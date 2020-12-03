@@ -1,0 +1,2 @@
+apply plugin: 'com.android.application'
+apply from: "${rootProject.rootDir}/CommonBuild.gradle"

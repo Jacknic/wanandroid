@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="home_tab">
+        <item>热门</item>
+        <item>最新</item>
+        <item>广场</item>
+        <item>项目</item>
+        <item>公众号</item>
+    </string-array>
+</resources>

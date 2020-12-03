@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainNav"
+    app:startDestination="@id/mainPage">
+
+    <fragment
+        android:id="@+id/mainPage"
+        android:name="com.jacknic.wanandroid.ui.page.main.MainPage"
+        android:label="@string/app_name"
+        tools:layout="@layout/page_main" />
+    <fragment
+        android:id="@+id/settingsPage"
+        android:name="com.jacknic.wanandroid.SettingsPage"
+        android:label="设置" />
+    <fragment
+        android:id="@+id/browserPage"
+        android:name="com.jacknic.wanandroid.ui.page.browser.BrowserPage"
+        tools:layout="@layout/page_browser">
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+    <action
+        android:id="@+id/nav_to_browserPage"
+        app:destination="@id/browserPage"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+</navigation>

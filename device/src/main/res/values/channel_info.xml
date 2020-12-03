@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="channel_name_list">
+        <item>应用更新</item>
+        <item>文件下载</item>
+        <item>消息推送</item>
+    </string-array>
+</resources>

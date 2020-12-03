@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/include_reload_view" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="@dimen/offset_primary"
+                    android:background="@drawable/ic_account_circle_outline"
+                    android:contentDescription="@null"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/offset_primary"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Jacknic"
+                    android:textColor="?colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivAvatar"
+                    app:layout_constraintTop_toTopOf="@id/ivAvatar" />
+
+                <TextView
+                    android:id="@+id/tvSubInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/offset_primary"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="2020年6月19日09:53:51"
+                    android:textColor="?colorButtonNormal"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ivAvatar"
+                    app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/offset_primary"
+                    android:text="粉丝 0" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/offset_primary"
+                    android:text="关注 0" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/offset_primary"
+                    android:text="积分 0" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_primary"
+                android:layout_marginTop="@dimen/offset_primary"
+                app:cardElevation="0dp"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.RadiusPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="true">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_archive"
+                            android:text="必看"
+                            app:drawableTint="@color/red" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_public"
+                            android:text="新闻"
+                            app:drawableTint="@color/cyan" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_extension_outline"
+                            android:text="发现"
+                            app:drawableTint="@color/green" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_contacts_outline"
+                            android:text="酷友"
+                            app:drawableTint="@color/orange" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="true">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_archive"
+                            android:text="必看"
+                            app:drawableTint="@color/red" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_public"
+                            android:text="新闻"
+                            app:drawableTint="@color/cyan" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_extension_outline"
+                            android:text="发现"
+                            app:drawableTint="@color/green" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/BannerTabStyle"
+                            android:drawableTop="@drawable/ic_contacts_outline"
+                            android:text="酷友"
+                            app:drawableTint="@color/orange" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

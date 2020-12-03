@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_tab_home"
+            android:icon="@drawable/selector_home_icon"
+            android:title="首页" />
+        <item
+            android:id="@+id/menu_tab_tree"
+            android:icon="@drawable/selector_extension_icon"
+            android:title="体系" />
+        <item
+            android:id="@+id/menu_tab_share"
+            android:icon="@drawable/selector_add_icon"
+            android:title="分享" />
+        <item
+            android:id="@+id/menu_tab_wechat"
+            android:icon="@drawable/selector_contacts_icon"
+            android:title="公众号" />
+        <item
+            android:id="@+id/menu_tab_mine"
+            android:icon="@drawable/selector_account_icon"
+            android:title="我的" />
+    </group>
+</menu>

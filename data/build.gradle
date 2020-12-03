@@ -1,0 +1,16 @@
+apply from: "${rootProject.rootDir}/AppLibraryBuild.gradle"
+
+dependencies {
+    implementation libs.roomRuntime
+    implementation libs.roomKtx
+    implementation libs.coroutinesCore
+    implementation libs.coroutinesAndroid
+    kapt libs.room
+
+    api libs.logger
+    api libs.okhttp
+    api libs.retrofit
+    api libs.jsoup
+    implementation "androidx.paging:paging-runtime:3.0.0-alpha02"
+
+}

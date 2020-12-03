@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">酷玩</string>
+    <string name="open_with_browser">浏览器打开</string>
+    <string name="refresh">刷新</string>
+    <string name="action_title_download">选择下载方式</string>
+    <string name="tips_file_download">是否下载该文件？</string>
+    <string name="action_title_file_download">选择下载方式</string>
+    <string name="action_title_file_upload">上传文件</string>
+    <string name="action_title_choice_browser">选择浏览器</string>
+    <string name="browser_argument_error">参数有误，无法打开网页！</string>
+    <string name="inner_page_tips">内置页面，无法在浏览器打开</string>
+</resources>

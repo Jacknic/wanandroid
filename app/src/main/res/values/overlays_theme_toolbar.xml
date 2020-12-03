@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 主题着色工具栏 -->
+    <style name="AppThemeOverlay.Toolbar.Primary" parent="">
+        <item name="toolbarStyle">@style/AppWidget.Toolbar.Primary</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+        <item name="android:statusBarColor">?android:attr/colorPrimary</item>
+        <item name="android:navigationBarColor">?android:attr/colorPrimary</item>
+        <item name="bottomNavigationStyle">
+            @style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface
+        </item>
+        <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout.PrimarySurface</item>
+    </style>
+
+</resources>

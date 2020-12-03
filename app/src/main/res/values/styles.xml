@@ -1,0 +1,17 @@
+<resources>
+
+    <style name="BannerTabStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">@dimen/offset_primary</item>
+        <item name="android:paddingBottom">@dimen/offset_primary</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:drawablePadding">@dimen/offset_middle</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="drawableTintMode">src_in</item>
+    </style>
+
+</resources>

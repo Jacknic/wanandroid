@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 闪屏主题 -->
+    <style name="AppThemeSplash" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
+
+    <!-- 白天主题 -->
+    <style name="AppThemeDay" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@color/main_background</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+    </style>
+
+    <!-- 夜间主题 -->
+    <style name="AppThemeNight" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <!-- 主题样式覆盖/通用样式 -->
+    <style name="AppThemeOverlay.Theme" parent="">
+        <!-- 窗口样式 -->
+        <item name="android:statusBarColor">?colorSurface</item>
+        <item name="android:navigationBarColor">?colorSurface</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <!-- 颜色 -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorSecondary">?colorPrimary</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorBackgroundFloating">?colorSurface</item>
+
+        <!-- 组件样式 -->
+        <item name="android:scrollbarThumbHorizontal">@drawable/scrollbar</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar</item>
+        <item name="dialogCornerRadius">@dimen/radius_primary</item>
+        <item name="toolbarStyle">@style/AppWidget.Toolbar.Surface</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
+    </style>
+</resources>

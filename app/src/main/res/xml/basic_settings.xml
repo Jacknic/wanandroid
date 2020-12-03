@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:inputType="textCapWords"
+        android:key="app_main_mode"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="选择你喜欢的默认启动页"
+        android:title="默认启动页" />
+    <CheckBoxPreference
+        android:key="navigation_bar_color"
+        android:title="@string/pref_title_navigation_color" />
+    <CheckBoxPreference
+        android:key="auto_hide_bottom_navigation"
+        android:title="@string/pref_title_auto_hide_bottom_navigation" />
+    <CheckBoxPreference
+        android:key="transparent_status_bar"
+        android:title="@string/pref_title_transparent_status_bar" />
+    <CheckBoxPreference
+        android:key="show_fast_return_view"
+        android:title="显示快速返回按钮" />
+    <CheckBoxPreference
+        android:key="use_internal_webview"
+        android:summary="@string/pref_summary_use_internal_webview"
+        android:title="@string/pref_title_use_internal_webview" />
+    <PreferenceCategory android:title="@string/pref_header_download">
+        <CheckBoxPreference
+            android:key="global_auto_install_accessibility_service"
+            android:title="@string/pref_title_global_auto_install_accessibility_service" />
+        <CheckBoxPreference
+            android:key="auto_install_on_downloaded"
+            android:summary="@string/pref_description_auto_install_on_downloaded"
+            android:title="@string/pref_title_auto_install_on_downloaded" />
+        <CheckBoxPreference
+            android:key="delete_file_on_installed"
+            android:summary="@string/pref_description_delete_file_on_installed"
+            android:title="@string/pref_title_delete_file_on_installed" />
+        <CheckBoxPreference
+            android:key="download_filename_cn_enabled"
+            android:summary="@string/pref_description_download_filename_cn_enabled"
+            android:title="@string/pref_title_download_filename_cn_enabled" />
+        <CheckBoxPreference
+            android:key="show_hide_apps"
+            android:summary="@string/pref_summary_show_hide_apps"
+            android:title="@string/pref_title_show_hide_apps" />
+        <Preference
+            android:inputType="textCapWords"
+            android:key="download_dir"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_download_dir" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_header_service">
+        <CheckBoxPreference
+            android:key="check_beta_version_enabled"
+            android:summary="@string/pref_description_check_beta_version"
+            android:title="@string/pref_title_check_beta_version" />
+        <CheckBoxPreference
+            android:key="push_service_enabled"
+            android:summary="@string/pref_description_push_service_enabled"
+            android:title="@string/pref_title_push_service_enabled" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_header_notification">
+        <CheckBoxPreference
+            android:key="show_upgrade_notification_enabled"
+            android:title="@string/pref_title_show_upgrade_notification_enabled" />
+        <CheckBoxPreference
+            android:dependency="push_service_enabled"
+            android:key="show_notice_notification_enabled"
+            android:summary="@string/pref_description_show_notice_notification_enabled"
+            android:title="@string/pref_title_show_notice_notification_enabled" />
+        <CheckBoxPreference
+            android:dependency="push_service_enabled"
+            android:key="show_installed_notification_enabled"
+            android:title="@string/pref_title_show_installed_notification_enabled" />
+        <CheckBoxPreference
+            android:key="floating_notification"
+            android:title="@string/pref_floating_notification" />
+        <CheckBoxPreference
+            android:key="notification_sound"
+            android:title="@string/pref_title_enable_notification_sound" />
+        <CheckBoxPreference
+            android:key="notification_vibrate"
+            android:title="@string/pref_enable_notification_vibrate" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_header_clear">
+        <CheckBoxPreference
+            android:key="clear_cache_on_exit"
+            android:summary="@string/pref_description_clear_cache_on_exit"
+            android:title="@string/pref_title_clear_cache_on_exit" />
+        <CheckBoxPreference
+            android:key="limited_background_enabled"
+            android:title="@string/pref_title_limited_background" />
+        <Preference
+            android:key="reset_preferences"
+            android:summary="@string/pref_description_reset_preferences"
+            android:title="@string/pref_title_reset_preferences" />
+        <Preference
+            android:key="clear_cache"
+            android:summary="@string/pref_description_clear_cache"
+            android:title="@string/pref_title_clear_cache" />
+        <Preference
+            android:key="clear_all"
+            android:summary="@string/pref_description_clear_all"
+            android:title="@string/pref_title_clear_all" />
+        <Preference
+            android:key="check_log_and_test"
+            android:title="@string/pref_title_test_and_log" />
+    </PreferenceCategory>
+</PreferenceScreen>

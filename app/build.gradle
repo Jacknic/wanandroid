@@ -1,0 +1,87 @@
+apply from: "${rootProject.rootDir}/AppModuleBuild.gradle"
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    defaultConfig {
+        applicationId "com.jacknic.wanandroid"
+        setProperty("archivesBaseName", applicationId)
+        vectorDrawables.useSupportLibrary = true
+        resValue("string", "appVersion", "appVersion123456")
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+    }
+
+    buildFeatures.dataBinding = true
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+}
+
+dependencies {
+    implementation libs.androidxActivity
+    implementation libs.lifecycle
+    implementation libs.lifecycleExtensions
+    implementation libs.lifecycleViewmodelKtx
+    implementation libs.startup
+    implementation libs.workKtx
+
+    api(project(":data"))
+    api(project(":device"))
+
+    // 工具
+    implementation libs.hilt
+    kapt libs.hiltCompiler
+    implementation libs.hiltViewmodel
+    implementation libs.hiltWork
+    kapt "androidx.hilt:hilt-compiler:${versions.hiltJetpack}"
+    implementation libs.eventbus
+    implementation libs.logger
+    implementation "com.blankj:utilcodex:1.28.1"
+
+    // 数据
+    implementation libs.glide
+    kapt libs.glideCompiler
+    implementation libs.pagingRuntime
+
+    // UI
+    implementation libs.constraintLayout
+    implementation libs.recyclerView
+    implementation libs.webkit
+    implementation libs.preference
+    implementation libs.navigationUiKtx
+    implementation libs.navigationFragmentKtx
+    implementation libs.preference
+    implementation libs.swipeRefreshLayout
+    implementation libs.viewPager2
+    implementation libs.material
+    implementation libs.brvh
+    implementation libs.ahBottomNavigation
+    implementation libs.recyclerItemDecoration
+    implementation libs.banner
+    implementation libs.photoView
+    implementation 'com.wuyr:rippleanimation:1.0.0'
+    implementation "com.github.florent37:arclayout:1.0.3"
+    implementation "com.loopeer.lib:shadow:0.0.4-beta3"
+    implementation "com.dinuscxj:ellipsizetextview:1.0.5"
+    implementation "com.github.fondesa:recycler-view-divider:3.1.0"
+    implementation "com.kk.taurus.playerbase:playerbase:3.3.6"
+    implementation "com.romandanylyk:pageindicatorview:1.0.3"
+    implementation "com.mostafagazar:customshapeimageview:1.0.4"
+    implementation "com.dlazaro66.qrcodereaderview:qrcodereaderview:2.0.3"
+    implementation "com.davemorrissey.labs:subsampling-scale-image-view:3.10.0"
+    implementation "com.makeramen:roundedimageview:2.3.0"
+    implementation "com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar"
+    implementation 'com.jaredrummler:cyanea:1.0.2'
+
+    // 测试
+    androidTestImplementation libs.espressoCore
+}

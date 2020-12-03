@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 默认工具栏 -->
+    <style name="AppWidget.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:textColorPrimary">?attr/colorPrimary</item>
+        <item name="titleTextColor">?attr/colorPrimary</item>
+        <item name="subtitleTextColor">?attr/colorPrimary</item>
+        <item name="theme">@style/AppWidgetOverlay.Toolbar.Surface</item>
+        <item name="android:theme">@style/AppWidgetOverlay.Toolbar.Surface</item>
+    </style>
+
+    <style name="AppWidgetOverlay.Toolbar.Surface" parent="">
+        <item name="colorControlNormal">?attr/colorPrimary</item>
+        <item name="actionMenuTextColor">?attr/colorPrimary</item>
+    </style>
+
+    <!-- 着色状态工具栏 -->
+    <style name="AppWidget.Toolbar.Primary" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="subtitleTextColor">@android:color/white</item>
+        <item name="theme">@style/AppWidgetOverlay.Toolbar.Primary</item>
+        <item name="android:theme">@style/AppWidgetOverlay.Toolbar.Primary</item>
+    </style>
+
+    <style name="AppWidgetOverlay.Toolbar.Primary" parent="">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:statusBarColor">?colorSurface</item>
+    </style>
+
+    <!-- 底部弹出对话框样式 -->
+    <style name="BottomSheetDialog">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">?colorSurface</item>
+    </style>
+
+</resources>

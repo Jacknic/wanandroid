@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RadiusPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:indicator_gravity="right"
+                app:indicator_normal_width="4dp"
+                app:indicator_selected_color="@android:color/white"
+                app:indicator_selected_width="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/banner">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BannerTabStyle"
+                    android:drawableTop="@drawable/ic_archive"
+                    android:text="必看"
+                    app:drawableTint="@color/red" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BannerTabStyle"
+                    android:drawableTop="@drawable/ic_public"
+                    android:text="新闻"
+                    app:drawableTint="@color/cyan" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BannerTabStyle"
+                    android:drawableTop="@drawable/ic_extension_outline"
+                    android:text="发现"
+                    app:drawableTint="@color/green" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BannerTabStyle"
+                    android:drawableTop="@drawable/ic_contacts_outline"
+                    android:text="酷友"
+                    app:drawableTint="@color/orange" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/BannerTabStyle"
+                    android:drawableTop="@drawable/ic_notifications"
+                    android:text="更多"
+                    app:drawableTint="@color/purple" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
