@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">玩安卓</string>
+    <string name="title_home">首页</string>
+    <string name="title_category">分类</string>
+    <string name="title_system">体系</string>
+    <string name="title_mine">我的</string>
+    <string-array name="tab_titles">
+        <item>@string/title_home</item>
+        <item>@string/title_category</item>
+        <item>@string/title_system</item>
+        <item>@string/title_mine</item>
+    </string-array>
+</resources>
