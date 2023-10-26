@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -10,5 +11,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
     }
+}
+
+dependencies {
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 

@@ -4,14 +4,23 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.sdklib.AndroidVersion.VersionCodes
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KaptExtension
+
+buildscript {
+    dependencies {
+        classpath(libs.androidx.navigation.plugin)
+    }
+}
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.hilt.android) apply false
 }
 true
 
@@ -27,6 +36,9 @@ fun DependencyHandler.testImplementation(dependencyNotation: Any): Dependency? =
 fun DependencyHandler.debugImplementation(dependencyNotation: Any): Dependency? =
     add("debugImplementation", dependencyNotation)
 
+fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
+    add("kapt", dependencyNotation)
+
 /**
  * Android 模块统一配置
  */
@@ -34,7 +46,12 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
     with(target) {
         version = libs.versions.module.get()
         pluginManager.apply("org.jetbrains.kotlin.android")
+        pluginManager.apply("kotlin-kapt")
+        pluginManager.apply("com.google.dagger.hilt.android")
         dependencies {
+            implementation(libs.hilt.android)
+            kapt(libs.hilt.android.compiler)
+
             androidTestImplementation(kotlin("test"))
             testImplementation(kotlin("test"))
             testImplementation(libs.junit)
@@ -55,7 +72,14 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
                 androidTestImplementation(project(":core:testing"))
             }
         }
+        (this as ExtensionAware).extensions.configure<KaptExtension>("kapt") {
+            correctErrorTypes = true
+        }
+        (this as ExtensionAware).extensions.configure<KotlinAndroidProjectExtension>("kotlin") {
+            jvmToolchain(8)
+        }
     }
+
 
     compileSdk = VersionCodes.TIRAMISU
     defaultConfig {
