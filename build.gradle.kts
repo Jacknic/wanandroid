@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_EXPRESSION")
+@file:Suppress("UNUSED_EXPRESSION", "UnstableApiUsage")
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
@@ -23,6 +23,8 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
 }
 true
+fun DependencyHandler.api(dependencyNotation: Any): Dependency? =
+    add("api", dependencyNotation)
 
 fun DependencyHandler.implementation(dependencyNotation: Any): Dependency? =
     add("implementation", dependencyNotation)
@@ -48,10 +50,37 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
         pluginManager.apply("org.jetbrains.kotlin.android")
         pluginManager.apply("kotlin-kapt")
         pluginManager.apply("com.google.dagger.hilt.android")
+    }
+
+    compileSdk = VersionCodes.TIRAMISU
+    defaultConfig {
+        minSdk = VersionCodes.LOLLIPOP
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    with(target) {
         dependencies {
-            implementation(libs.hilt.android)
+            val commonPath = ":core:common"
+            val commonProject = findProject(commonPath)
+            if (target != commonProject) {
+                api(project(commonPath))
+            }
+            add("compileOnly", libs.hilt.android)
             kapt(libs.hilt.android.compiler)
 
+            implementation(libs.core.ktx)
             androidTestImplementation(kotlin("test"))
             testImplementation(kotlin("test"))
             testImplementation(libs.junit)
@@ -62,7 +91,6 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
                 implementation(project(":core:ui"))
                 implementation(project(":core:design"))
                 implementation(project(":core:data"))
-                implementation(project(":core:common"))
                 implementation(project(":core:domain"))
                 implementation(project(":core:analytics"))
 
@@ -72,27 +100,18 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
                 androidTestImplementation(project(":core:testing"))
             }
         }
+
+        testOptions {
+            unitTests {
+                isIncludeAndroidResources = true
+            }
+        }
         (this as ExtensionAware).extensions.configure<KaptExtension>("kapt") {
             correctErrorTypes = true
         }
         (this as ExtensionAware).extensions.configure<KotlinAndroidProjectExtension>("kotlin") {
-            jvmToolchain(8)
+            jvmToolchain(17)
         }
-    }
-
-
-    compileSdk = VersionCodes.TIRAMISU
-    defaultConfig {
-        minSdk = VersionCodes.LOLLIPOP
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
@@ -144,7 +163,6 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
         }
     }
 
-
     buildFeatures {
         compose = true
     }
@@ -182,7 +200,7 @@ subprojects {
         pluginManager.apply("maven-publish")
         configure<KotlinProjectExtension> {
             jvmToolchain {
-                languageVersion.set(JavaLanguageVersion.of(8))
+                languageVersion.set(JavaLanguageVersion.of(17))
             }
         }
     }
