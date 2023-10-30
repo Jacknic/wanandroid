@@ -14,6 +14,15 @@ android {
 }
 
 dependencies {
+    api(project(":core:data"))
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+    implementation("androidx.compose.runtime:runtime-livedata")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+
+    // implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 }
 
