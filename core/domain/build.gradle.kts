@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.jacknic.android.core.domain"
 }
+
+dependencies {
+    implementation(project(":core:model"))
+}
