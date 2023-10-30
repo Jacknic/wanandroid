@@ -9,7 +9,7 @@ import timber.log.Timber
 /**
  * 通用功能模块初始化
  *
- * @author Jack
+ * @author Jacknic
  */
 @Keep
 class AppCommonInitializer : Initializer<Unit> {

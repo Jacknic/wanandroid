@@ -3,7 +3,7 @@ package com.jacknic.android.wanandroid.core.common
 /**
  * 通用状态数据密封类
  *
- * @author Jack
+ * @author Jacknic
  */
 sealed interface StateResult<out T> {
     /**

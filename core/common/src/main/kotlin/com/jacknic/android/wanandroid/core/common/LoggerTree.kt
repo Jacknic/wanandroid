@@ -11,7 +11,7 @@ import timber.log.Timber
  * 日志输出工具类
  *
  * @param tagPrefix tag便签前缀，便于筛选日志
- * @author Jack
+ * @author Jacknic
  */
 class LoggerTree(
     private val tagPrefix: String,

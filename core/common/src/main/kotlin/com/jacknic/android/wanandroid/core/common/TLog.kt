@@ -7,7 +7,7 @@ import timber.log.Timber
 /**
  * Timber log 工具类
  *
- * @author Jack
+ * @author Jacknic
  */
 class TLog @JvmOverloads constructor(
     private val tag: String,
