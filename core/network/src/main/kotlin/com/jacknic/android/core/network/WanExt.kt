@@ -1,20 +1,28 @@
 package com.jacknic.android.core.network
 
 import com.jacknic.android.core.model.WanResult
-import retrofit2.Response
-
-typealias WanResponse<T> = Response<WanResult<T>>
+import retrofit2.HttpException
 
 /**
- * 响应结果转换
+ * 获取请求数据结果
  */
-fun <T> WanResponse<T>.toResult(): Result<T> {
-    val txzResult = body() ?: return Result.failure(
-        WanServerException(code(), message())
-    )
-    return if (txzResult.success() && txzResult.data != null) {
-        Result.success(txzResult.data!!)
+suspend fun <T> runResult(
+    action: suspend () -> WanResult<T>
+): Result<T> = runCatching {
+    val result = try {
+        action()
+    } catch (e: Exception) {
+        if (e is HttpException) {
+            throw WanServerException(e.code(), e.message())
+        } else {
+            throw e
+        }
+    }
+
+    val data = result.data
+    return if (result.success() && data != null) {
+        Result.success(data)
     } else {
-        Result.failure(WanServerException(txzResult.errorCode, txzResult.errorMsg))
+        Result.failure(WanServerException(result.errorCode, result.errorMsg))
     }
 }

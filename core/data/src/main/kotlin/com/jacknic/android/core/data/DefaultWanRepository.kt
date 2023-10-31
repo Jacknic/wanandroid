@@ -4,7 +4,7 @@ import com.jacknic.android.core.domain.data.WanRepository
 import com.jacknic.android.core.model.Article
 import com.jacknic.android.core.model.Paging
 import com.jacknic.android.core.network.WanApi
-import com.jacknic.android.core.network.toResult
+import com.jacknic.android.core.network.runResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +19,5 @@ class DefaultWanRepository @Inject constructor(private val api: WanApi) : WanRep
     override suspend fun getHomeArticleList(
         page: Int,
         pageSize: Int
-    ): Result<Paging<Article>> = runCatching {
-        return api.getArticleList(page, pageSize).toResult()
-    }
+    ): Result<Paging<Article>> = runResult { api.getArticleList(page, pageSize) }
 }

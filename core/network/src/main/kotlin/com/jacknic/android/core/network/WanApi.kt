@@ -2,6 +2,7 @@ package com.jacknic.android.core.network
 
 import com.jacknic.android.core.model.Article
 import com.jacknic.android.core.model.Paging
+import com.jacknic.android.core.model.WanResult
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -23,6 +24,6 @@ interface WanApi {
     suspend fun getArticleList(
         @Path("page") page: Int,
         @Query("page_size") pageSize: Int = 20
-    ): WanResponse<Paging<Article>>
+    ): WanResult<Paging<Article>>
 
 }
