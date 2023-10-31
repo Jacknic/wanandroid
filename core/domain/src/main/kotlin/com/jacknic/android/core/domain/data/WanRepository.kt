@@ -16,5 +16,5 @@ interface WanRepository {
      * @param page 页码
      * @param pageSize 分页大小
      */
-    suspend fun getHomeArticleList(page: Int, pageSize: Int = 20): Result<Paging<Article>>
+    suspend fun getHomeArticleList(page: Int, pageSize: Int): Result<Paging<Article>>
 }

@@ -18,12 +18,13 @@ interface WanApi {
      * 获取首页文章列表
      *
      * @param page 页码
-     * @param pageSize 分页大小 1-40
+     * @param pageSize 分页大小
      */
+    @PageNotice
     @GET("/article/list/{page}/json")
     suspend fun getArticleList(
         @Path("page") page: Int,
-        @Query("page_size") pageSize: Int = 20
+        @Query("page_size") pageSize: Int
     ): WanResult<Paging<Article>>
 
 }
