@@ -12,6 +12,6 @@ dependencies {
     implementation(libs.coil.kt.svg)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.okhttp.logging)
-    api(libs.retrofit.core)
+    implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
 }

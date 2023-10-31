@@ -85,7 +85,8 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
             testImplementation(kotlin("test"))
             testImplementation(libs.junit)
         }
-        if (parent?.name == "feature") {
+        val isApp = pluginManager.hasPlugin("com.android.application")
+        if (parent?.name == "feature" || isApp) {
             dependencies {
                 implementation(project(":core:model"))
                 implementation(project(":core:ui"))

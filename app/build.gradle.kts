@@ -14,7 +14,7 @@ android {
 }
 
 dependencies {
-    api(project(":core:data"))
+    implementation(project(":core:data"))
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
