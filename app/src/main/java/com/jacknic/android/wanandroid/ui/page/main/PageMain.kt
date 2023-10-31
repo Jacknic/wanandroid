@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -112,11 +111,10 @@ fun PageMain() {
             state = pagerState
         ) {
             val pageScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-            val listState = rememberLazyListState()
             if (pagerState.currentPage == it) {
                 scrollBehavior.value = pageScrollBehavior
             }
-            PageHome(pageScrollBehavior, listState)
+            PageHome(pageScrollBehavior)
         }
     }
 }
