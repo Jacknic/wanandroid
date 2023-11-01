@@ -27,6 +27,11 @@ jobs:
           name: test-artifact
           path: ./**/build/reports/**
 
+      - name: 发布快照任务
+        run: |
+          chmod +x ./gradlew
+          ./gradlew publish
+
       - name: 打包产出物
         run: |
           chmod +x ./gradlew
