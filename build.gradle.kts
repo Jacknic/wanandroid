@@ -42,6 +42,24 @@ fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
     add("kapt", dependencyNotation)
 
 /**
+ * 获取 Git 标签
+ */
+fun getGitTag(dir: String): String? {
+    try {
+        val undefined = "undefined"
+        val process = Runtime.getRuntime().exec("git -C $dir name-rev --name-only --tags HEAD")
+        process.waitFor()
+        val tag = process.inputReader().readLine().trim()
+        if (tag != undefined) {
+            return tag
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return null
+}
+
+/**
  * Android 模块统一配置
  */
 fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
@@ -222,13 +240,14 @@ subprojects {
                     }
                 }
                 publications {
-                    create<MavenPublication>("gpr") {
+                    create<MavenPublication>("main") {
                         val groupIdBuilder = StringBuilder("com.jacknic.android.wanandroid")
                         if (parent != null && parent != rootProject) {
                             groupIdBuilder.append(".${parent!!.name}")
                         }
+                        val gitTag = getGitTag(target.projectDir.absolutePath)
                         groupId = groupIdBuilder.toString()
-                        version = target.version.toString()
+                        version = gitTag ?: "${target.version}-SNAPSHOT"
                         var targetComponent: SoftwareComponent? = components.findByName("release")
                         var packType = "aar"
                         if (targetComponent == null) {
