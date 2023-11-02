@@ -1,6 +1,9 @@
-name: 单元测试流程
+name: android CI
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   build:
@@ -17,35 +20,31 @@ jobs:
           cache: gradle
 
       - name: 执行单元测试
-        run: |
-          chmod +x ./gradlew
-          ./gradlew test
+        run: ./gradlew test
 
-      - name: 上传产出物(测试报告)
+      - name: 上传单元测试报告
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: test-artifact
           path: ./**/build/reports/**
 
-      - name: 发布快照任务
+      - name: 发布组件包
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${GITHUB_REF}" =~ ^refs/tags/ ]]; then
-            echo "当前有标签，忽略快照任务"
-          else
-            echo "当前无标签，执行快照任务"
-            chmod +x ./gradlew
-            ./gradlew publishMainPublicationToGitHubPackagesRepository
-          fi
+          ./gradlew publishMainPublicationToGitHubPackagesRepository
 
       - name: 打包产出物
-        run: |
-          chmod +x ./gradlew
-          ./gradlew assemble
+        run:
+          ./gradlew build
 
       - name: 上传产出物
         uses: actions/upload-artifact@v3
         with:
           name: outputs-artifact
           path: ./**/build/outputs/**
+
+      - name: release
+        run: echo 'release'
+
