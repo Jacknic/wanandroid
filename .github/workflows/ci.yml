@@ -20,7 +20,9 @@ jobs:
           cache: gradle
 
       - name: 执行单元测试
-        run: ./gradlew test
+        run:
+          chmod +x ./gradlew
+          ./gradlew test
 
       - name: 上传单元测试报告
         if: ${{ always() }}
