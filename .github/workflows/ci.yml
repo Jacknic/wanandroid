@@ -29,6 +29,7 @@ jobs:
           path: ./**/build/reports/**
 
       - name: 发布组件包
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
