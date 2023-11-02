@@ -1,9 +1,6 @@
 name: android CI
 
-on:
-  push:
-    branches:
-      - 'main'
+on: [ push ]
 
 jobs:
   build:
@@ -22,7 +19,7 @@ jobs:
       - name: 执行单元测试
         run: |
           chmod +x ./gradlew
-          ./gradlew test
+          ./gradlew testDebugUnitTest
 
       - name: 上传单元测试报告
         if: ${{ always() }}
@@ -37,9 +34,15 @@ jobs:
         run: |
           ./gradlew publishMainPublicationToGitHubPackagesRepository
 
-      - name: 打包产出物
+      - name: 打包产出物(debug)
+        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         run: |
-          ./gradlew build
+          ./gradlew assembleDebug
+
+      - name: 打包产出物(release)
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          ./gradlew assembleRelease
 
       - name: 上传产出物
         uses: actions/upload-artifact@v3
@@ -48,5 +51,6 @@ jobs:
           path: ./**/build/outputs/**
 
       - name: release
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: echo 'release'
 
