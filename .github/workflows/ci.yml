@@ -20,7 +20,7 @@ jobs:
           cache: gradle
 
       - name: 执行单元测试
-        run:
+        run: |
           chmod +x ./gradlew
           ./gradlew test
 
@@ -38,7 +38,7 @@ jobs:
           ./gradlew publishMainPublicationToGitHubPackagesRepository
 
       - name: 打包产出物
-        run:
+        run: |
           ./gradlew build
 
       - name: 上传产出物
