@@ -28,6 +28,8 @@ jobs:
           path: ./**/build/reports/**
 
       - name: 发布快照任务
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x ./gradlew
           ./gradlew publish
