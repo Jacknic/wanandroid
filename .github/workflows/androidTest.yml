@@ -31,7 +31,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${GITHUB_REF_NAME}" =~ ^refs/tags/ ]]; then
+          if [[ "${GITHUB_REF}" =~ ^refs/tags/ ]]; then
             echo "当前有标签，忽略快照任务"
           else
             echo "当前无标签，执行快照任务"
