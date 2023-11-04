@@ -11,17 +11,32 @@ android {
         versionCode = 1
         versionName = "1.0.0"
     }
+
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
 }
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(platform(libs.compose.bom))
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
-    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
+    implementation(libs.androidx.paging.compose)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
     implementation("androidx.compose.runtime:runtime-livedata")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.material3)
+
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 
     // implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 }

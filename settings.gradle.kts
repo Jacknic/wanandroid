@@ -31,4 +31,4 @@ fun installSubmodule(dir: String) {
 }
 
 installSubmodule("core")
-installSubmodule("feature")
+installSubmodule("apps")
