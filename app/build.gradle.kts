@@ -31,6 +31,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata")
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.material3)
+    implementation(libs.coil.kt.compose)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
