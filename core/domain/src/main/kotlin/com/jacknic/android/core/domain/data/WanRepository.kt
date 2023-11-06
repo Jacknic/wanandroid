@@ -1,6 +1,7 @@
 package com.jacknic.android.core.domain.data
 
 import com.jacknic.android.core.model.Article
+import com.jacknic.android.core.model.Banner
 import com.jacknic.android.core.model.Paging
 
 /**
@@ -17,4 +18,9 @@ interface WanRepository {
      * @param pageSize 分页大小
      */
     suspend fun getHomeArticleList(page: Int, pageSize: Int): Result<Paging<Article>>
+
+    /**
+     *获取首页
+     */
+    suspend fun getHomeBannerList(): Result<List<Banner>>
 }

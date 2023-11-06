@@ -20,4 +20,6 @@ class DefaultWanRepository @Inject constructor(private val api: WanApi) : WanRep
         page: Int,
         pageSize: Int
     ): Result<Paging<Article>> = runResult { api.getArticleList(page, pageSize) }
+
+    override suspend fun getHomeBannerList() = runResult(api::getBannerList)
 }
