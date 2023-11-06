@@ -18,6 +18,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
+    }
 }
 
 dependencies {
@@ -32,6 +37,7 @@ dependencies {
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.material3)
     implementation(libs.coil.kt.compose)
+    api(libs.ui.tooling.preview)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
