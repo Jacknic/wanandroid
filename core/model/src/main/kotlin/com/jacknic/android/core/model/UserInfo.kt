@@ -19,31 +19,31 @@ import com.google.gson.annotations.SerializedName
  * @param username 可用
  */
 
-data class UserInfo (
+data class UserInfo(
     @SerializedName("admin")
-    val admin: Boolean,
+    val admin: Boolean = false,
     @SerializedName("chapterTops")
-    val chapterTops: List<String>,
+    val chapterTops: List<String> = emptyList(),
     @SerializedName("coinCount")
-    val coinCount: Int,
+    val coinCount: Int = 0,
     @SerializedName("collectIds")
-    val collectIds: List<String>,
+    val collectIds: List<String> = emptyList(),
     @SerializedName("email")
-    val email: String,
+    val email: String = "",
     @SerializedName("icon")
-    val icon: String,
+    val icon: String = "",
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("nickname")
-    val nickname: String,
+    val nickname: String = "",
     @SerializedName("password")
-    val password: String,
+    val password: String = "",
     @SerializedName("publicName")
-    val publicName: String,
+    val publicName: String = "",
     @SerializedName("token")
-    val token: String,
+    val token: String = "",
     @SerializedName("type")
-    val type: Int,
+    val type: Int = 0,
     @SerializedName("username")
     val username: String
 )

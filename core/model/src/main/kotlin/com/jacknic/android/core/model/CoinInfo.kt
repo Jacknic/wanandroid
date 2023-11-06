@@ -13,13 +13,13 @@ import com.google.gson.annotations.SerializedName
 
 data class CoinInfo(
     @SerializedName("coinCount")
-    val coinCount: Int,
+    val coinCount: Int = 0,
     @SerializedName("level")
-    val level: Int,
+    val level: Int = 0,
     @SerializedName("rank")
-    val rank: String,
+    val rank: String = "",
     @SerializedName("userId")
-    val userId: Int,
+    val userId: Int = 0,
     @SerializedName("username")
-    val username: String
+    val username: String = ""
 )

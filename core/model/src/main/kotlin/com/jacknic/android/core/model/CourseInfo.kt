@@ -23,29 +23,29 @@ import com.google.gson.annotations.SerializedName
  */
 data class CourseInfo(
     @SerializedName("author")
-    val author: String,
+    val author: String = "",
     @SerializedName("children")
-    val children: List<String>,
+    val children: List<String> = emptyList(),
     @SerializedName("courseId")
-    val courseId: Int,
+    val courseId: Int = 0,
     @SerializedName("cover")
-    val cover: String,
+    val cover: String = "",
     @SerializedName("desc")
-    val desc: String,
+    val desc: String = "",
     @SerializedName("id")
-    val id: Long,
+    val id: Long = 0,
     @SerializedName("lisense")
-    val license: String,
+    val license: String = "",
     @SerializedName("lisenseLink")
-    val licenseLink: String,
+    val licenseLink: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("order")
-    val order: Int,
+    val order: Int = 0,
     @SerializedName("parentChapterId")
-    val parentChapterId: Int,
+    val parentChapterId: Int = 0,
     @SerializedName("userControlSetTop")
-    val userControlSetTop: Boolean,
+    val userControlSetTop: Boolean = false,
     @SerializedName("visible")
-    val visible: Int
+    val visible: Int = 0
 )

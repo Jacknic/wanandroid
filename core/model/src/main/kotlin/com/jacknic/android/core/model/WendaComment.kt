@@ -24,41 +24,41 @@ import com.google.gson.annotations.SerializedName
  * @param userName
  * @param zan
  */
-data class WendaComment (
+data class WendaComment(
     @SerializedName("anonymous")
-    val anonymous: Int,
+    val anonymous: Int = 0,
     @SerializedName("appendForContent")
-    val appendForContent: Int,
+    val appendForContent: Int = 0,
     @SerializedName("articleId")
-    val articleId: Int,
+    val articleId: Int = 0,
     @SerializedName("canEdit")
-    val canEdit: Boolean,
+    val canEdit: Boolean = false,
     @SerializedName("content")
-    val content: String,
+    val content: String = "",
     @SerializedName("contentMd")
-    val contentMd: String,
+    val contentMd: String = "",
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("niceDate")
-    val niceDate: String,
+    val niceDate: String = "",
     @SerializedName("publishDate")
-    val publishDate: Int,
+    val publishDate: Int = 0,
     @SerializedName("replyCommentId")
-    val replyCommentId: Int,
+    val replyCommentId: Int = 0,
     @SerializedName("replyComments")
-    val replyComments: List<WendaComment>,
+    val replyComments: List<WendaComment> = emptyList(),
     @SerializedName("rootCommentId")
-    val rootCommentId: Int,
+    val rootCommentId: Int = 0,
     @SerializedName("status")
-    val status: Int,
+    val status: Int = 0,
     @SerializedName("toUserId")
-    val toUserId: Int,
+    val toUserId: Int = 0,
     @SerializedName("toUserName")
-    val toUserName: String,
+    val toUserName: String = "",
     @SerializedName("userId")
-    val userId: Int,
+    val userId: Int = 0,
     @SerializedName("userName")
-    val userName: String,
+    val userName: String = "",
     @SerializedName("zan")
-    val zan: Int
+    val zan: Int = 0
 )

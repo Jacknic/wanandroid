@@ -23,33 +23,33 @@ import com.google.gson.annotations.SerializedName
 
 data class TreeChildren(
     @SerializedName("articleList")
-    val articleList: List<Article>,
+    val articleList: List<Article> = emptyList(),
     @SerializedName("author")
-    val author: String,
+    val author: String = "",
     @SerializedName("children")
-    val children: List<String>,
+    val children: List<String> = emptyList(),
     @SerializedName("courseId")
-    val courseId: Int,
+    val courseId: Int = 0,
     @SerializedName("cover")
-    val cover: String,
+    val cover: String = "",
     @SerializedName("desc")
-    val desc: String,
+    val desc: String = "",
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("lisense")
-    val lisense: String,
+    val lisense: String = "",
     @SerializedName("lisenseLink")
-    val lisenseLink: String,
+    val lisenseLink: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("order")
-    val order: Int,
+    val order: Int = 0,
     @SerializedName("parentChapterId")
-    val parentChapterId: Int,
+    val parentChapterId: Int = 0,
     @SerializedName("type")
-    val type: Int,
+    val type: Int = 0,
     @SerializedName("userControlSetTop")
-    val userControlSetTop: Boolean,
+    val userControlSetTop: Boolean = false,
     @SerializedName("visible")
-    val visible: Int
+    val visible: Int = 0
 )

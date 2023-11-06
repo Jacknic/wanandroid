@@ -13,13 +13,13 @@ import com.google.gson.annotations.SerializedName
 
 data class HotKeyword (
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("order")
-    val order: Int,
+    val order: Int = 0,
     @SerializedName("visible")
-    val visible: Int,
+    val visible: Int = 0,
     @SerializedName("link")
     val link: String? = null
 )

@@ -45,74 +45,74 @@ import com.google.gson.annotations.SerializedName
  */
 data class Article(
     @SerializedName("adminAdd")
-    val adminAdd: Boolean,
+    val adminAdd: Boolean = false,
     @SerializedName("apkLink")
-    val apkLink: String,
+    val apkLink: String = "",
     @SerializedName("audit")
-    val audit: Int,
+    val audit: Int = 0,
     @SerializedName("author")
-    val author: String,
+    val author: String = "",
     @SerializedName("canEdit")
-    val canEdit: Boolean,
+    val canEdit: Boolean = false,
     @SerializedName("chapterId")
-    val chapterId: Int,
+    val chapterId: Int = 0,
     @SerializedName("chapterName")
-    val chapterName: String,
+    val chapterName: String = "",
     @SerializedName("collect")
-    val collect: Boolean,
+    val collect: Boolean = false,
     @SerializedName("courseId")
-    val courseId: Int,
+    val courseId: Int = 0,
     @SerializedName("desc")
-    val desc: String,
+    val desc: String = "",
     @SerializedName("descMd")
-    val descMd: String,
+    val descMd: String = "",
     @SerializedName("envelopePic")
-    val envelopePic: String,
+    val envelopePic: String = "",
     @SerializedName("fresh")
-    val fresh: Boolean,
+    val fresh: Boolean = false,
     @SerializedName("host")
-    val host: String,
+    val host: String = "",
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("isAdminAdd")
-    val isAdminAdd: Boolean,
+    val isAdminAdd: Boolean = false,
     @SerializedName("link")
-    val link: String,
+    val link: String = "",
     @SerializedName("niceDate")
-    val niceDate: String,
+    val niceDate: String = "",
     @SerializedName("niceShareDate")
-    val niceShareDate: String,
+    val niceShareDate: String = "",
     @SerializedName("origin")
-    val origin: String,
+    val origin: String = "",
     @SerializedName("prefix")
-    val prefix: String,
+    val prefix: String = "",
     @SerializedName("projectLink")
-    val projectLink: String,
+    val projectLink: String = "",
     @SerializedName("publishTime")
-    val publishTime: Long,
+    val publishTime: Long = 0,
     @SerializedName("realSuperChapterId")
-    val realSuperChapterId: Int,
+    val realSuperChapterId: Int = 0,
     @SerializedName("selfVisible")
-    val selfVisible: Int,
+    val selfVisible: Int = 0,
     @SerializedName("shareDate")
-    val shareDate: Long,
+    val shareDate: Long = 0,
     @SerializedName("shareUser")
-    val shareUser: String,
+    val shareUser: String = "",
     @SerializedName("superChapterId")
-    val superChapterId: Int,
+    val superChapterId: Int = 0,
     @SerializedName("superChapterName")
-    val superChapterName: String,
+    val superChapterName: String = "",
     @SerializedName("tags")
-    val tags: List<Any>,
+    val tags: List<Any> = emptyList(),
     @SerializedName("title")
-    val title: String,
+    val title: String = "",
     @SerializedName("type")
-    val type: Int,
+    val type: Int = 0,
     @SerializedName("userId")
-    val userId: Int,
+    val userId: Int = 0,
     @SerializedName("visible")
-    val visible: Int,
+    val visible: Int = 0,
     @SerializedName("zan")
-    val zan: Int
+    val zan: Int = 0
 )
 

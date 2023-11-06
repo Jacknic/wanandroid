@@ -13,19 +13,19 @@ import com.google.gson.annotations.SerializedName
  * @param visible 可见性
  */
 
-data class FriendLink (
+data class FriendLink(
     @SerializedName("category")
-    val category: String,
+    val category: String = "",
     @SerializedName("icon")
-    val icon: String,
+    val icon: String = "",
     @SerializedName("id")
-    val id: Int,
+    val id: Int = 0,
     @SerializedName("link")
-    val link: String,
+    val link: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("order")
-    val order: Int,
+    val order: Int = 0,
     @SerializedName("visible")
-    val visible: Int
+    val visible: Int = 0
 )

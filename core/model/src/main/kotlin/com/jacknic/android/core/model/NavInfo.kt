@@ -11,9 +11,9 @@ import com.google.gson.annotations.SerializedName
 
 data class NavInfo(
     @SerializedName("articles")
-    val articles: List<Article>,
+    val articles: List<Article> = emptyList(),
     @SerializedName("cid")
-    val cid: Int,
+    val cid: Int = 0,
     @SerializedName("name")
-    val name: String
+    val name: String = ""
 )
