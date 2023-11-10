@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application)
+    alias(libs.plugins.hilt.android)
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -28,13 +29,11 @@ android {
 dependencies {
     implementation(project(":core:data"))
     implementation(platform(libs.compose.bom))
-    implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.paging.compose)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
     implementation("androidx.compose.runtime:runtime-livedata")
-    kapt(libs.androidx.hilt.compiler)
     implementation(libs.material3)
     implementation(libs.coil.kt.compose)
     api(libs.ui.tooling.preview)

@@ -67,7 +67,6 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
         version = libs.versions.module.get()
         pluginManager.apply("org.jetbrains.kotlin.android")
         pluginManager.apply("kotlin-kapt")
-        pluginManager.apply("com.google.dagger.hilt.android")
     }
 
     compileSdk = VersionCodes.TIRAMISU
@@ -95,8 +94,6 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
             if (target != commonProject) {
                 api(project(commonPath))
             }
-            add("compileOnly", libs.hilt.android)
-            kapt(libs.hilt.android.compiler)
 
             implementation(libs.core.ktx)
             androidTestImplementation(kotlin("test"))
@@ -213,6 +210,13 @@ subprojects {
             jvmToolchain {
                 languageVersion.set(JavaLanguageVersion.of(17))
             }
+        }
+    }
+
+    pluginManager.withPlugin("com.google.dagger.hilt.android") {
+        target.dependencies {
+            implementation(libs.hilt.android)
+            kapt(libs.hilt.android.compiler)
         }
     }
 

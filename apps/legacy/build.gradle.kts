@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -20,7 +21,5 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
-    implementation(libs.hilt.android)
-    kapt(libs.androidx.hilt.compiler)
 }
 
