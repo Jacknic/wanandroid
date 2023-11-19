@@ -2,12 +2,22 @@
     <string name="app_name">玩安卓</string>
     <string name="title_home">首页</string>
     <string name="title_category">分类</string>
+    <string name="title_discovery">发现</string>
     <string name="title_system">体系</string>
     <string name="title_mine">我的</string>
+    <string name="title_theme_mode">主题模式</string>
+    <string name="title_dynamic_theme_color">动态颜色</string>
+    <string name="desc_dynamic_theme_color">自动匹配壁纸颜色样式</string>
     <string-array name="tab_titles">
         <item>@string/title_home</item>
         <item>@string/title_category</item>
+        <item>@string/title_discovery</item>
         <item>@string/title_system</item>
         <item>@string/title_mine</item>
+    </string-array>
+    <string-array name="theme_mode_names">
+        <item>跟随系统</item>
+        <item>浅色模式</item>
+        <item>深色模式</item>
     </string-array>
 </resources>
