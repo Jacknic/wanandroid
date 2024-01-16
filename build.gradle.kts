@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED_EXPRESSION", "UnstableApiUsage")
+@file:Suppress("UnstableApiUsage")
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
@@ -22,24 +22,6 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.hilt.android) apply false
 }
-true
-fun DependencyHandler.api(dependencyNotation: Any): Dependency? =
-    add("api", dependencyNotation)
-
-fun DependencyHandler.implementation(dependencyNotation: Any): Dependency? =
-    add("implementation", dependencyNotation)
-
-fun DependencyHandler.androidTestImplementation(dependencyNotation: Any): Dependency? =
-    add("androidTestImplementation", dependencyNotation)
-
-fun DependencyHandler.testImplementation(dependencyNotation: Any): Dependency? =
-    add("testImplementation", dependencyNotation)
-
-fun DependencyHandler.debugImplementation(dependencyNotation: Any): Dependency? =
-    add("debugImplementation", dependencyNotation)
-
-fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
-    add("kapt", dependencyNotation)
 
 /**
  * 获取 Git 标签
@@ -92,28 +74,28 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
             val commonPath = ":core:common"
             val commonProject = findProject(commonPath)
             if (target != commonProject) {
-                api(project(commonPath))
+                "api"(project(commonPath))
             }
 
-            implementation(libs.core.ktx)
-            androidTestImplementation(kotlin("test"))
-            testImplementation(kotlin("test"))
-            testImplementation(libs.junit)
+            "implementation"(libs.core.ktx)
+            "androidTestImplementation"(kotlin("test"))
+            "testImplementation"(kotlin("test"))
+            "testImplementation"(libs.junit)
         }
         val isApp = pluginManager.hasPlugin("com.android.application")
         if (parent?.name == "feature" || isApp) {
             dependencies {
-                implementation(project(":core:model"))
-                implementation(project(":core:ui"))
-                implementation(project(":core:design"))
-                implementation(project(":core:data"))
-                implementation(project(":core:domain"))
-                implementation(project(":core:analytics"))
+                "implementation"(project(":core:model"))
+                "implementation"(project(":core:ui"))
+                "implementation"(project(":core:design"))
+                "implementation"(project(":core:data"))
+                "implementation"(project(":core:domain"))
+                "implementation"(project(":core:analytics"))
 
-                testImplementation(kotlin("test"))
-                testImplementation(project(":core:testing"))
-                androidTestImplementation(kotlin("test"))
-                androidTestImplementation(project(":core:testing"))
+                "testImplementation"(kotlin("test"))
+                "testImplementation"(project(":core:testing"))
+                "androidTestImplementation"(kotlin("test"))
+                "androidTestImplementation"(project(":core:testing"))
             }
         }
 
@@ -138,10 +120,10 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     configCommon(target)
     with(target) {
         dependencies {
-            implementation(libs.core.ktx)
-            implementation(libs.lifecycle.runtime.ktx)
-            androidTestImplementation(libs.androidx.test.ext.junit)
-            androidTestImplementation(libs.espresso.core)
+            "implementation"(libs.core.ktx)
+            "implementation"(libs.lifecycle.runtime.ktx)
+            "androidTestImplementation"(libs.androidx.test.ext.junit)
+            "androidTestImplementation"(libs.espresso.core)
         }
     }
     compileSdk = VersionCodes.TIRAMISU
@@ -215,8 +197,8 @@ subprojects {
 
     pluginManager.withPlugin("com.google.dagger.hilt.android") {
         target.dependencies {
-            implementation(libs.hilt.android)
-            kapt(libs.hilt.android.compiler)
+            "implementation"(libs.hilt.android)
+            "kapt"(libs.hilt.android.compiler)
         }
     }
 
