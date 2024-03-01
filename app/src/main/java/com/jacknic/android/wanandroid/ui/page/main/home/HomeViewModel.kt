@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val log = TLog.create("HomeViewModel", BuildConfig.DEBUG)
     private var loadPagingDataJob: Job? = null
-    private val _articleListFlow = MutableStateFlow<PagingData<Article>>(PagingData.empty())
+    private val _articleListFlow = MutableStateFlow(PagingData.empty<Article>())
     val articleListFlow = _articleListFlow.cachedIn(viewModelScope)
     private val _bannerList = MutableStateFlow<StateResult<List<Banner>>>(StateResult.Loading)
     val bannerList = _bannerList.asStateFlow()
