@@ -6,6 +6,7 @@ import coil.decode.SvgDecoder
 import coil.util.DebugLogger
 import com.jacknic.android.core.common.BuildConfig
 import com.jacknic.android.core.network.AndroidCookieJar
+import com.jacknic.android.core.network.AppTrustManager
 import com.jacknic.android.core.network.WanApi
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Call
 import okhttp3.OkHttpClient
+import okhttp3.internal.platform.Platform
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,7 +24,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
 
     private const val URL_WAN_ANDROID = "https://wanandroid.com/"
 
@@ -40,7 +41,10 @@ object NetworkModule {
     @Provides
     @Singleton
     fun okHttpCallFactory(): Call.Factory {
+        val trustManager = AppTrustManager()
+        val sslSocketFactory = Platform.get().newSslSocketFactory(trustManager)
         return OkHttpClient.Builder()
+            .sslSocketFactory(sslSocketFactory, trustManager)
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     if (BuildConfig.DEBUG) {
