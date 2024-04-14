@@ -19,11 +19,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
 }
 
 dependencies {
