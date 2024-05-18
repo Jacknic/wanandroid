@@ -4,10 +4,6 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
-android {
-    namespace = "com.jacknic.android.core.network"
-}
-
 dependencies {
     implementation(project(":core:model"))
     implementation(libs.coil.kt)

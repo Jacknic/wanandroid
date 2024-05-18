@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.jacknic.android.core.model.Paging
+import com.jacknic.android.wanandroid.core.model.Paging
 
 /**
  * 通用分页数据源

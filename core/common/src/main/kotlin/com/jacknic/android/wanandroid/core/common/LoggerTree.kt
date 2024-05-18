@@ -1,6 +1,5 @@
 package com.jacknic.android.wanandroid.core.common
 
-import com.jacknic.android.core.common.BuildConfig
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.FormatStrategy
 import com.orhanobut.logger.Logger

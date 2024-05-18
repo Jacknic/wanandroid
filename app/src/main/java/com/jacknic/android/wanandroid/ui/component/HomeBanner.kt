@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.jacknic.android.core.model.Banner
+import com.jacknic.android.wanandroid.core.model.Banner
 
 /**
  * 首页 banner 组件

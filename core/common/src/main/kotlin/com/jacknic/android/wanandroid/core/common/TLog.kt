@@ -1,7 +1,6 @@
 package com.jacknic.android.wanandroid.core.common
 
 import android.util.Log
-import com.jacknic.android.core.common.BuildConfig
 import timber.log.Timber
 
 /**

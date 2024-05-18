@@ -3,7 +3,6 @@ package com.jacknic.android.wanandroid.core.common
 import android.content.Context
 import androidx.annotation.Keep
 import androidx.startup.Initializer
-import com.jacknic.android.core.common.BuildConfig
 import timber.log.Timber
 
 /**

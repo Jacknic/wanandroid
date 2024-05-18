@@ -15,6 +15,8 @@ buildscript {
     }
 }
 
+val namespacePrefix = "com.jacknic.android.wanandroid"
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -170,6 +172,13 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
  * 库模块统一配置
  */
 fun LibraryExtension.configLibrary(target: Project) {
+    val names = mutableListOf(namespacePrefix)
+    val parent = target.parent
+    if (parent != null && parent != rootProject) {
+        names.add(parent.name)
+    }
+    names.add(target.name)
+    namespace = names.joinToString(".")
     configCommon(target)
     target.pluginManager.apply("maven-publish")
 }
@@ -218,7 +227,7 @@ subprojects {
                 }
                 publications {
                     create<MavenPublication>("main") {
-                        val groupIdBuilder = StringBuilder("com.jacknic.android.wanandroid")
+                        val groupIdBuilder = StringBuilder(namespacePrefix)
                         if (parent != null && parent != rootProject) {
                             groupIdBuilder.append(".${parent!!.name}")
                         }

@@ -4,10 +4,6 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
-android {
-    namespace = "com.jacknic.android.core.data"
-}
-
 dependencies {
     implementation(project(":core:analytics"))
     implementation(project(":core:domain"))
@@ -23,6 +19,6 @@ dependencies {
 //    implementation(libs.kotlinx.datetime)
 //    implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(project(":core:datastore-test"))
+    testImplementation(project(":core:datastore_test"))
     testImplementation(project(":core:testing"))
 }

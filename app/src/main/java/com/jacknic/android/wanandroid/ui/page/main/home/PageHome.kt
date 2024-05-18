@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.jacknic.android.core.model.Banner
 import com.jacknic.android.wanandroid.core.common.onSuccess
+import com.jacknic.android.wanandroid.core.model.Banner
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.HomeBanner
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
