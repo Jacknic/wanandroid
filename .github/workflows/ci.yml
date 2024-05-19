@@ -33,18 +33,18 @@ jobs:
           path: ./**/build/reports/**
 
       - name: 发布组件包
-        if: ${{ env.HAS_RELEASE_TAG }}
+        if: ${{ env.HAS_RELEASE_TAG == 'true' }}
         run: |
           ./gradlew publishMainPublicationToGitHubPackagesRepository
 
       - name: 打包产出物(debug)
-        if: ${{ ! env.HAS_RELEASE_TAG }}
+        if: ${{ ! env.HAS_RELEASE_TAG == 'true' }}
         run: |
           ./gradlew publishMainPublicationToGitHubPackagesRepository
           ./gradlew assembleDebug
 
       - name: 打包产出物(release)
-        if: ${{ env.HAS_RELEASE_TAG }}
+        if: ${{ env.HAS_RELEASE_TAG == 'true' }}
         run: |
           ./gradlew assembleRelease
 
@@ -55,7 +55,7 @@ jobs:
           path: ./**/build/outputs/**
 
       - name: GitHub Release
-        if: ${{ env.HAS_RELEASE_TAG }}
+        if: ${{ env.HAS_RELEASE_TAG == 'true' }}
         id: create_release
         uses: actions/create-release@v1
         with:
@@ -65,7 +65,7 @@ jobs:
           prerelease: ${{ contains(github.ref, '-') }}
 
       - name: 上传渠道包(GitHub)
-        if: ${{ env.HAS_RELEASE_TAG }}
+        if: ${{ env.HAS_RELEASE_TAG == 'true' }}
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
