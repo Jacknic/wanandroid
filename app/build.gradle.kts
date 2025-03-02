@@ -30,8 +30,9 @@ dependencies {
     implementation(androidx.lifecycle.lifecycleLivedataKtx)
     implementation(androidx.composeMaterial3.material3)
     implementation(libs.coil.kt.compose)
-    api(androidx.composeUi.uiToolingPreview)
+    implementation(libs.lottie.compose)
 
+    androidTestImplementation(androidx.composeUi.uiToolingPreview)
     androidTestImplementation(androidx.composeUi.uiTestJunit4)
 
     debugImplementation(androidx.composeUi.uiTooling)

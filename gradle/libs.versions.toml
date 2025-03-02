@@ -31,6 +31,7 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+lottie-compose = "com.airbnb.android:lottie-compose:6.6.2"
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
