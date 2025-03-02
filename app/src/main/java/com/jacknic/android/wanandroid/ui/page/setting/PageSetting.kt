@@ -42,6 +42,7 @@ import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.theme.ThemeMode
 import com.jacknic.android.wanandroid.ui.theme.dynamicThemeColor
 import com.jacknic.android.wanandroid.ui.theme.themeMode
+import com.jacknic.android.wanandroid.ui.theme.useThemeMode
 
 /**
  * 应用设置页
@@ -157,6 +158,7 @@ private fun ThemeModePanel(showModePanel: MutableState<Boolean>, themeModeNames:
                 },
                 modifier = Modifier.clickable {
                     themeMode = mode
+                    useThemeMode(mode)
                     showModePanel.value = false
                 }
             )
