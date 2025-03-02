@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.ArrowBack
+import androidx.compose.material.icons.automirrored.twotone.ArrowBack
+import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.Check
 import androidx.compose.material.icons.twotone.CheckCircle
 import androidx.compose.material.icons.twotone.Face
-import androidx.compose.material.icons.twotone.KeyboardArrowRight
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,7 +57,7 @@ fun PageSetting() {
     Scaffold(topBar = {
         TopAppBar(title = { Text("设置") }, navigationIcon = {
             IconButton(onClick = { nav.navigateUp() }) {
-                Icon(Icons.TwoTone.ArrowBack, "")
+                Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "")
             }
         }, scrollBehavior = scrollBehavior)
     }) { padding ->
@@ -86,7 +86,7 @@ fun PageSetting() {
                     },
                     trailingContent = {
 
-                        Icon(Icons.TwoTone.KeyboardArrowRight, "")
+                        Icon(Icons.AutoMirrored.TwoTone.KeyboardArrowRight, "")
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         showModePanel.value = true

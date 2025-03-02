@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.Face
-import androidx.compose.material.icons.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.Notifications
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.Card
@@ -64,7 +64,11 @@ fun PageMine() {
                             fontWeight = FontWeight.Bold
                         )
                         Text("个人主页", fontSize = 12.sp)
-                        Icon(Icons.TwoTone.KeyboardArrowRight, "", modifier = Modifier.size(12.dp))
+                        Icon(
+                            Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
+                            "",
+                            modifier = Modifier.size(12.dp)
+                        )
                     }
                     Row {
                         IconButton(onClick = { }) {

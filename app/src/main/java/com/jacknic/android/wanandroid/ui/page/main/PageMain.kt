@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.List
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.DateRange
 import androidx.compose.material.icons.twotone.Home
-import androidx.compose.material.icons.twotone.List
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,12 +38,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun PageMain() {
     val tabTitles = stringArrayResource(R.array.tab_titles)
-    val pagerState = rememberPagerState() { tabTitles.size }
+    val pagerState = rememberPagerState { tabTitles.size }
     val selectedIndex = pagerState.currentPage
     val scope = rememberCoroutineScope()
     val tabIcons = arrayOf(
         Icons.TwoTone.Home,
-        Icons.TwoTone.List,
+        Icons.AutoMirrored.TwoTone.List,
         Icons.TwoTone.Search,
         Icons.TwoTone.DateRange,
         Icons.TwoTone.AccountCircle

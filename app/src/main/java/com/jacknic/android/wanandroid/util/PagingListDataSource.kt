@@ -11,7 +11,7 @@ import com.jacknic.android.wanandroid.core.model.Paging
  *
  * @author Jacknic
  */
-class PagingListDataSource<T : Any> constructor(
+class PagingListDataSource<T : Any>(
     private val loadAction: suspend (page: Int, pageSize: Int) -> Result<Paging<T>>,
     private val initPage: Int = 0
 ) : PagingSource<Int, T>() {

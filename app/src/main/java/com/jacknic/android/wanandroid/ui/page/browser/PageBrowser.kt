@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.ArrowBack
+import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,7 +39,7 @@ fun PageBrowser() {
     val link = savedStateHandle?.get<String?>("link")
     var webView: WebView? = null
     val titleState = remember { mutableStateOf("") }
-    val progress = remember { mutableStateOf(-1f) }
+    val progress = remember { mutableFloatStateOf(0f) }
 
     Scaffold(topBar = {
         TopAppBar(
@@ -50,7 +51,7 @@ fun PageBrowser() {
                         nav.navigateUp()
                     }
                 }) {
-                    Icon(Icons.TwoTone.ArrowBack, "")
+                    Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "")
                 }
             },
             actions = {
@@ -91,14 +92,17 @@ fun PageBrowser() {
                     }
 
                     override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                        progress.value = newProgress / 100f
+                        progress.floatValue = newProgress / 100f
                     }
                 }
                 web.loadUrl(link.toString())
             }
-            val progressValue = progress.value
+            val progressValue = progress.floatValue
             if (progressValue < 1) {
-                LinearProgressIndicator(progressValue, Modifier.fillMaxWidth(1f))
+                LinearProgressIndicator(
+                    progress = { progressValue },
+                    modifier = Modifier.fillMaxWidth(1f),
+                )
             }
         }
     }

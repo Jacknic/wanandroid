@@ -31,7 +31,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,7 +55,6 @@ fun PageHome() {
     val nav = LocalNavCtrl.current
     val stackEntry = nav.currentBackStackEntry!!
     val vm: HomeViewModel = hiltViewModel(stackEntry)
-    val context = LocalContext.current
     val pagingItems = vm.articleListFlow.collectAsLazyPagingItems()
     val bannerResult = vm.bannerList.collectAsState()
     var banners = emptyList<Banner>()
