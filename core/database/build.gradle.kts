@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.room.ktx)
+    implementation(androidx.room.roomKtx)
 }

@@ -22,9 +22,8 @@ import com.jacknic.android.wanandroid.core.model.Banner
 @ExperimentalFoundationApi
 @Composable
 fun HomeBanner(bannerList: List<Banner>) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState { bannerList.size }
     HorizontalPager(
-        pageCount = bannerList.size,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()

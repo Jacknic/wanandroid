@@ -15,6 +15,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("androidx") {
+            from("androidx.gradle:gradle-version-catalog:2025.02.00")
+        }
+    }
 }
 
 rootProject.name = "Wanandroid"

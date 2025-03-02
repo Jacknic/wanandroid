@@ -79,8 +79,8 @@ fun PageSetting() {
                 val showModePanel = rememberSaveable { mutableStateOf(false) }
                 val interactionSource = remember { MutableInteractionSource() }
                 ListItem(leadingContent = { Icon(Icons.TwoTone.Face, "") },
-                    headlineText = { Text(stringResource(R.string.title_theme_mode)) },
-                    supportingText = {
+                    headlineContent = { Text(stringResource(R.string.title_theme_mode)) },
+                    supportingContent = {
                         ThemeModePanel(showModePanel, themeModeNames)
                         Text(themeModeNames[themeMode.ordinal])
                     },
@@ -96,8 +96,8 @@ fun PageSetting() {
                 item {
                     val interactionSource = remember { MutableInteractionSource() }
                     ListItem(leadingContent = { Icon(Icons.TwoTone.CheckCircle, "") },
-                        headlineText = { Text(stringResource(R.string.title_dynamic_theme_color)) },
-                        supportingText = { Text(stringResource(R.string.desc_dynamic_theme_color)) },
+                        headlineContent = { Text(stringResource(R.string.title_dynamic_theme_color)) },
+                        supportingContent = { Text(stringResource(R.string.desc_dynamic_theme_color)) },
                         trailingContent = {
                             Switch(dynamicThemeColor, onCheckedChange = {
                                 dynamicThemeColor = !dynamicThemeColor
@@ -117,8 +117,8 @@ fun PageSetting() {
                     }
                     val interactionSource = remember { MutableInteractionSource() }
                     ListItem(leadingContent = { Icon(Icons.TwoTone.Face, "") },
-                        headlineText = { Text("主题模式") },
-                        supportingText = { Text("系统默认") },
+                        headlineContent = { Text("主题模式") },
+                        supportingContent = { Text("系统默认") },
                         trailingContent = {
                             Switch(checked, onCheckedChange = {
                                 checked = !checked
@@ -143,11 +143,11 @@ private fun ThemeModePanel(showModePanel: MutableState<Boolean>, themeModeNames:
         onDismissRequest = { showModePanel.value = false }
     ) {
         val colorPrimary = MaterialTheme.colorScheme.primary
-        ThemeMode.values().forEachIndexed { index, mode ->
+        ThemeMode.entries.forEachIndexed { index, mode ->
             val modeName = themeModeNames[index]
             val selected = themeMode == mode
             ListItem(
-                headlineText = {
+                headlineContent = {
                     Text(modeName, color = if (selected) colorPrimary else Color.Unspecified)
                 },
                 trailingContent = {

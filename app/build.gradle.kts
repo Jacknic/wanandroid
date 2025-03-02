@@ -2,7 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.hilt.android)
-    id("androidx.navigation.safeargs.kotlin")
+    alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin)
 }
 
 android {
@@ -17,27 +17,25 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = androidx.composeCompiler.compiler.get().version
     }
 }
 
 dependencies {
     implementation(project(":core:data"))
-    implementation(platform(libs.compose.bom))
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.paging.compose)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
-    implementation("androidx.compose.runtime:runtime-livedata")
-    implementation(libs.material3)
+    implementation(androidx.hilt.hiltNavigationCompose)
+    implementation(androidx.navigation.navigationCompose)
+    implementation(androidx.paging.pagingCompose)
+    implementation(androidx.lifecycle.lifecycleViewmodelCompose)
+    implementation(androidx.lifecycle.lifecycleLivedataKtx)
+    implementation(androidx.composeMaterial3.material3)
     implementation(libs.coil.kt.compose)
-    api(libs.ui.tooling.preview)
+    api(androidx.composeUi.uiToolingPreview)
 
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
+    androidTestImplementation(androidx.composeUi.uiTestJunit4)
 
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
+    debugImplementation(androidx.composeUi.uiTooling)
+    debugImplementation(androidx.composeUi.uiTestManifest)
 
     // implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 }

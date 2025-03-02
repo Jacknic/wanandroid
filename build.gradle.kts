@@ -3,17 +3,10 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import com.android.sdklib.AndroidVersion.VersionCodes
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
-
-buildscript {
-    dependencies {
-        classpath(libs.androidx.navigation.plugin)
-    }
-}
 
 val namespacePrefix = "com.jacknic.android.wanandroid"
 
@@ -23,6 +16,7 @@ plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.hilt.android) apply false
+    alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin) apply false
 }
 
 /**
@@ -46,16 +40,16 @@ fun getGitTag(dir: String): String? {
 /**
  * Android 模块统一配置
  */
-fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
+fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
     with(target) {
         version = libs.versions.module.get()
         pluginManager.apply("org.jetbrains.kotlin.android")
         pluginManager.apply("kotlin-kapt")
     }
 
-    compileSdk = VersionCodes.TIRAMISU
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = VersionCodes.LOLLIPOP
+        minSdk = libs.versions.minSdk.get().toInt()
     }
 
     compileOptions {
@@ -79,7 +73,7 @@ fun CommonExtension<*, *, *, *, *>.configCommon(target: Project) {
                 "api"(project(commonPath))
             }
 
-            "implementation"(libs.core.ktx)
+            "implementation"(androidx.core.coreKtx)
             "androidTestImplementation"(kotlin("test"))
             "testImplementation"(kotlin("test"))
             "testImplementation"(libs.junit)
@@ -122,13 +116,13 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     configCommon(target)
     with(target) {
         dependencies {
-            "implementation"(libs.core.ktx)
-            "implementation"(libs.lifecycle.runtime.ktx)
-            "androidTestImplementation"(libs.androidx.test.ext.junit)
-            "androidTestImplementation"(libs.espresso.core)
+            "implementation"(androidx.core.coreKtx)
+            "implementation"(androidx.lifecycle.lifecycleRuntimeKtx)
+            "androidTestImplementation"(androidx.testExt.junitKtx)
+            "androidTestImplementation"(androidx.testEspresso.espressoCore)
         }
     }
-    compileSdk = VersionCodes.TIRAMISU
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     signingConfigs {
         getByName("debug") {
@@ -140,8 +134,8 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     }
 
     defaultConfig {
-        minSdk = VersionCodes.LOLLIPOP
-        targetSdk = VersionCodes.TIRAMISU
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
         signingConfig = signingConfigs["debug"]

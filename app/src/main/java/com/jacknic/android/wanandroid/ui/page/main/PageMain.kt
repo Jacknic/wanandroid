@@ -37,10 +37,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PageMain() {
-    val pagerState = rememberPagerState(0)
+    val tabTitles = stringArrayResource(R.array.tab_titles)
+    val pagerState = rememberPagerState() { tabTitles.size }
     val selectedIndex = pagerState.currentPage
     val scope = rememberCoroutineScope()
-    val tabTitles = stringArrayResource(R.array.tab_titles)
     val tabIcons = arrayOf(
         Icons.TwoTone.Home,
         Icons.TwoTone.List,
@@ -75,8 +75,7 @@ fun PageMain() {
             }
         }) { padding ->
         HorizontalPager(
-            pageCount = tabTitles.size,
-            Modifier.padding(padding),
+            modifier = Modifier.padding(padding),
             key = { index -> index },
             state = pagerState
         ) {
