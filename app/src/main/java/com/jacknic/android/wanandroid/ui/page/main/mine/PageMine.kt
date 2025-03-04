@@ -1,6 +1,5 @@
 package com.jacknic.android.wanandroid.ui.page.main.mine
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,8 +33,7 @@ import com.jacknic.android.wanandroid.ui.page.Page
 /**
  * 我的页面
  */
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PageMine() {
     val nav = LocalNavCtrl.current
