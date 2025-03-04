@@ -29,6 +29,8 @@ dependencies {
     implementation(androidx.lifecycle.lifecycleViewmodelCompose)
     implementation(androidx.lifecycle.lifecycleLivedataKtx)
     implementation(androidx.composeMaterial3.material3)
+    implementation(androidx.composeMaterial3Adaptive.adaptiveNavigation)
+    implementation(androidx.composeMaterial3.material3AdaptiveNavigationSuite)
     implementation(libs.coil.kt.compose)
     implementation(libs.lottie.compose)
 
