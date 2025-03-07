@@ -24,22 +24,24 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(androidx.lifecycle.lifecycleLivedataKtx)
+
+    implementation(androidx.composeUi.uiToolingPreview)
     implementation(androidx.hilt.hiltNavigationCompose)
     implementation(androidx.navigation.navigationCompose)
     implementation(androidx.paging.pagingCompose)
     implementation(androidx.lifecycle.lifecycleViewmodelCompose)
-    implementation(androidx.lifecycle.lifecycleLivedataKtx)
     implementation(androidx.composeMaterial3.material3)
     implementation(androidx.composeMaterial3Adaptive.adaptiveNavigation)
     implementation(androidx.composeMaterial3.material3AdaptiveNavigationSuite)
+
     implementation(libs.coil.kt.compose)
     implementation(libs.lottie.compose)
 
-    androidTestImplementation(androidx.composeUi.uiToolingPreview)
-    androidTestImplementation(androidx.composeUi.uiTestJunit4)
-
     debugImplementation(androidx.composeUi.uiTooling)
     debugImplementation(androidx.composeUi.uiTestManifest)
+
+    androidTestImplementation(androidx.composeUi.uiTestJunit4)
 
     // implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 }
