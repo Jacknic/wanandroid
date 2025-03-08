@@ -1,6 +1,5 @@
 package com.jacknic.android.wanandroid.ui.component
 
-import android.text.Html
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.parseAsHtml
 import coil.compose.AsyncImage
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
@@ -46,7 +46,7 @@ fun ArticleListItem(article: Article, onClick: () -> Unit = {}) {
         .clickable { onClick() }
         .background(MaterialTheme.colorScheme.surface)
         .padding(8.dp)) {
-        val html = Html.fromHtml(article.title)
+        val html = article.title.parseAsHtml()
         Text(html.toString(), fontSize = 18.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Spacer(Modifier.size(6.dp))
         Row {
