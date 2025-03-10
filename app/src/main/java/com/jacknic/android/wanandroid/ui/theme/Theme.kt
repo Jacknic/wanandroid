@@ -18,8 +18,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme()
-private val LightColorScheme = lightColorScheme()
+private val DarkColorScheme = darkColorScheme(
+    primary = darkPrimaryColor,
+    secondary = darkSecondaryColor,
+    tertiary = darkTertiaryColor
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = lightPrimaryColor,
+    secondary = lightSecondaryColor,
+    tertiary = lightTertiaryColor
+)
 
 /**
  * 主题模式
