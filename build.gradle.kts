@@ -235,10 +235,12 @@ subprojects {
                             packType = "jar"
                         }
                         from(targetComponent!!)
-                        val artifactTask = tasks.run {
-                            findByName("releaseSourcesJar") ?: getByName("kotlinSourcesJar")
+                        if (packType == "jar") {
+                            val artifactTask = tasks.run {
+                                findByName("releaseSourcesJar") ?: getByName("kotlinSourcesJar")
+                            }
+                            artifact(artifactTask)
                         }
-                        artifact(artifactTask)
                         pom {
                             version = version
                             description.set(target.description)
