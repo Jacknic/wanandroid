@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
@@ -16,10 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCancellationBehavior
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -60,17 +61,19 @@ fun PageMain() {
                         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))
                         val progress by animateLottieCompositionAsState(
                             composition,
-                            speed = if (selected) 1f else 0.5f,
-                            isPlaying = selected,
-                            cancellationBehavior = LottieCancellationBehavior.Immediately
+                            speed = if (selected) 1f else -5f,
                         )
                         LottieAnimation(
                             modifier = Modifier.size(24.dp),
                             composition = composition,
-                            progress = { if (selected) progress else 0f }
+                            progress = { progress }
                         )
                     },
-                    label = { Text(stringResource(it.label)) },
+                    label = {
+                        val textColor = if (selected) MaterialTheme.colorScheme.primary
+                        else Color.Unspecified
+                        Text(stringResource(it.label), color = textColor)
+                    },
                     selected = selected,
                     onClick = { currentDestination = it },
                     alwaysShowLabel = navSuiteType == NavigationSuiteType.NavigationBar,
