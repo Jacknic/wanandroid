@@ -9,7 +9,7 @@ sealed interface StateResult<out T> {
     /**
      * 加载中
      */
-    object Loading : StateResult<Nothing>
+    data object Loading : StateResult<Nothing>
 
     /**
      * 加载成功
@@ -70,6 +70,13 @@ inline fun <T> StateResult<T>.onState(
         is StateResult.Error -> error(exception)
         is StateResult.Success -> success(data)
     }
+}
+
+/**
+ * 获取数据或返回null对象
+ */
+fun <T> StateResult<T>.getDataOrNull(): T? {
+    return if (this is StateResult.Success) data else null
 }
 
 /**
