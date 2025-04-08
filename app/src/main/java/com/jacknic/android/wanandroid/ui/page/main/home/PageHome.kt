@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -36,8 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.jacknic.android.wanandroid.core.common.onSuccess
-import com.jacknic.android.wanandroid.core.model.Banner
+import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.HomeBanner
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
@@ -56,13 +56,10 @@ fun PageHome() {
     val stackEntry = nav.currentBackStackEntry!!
     val vm: HomeViewModel = hiltViewModel(stackEntry)
     val pagingItems = vm.articleListFlow.collectAsLazyPagingItems()
-    val bannerResult = vm.bannerList.collectAsState()
-    var banners = emptyList<Banner>()
+    val bannerResult by vm.bannerList.collectAsState()
+    val banners = bannerResult.getDataOrNull() ?: emptyList()
     val scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val listStateTop: LazyListState = rememberLazyListState()
-    bannerResult.value.onSuccess {
-        banners = it
-    }
     val scrollConnection = if (pagingItems.itemCount > 0) scrollBehavior.nestedScrollConnection
     else rememberNestedScrollInteropConnection()
     val listState = if (pagingItems.itemCount > 0) listStateTop else rememberLazyListState()
