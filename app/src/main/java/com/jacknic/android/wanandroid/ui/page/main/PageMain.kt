@@ -3,6 +3,7 @@ package com.jacknic.android.wanandroid.ui.page.main
 import android.annotation.SuppressLint
 import androidx.annotation.RawRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -61,7 +62,7 @@ fun PageMain() {
                         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))
                         val progress by animateLottieCompositionAsState(
                             composition,
-                            speed = if (selected) 1f else -5f,
+                            speed = if (selected) 1f else -3f,
                         )
                         LottieAnimation(
                             modifier = Modifier.size(24.dp),
@@ -72,7 +73,8 @@ fun PageMain() {
                     label = {
                         val textColor = if (selected) MaterialTheme.colorScheme.primary
                         else Color.Unspecified
-                        Text(stringResource(it.label), color = textColor)
+                        val colorState by animateColorAsState(textColor)
+                        Text(stringResource(it.label), color = colorState)
                     },
                     selected = selected,
                     onClick = { currentDestination = it },
