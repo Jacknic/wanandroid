@@ -1,6 +1,5 @@
 package com.jacknic.android.wanandroid.ui.page.main.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,7 +20,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -29,10 +30,12 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -48,21 +51,19 @@ import com.jacknic.android.wanandroid.ui.page.Page
  *
  * @author Jacknic
  */
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun PageHome() {
+fun PageHome(
+    vm: HomeViewModel = hiltViewModel(),
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+    listStateTop: LazyListState = rememberLazyListState()
+) {
     val nav = LocalNavCtrl.current
-    val stackEntry = nav.currentBackStackEntry!!
-    val vm: HomeViewModel = hiltViewModel(stackEntry)
     val pagingItems = vm.articleListFlow.collectAsLazyPagingItems()
     val bannerResult by vm.bannerList.collectAsState()
     val banners = bannerResult.getDataOrNull() ?: emptyList()
-    val scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val listStateTop: LazyListState = rememberLazyListState()
-    val scrollConnection = if (pagingItems.itemCount > 0) scrollBehavior.nestedScrollConnection
-    else rememberNestedScrollInteropConnection()
-    val listState = if (pagingItems.itemCount > 0) listStateTop else rememberLazyListState()
+    val scrollConnection = scrollBehavior.nestedScrollConnection
+    var tabIndex by rememberSaveable { mutableIntStateOf(0) }
     Scaffold(topBar = {
         TopAppBar(
             title = {},
@@ -81,8 +82,30 @@ fun PageHome() {
                 .padding(it)
                 .nestedScroll(scrollConnection)
                 .fillMaxSize(1f)
-                .background(MaterialTheme.colorScheme.onBackground.copy(0.05f)), state = listState
+                .background(MaterialTheme.colorScheme.onBackground.copy(0.05f)),
+            state = listStateTop
         ) {
+            stickyHeader {
+                PrimaryScrollableTabRow(
+                    tabIndex,
+                    modifier = Modifier.fillParentMaxWidth(),
+                    edgePadding = 8.dp,
+                    divider = {}
+                ) {
+                    for (i in 0 until 15) {
+                        Tab(tabIndex == i, onClick = {
+                            tabIndex = i
+                        }) {
+                            Text(
+                                "Tab内容 $i",
+                                modifier = Modifier
+                                    .align(Alignment.CenterHorizontally)
+                                    .padding(12.dp, 8.dp)
+                            )
+                        }
+                    }
+                }
+            }
             item {
                 HomeBanner(banners)
             }

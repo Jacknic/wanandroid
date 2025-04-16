@@ -5,16 +5,20 @@ import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,6 +35,7 @@ import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
 import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
 import com.jacknic.android.wanandroid.ui.page.main.tree.PageTree
+import kotlinx.coroutines.launch
 import com.jacknic.android.wanandroid.core.ui.R as UR
 
 enum class NavDestinations(
@@ -45,13 +50,31 @@ enum class NavDestinations(
     MINE(R.string.title_mine, UR.raw.tabbar_animate_mine, R.string.title_mine),
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PageMain() {
     var currentDestination by rememberSaveable { mutableStateOf(NavDestinations.HOME) }
-    val suiteItemColors = NavigationSuiteDefaults.itemColors()
     val navSuiteType =
         NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
+    val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(currentDestination.ordinal) {
+        NavDestinations.entries.size
+    }
+    LaunchedEffect(currentDestination) {
+        if (pagerState.isScrollInProgress) {
+            return@LaunchedEffect
+        }
+        scope.launch {
+            pagerState.animateScrollToPage(currentDestination.ordinal)
+        }
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        if (pagerState.isScrollInProgress) {
+            currentDestination = NavDestinations.entries[pagerState.currentPage]
+        }
+    }
     NavigationSuiteScaffold(
         layoutType = navSuiteType,
         navigationSuiteItems = {
@@ -79,17 +102,18 @@ fun PageMain() {
                     selected = selected,
                     onClick = { currentDestination = it },
                     alwaysShowLabel = navSuiteType == NavigationSuiteType.NavigationBar,
-                    colors = suiteItemColors
                 )
             }
         },
     ) {
-        when (currentDestination) {
-            NavDestinations.HOME -> PageHome()
-            NavDestinations.CATEGORY -> PageTree()
-            NavDestinations.DISCOVERY -> PageDiscovery()
-            NavDestinations.SYSTEM -> PageCategory()
-            NavDestinations.MINE -> PageMine()
+        HorizontalPager(pagerState) { index ->
+            when (index) {
+                NavDestinations.HOME.ordinal -> PageHome()
+                NavDestinations.CATEGORY.ordinal -> PageTree()
+                NavDestinations.DISCOVERY.ordinal -> PageDiscovery()
+                NavDestinations.SYSTEM.ordinal -> PageCategory()
+                NavDestinations.MINE.ordinal -> PageMine()
+            }
         }
     }
 }
