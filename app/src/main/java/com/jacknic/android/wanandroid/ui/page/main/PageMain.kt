@@ -5,12 +5,17 @@ import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
@@ -34,6 +39,7 @@ import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
 import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
+import com.jacknic.android.wanandroid.ui.page.main.tree.ContentItem
 import com.jacknic.android.wanandroid.ui.page.main.tree.PageTree
 import kotlinx.coroutines.launch
 import com.jacknic.android.wanandroid.core.ui.R as UR
@@ -50,7 +56,7 @@ enum class NavDestinations(
     MINE(R.string.title_mine, UR.raw.tabbar_animate_mine, R.string.title_mine),
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PageMain() {
@@ -61,19 +67,8 @@ fun PageMain() {
     val pagerState = rememberPagerState(currentDestination.ordinal) {
         NavDestinations.entries.size
     }
-    LaunchedEffect(currentDestination) {
-        if (pagerState.isScrollInProgress) {
-            return@LaunchedEffect
-        }
-        scope.launch {
-            pagerState.animateScrollToPage(currentDestination.ordinal)
-        }
-    }
-
-    LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.isScrollInProgress) {
-            currentDestination = NavDestinations.entries[pagerState.currentPage]
-        }
+    LaunchedEffect(pagerState.targetPage) {
+        currentDestination = NavDestinations.entries[pagerState.targetPage]
     }
     NavigationSuiteScaffold(
         layoutType = navSuiteType,
@@ -100,19 +95,45 @@ fun PageMain() {
                         Text(stringResource(it.label), color = colorState)
                     },
                     selected = selected,
-                    onClick = { currentDestination = it },
+                    onClick = {
+                        currentDestination = it
+                        scope.launch {
+                            pagerState.animateScrollToPage(currentDestination.ordinal)
+                        }
+                    },
                     alwaysShowLabel = navSuiteType == NavigationSuiteType.NavigationBar,
                 )
             }
         },
     ) {
+        val listStateTop = rememberLazyListState()
+        val scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<ContentItem>()
+        val state = rememberLazyListState()
         HorizontalPager(pagerState) { index ->
             when (index) {
-                NavDestinations.HOME.ordinal -> PageHome()
-                NavDestinations.CATEGORY.ordinal -> PageTree()
-                NavDestinations.DISCOVERY.ordinal -> PageDiscovery()
-                NavDestinations.SYSTEM.ordinal -> PageCategory()
-                NavDestinations.MINE.ordinal -> PageMine()
+                NavDestinations.HOME.ordinal -> {
+                    PageHome(
+                        listStateTop = listStateTop,
+                        scrollBehavior = scrollBehavior
+                    )
+                }
+
+                NavDestinations.CATEGORY.ordinal -> {
+                    PageTree(scaffoldNavigator, state)
+                }
+
+                NavDestinations.DISCOVERY.ordinal -> {
+                    PageDiscovery()
+                }
+
+                NavDestinations.SYSTEM.ordinal -> {
+                    PageCategory()
+                }
+
+                NavDestinations.MINE.ordinal -> {
+                    PageMine()
+                }
             }
         }
     }
