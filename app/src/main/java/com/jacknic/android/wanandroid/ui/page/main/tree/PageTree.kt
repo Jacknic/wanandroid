@@ -4,6 +4,9 @@ package com.jacknic.android.wanandroid.ui.page.main.tree
 
 import android.os.Parcelable
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -37,10 +40,12 @@ fun PageTree(
             AnimatedPane(
                 modifier = Modifier
                     .preferredWidth(200.dp)
-                    .systemBarsPadding(),
             ) {
                 Surface {
-                    LazyColumn(state = state) {
+                    LazyColumn(
+                        state = state,
+                        contentPadding = WindowInsets.statusBars.asPaddingValues()
+                    ) {
                         items(100) {
                             val text = "List item $it"
                             ListItem(
