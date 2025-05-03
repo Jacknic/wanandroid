@@ -21,6 +21,7 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -74,7 +75,10 @@ fun PageMain() {
         layoutType = navSuiteType,
         navigationSuiteItems = {
             NavDestinations.entries.forEach {
-                val selected = it == currentDestination
+                val selected by derivedStateOf {
+                    it == currentDestination
+                }
+
                 item(
                     icon = {
                         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))
