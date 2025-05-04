@@ -29,12 +29,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.rememberLottieDynamicProperties
+import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
@@ -89,7 +93,14 @@ fun PageMain() {
                         LottieAnimation(
                             modifier = Modifier.size(24.dp),
                             composition = composition,
-                            progress = { progress }
+                            progress = { progress },
+                            dynamicProperties = rememberLottieDynamicProperties(
+                                rememberLottieDynamicProperty(
+                                    property = LottieProperty.COLOR,
+                                    value = MaterialTheme.colorScheme.primary.toArgb(),
+                                    keyPath = arrayOf("**", "填充 1")
+                                )
+                            )
                         )
                     },
                     label = {
