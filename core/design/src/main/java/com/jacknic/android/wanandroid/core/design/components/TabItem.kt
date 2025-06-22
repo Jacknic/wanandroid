@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryScrollableTabRow
@@ -30,7 +29,7 @@ import androidx.compose.ui.unit.sp
 fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
     val styleColor =
         if (selected) MaterialTheme.colorScheme.primary
-        else MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f)
+        else MaterialTheme.colorScheme.onSurface.copy(0.5f)
     CompositionLocalProvider(
         LocalContentColor provides styleColor
     ) {
@@ -43,7 +42,7 @@ fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
                 .clip(cornerShape)
                 .clickable { onClick() }
                 .background(styleColor.copy(0.1f), cornerShape)
-                .padding(horizontal = 16.dp, vertical = 4.dp)
+                .padding(horizontal = 8.dp)
         )
     }
 }
@@ -55,13 +54,13 @@ fun PreviewTabItem() {
     MaterialTheme {
         var selectedTabIndex by remember { mutableIntStateOf(0) }
         SecondaryScrollableTabRow(
-            selectedTabIndex,
-            edgePadding = 16.dp,
-            containerColor = Color.Transparent,
-            divider = {
-                HorizontalDivider(thickness = 8.dp, color = Color.Transparent)
-            },
-            indicator = {}) {
+            selectedTabIndex = selectedTabIndex,
+            modifier = Modifier.padding(4.dp),
+            edgePadding = 8.dp,
+            containerColor = Color.Unspecified,
+            divider = {},
+            indicator = {}
+        ) {
             for (i in 0 until 15) {
                 Row {
                     if (i != 0) {
