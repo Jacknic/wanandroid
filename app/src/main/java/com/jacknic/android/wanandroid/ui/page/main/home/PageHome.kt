@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,34 +69,38 @@ fun PageHome(
     val pagingItems = vm.articleListFlow.collectAsLazyPagingItems()
     val bannerResult by vm.bannerList.collectAsState()
     val banners = bannerResult.getDataOrNull() ?: emptyList()
-    val scrollConnection = scrollBehavior.nestedScrollConnection
     var tabIndex by rememberSaveable { mutableIntStateOf(0) }
-    Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                SearchBar(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { nav.navigate(Page.Search) }
-                )
-            },
-            actions = {
-                Spacer(Modifier.size(8.dp))
-                IconButton(onClick = {
-                    nav.navigate(Page.Search)
-                }) {
-                    Icon(Icons.TwoTone.AccountCircle, "签到")
-                }
-            },
-            scrollBehavior = scrollBehavior
-        )
-    }) {
+    val containerColor = MaterialTheme.colorScheme.surfaceContainer
+    Scaffold(
+        containerColor = containerColor,
+        topBar = {
+            TopAppBar(
+                title = {
+                    SearchBar(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { nav.navigate(Page.Search) }
+                    )
+                },
+                actions = {
+                    Spacer(Modifier.size(8.dp))
+                    IconButton(onClick = {
+                        nav.navigate(Page.Search)
+                    }) {
+                        Icon(Icons.TwoTone.AccountCircle, "签到")
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors()
+                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
+            )
+        }) { paddingValues ->
         LazyColumn(
             Modifier
-                .padding(it)
-                .nestedScroll(scrollConnection)
-                .fillMaxSize(1f)
-                .background(MaterialTheme.colorScheme.onBackground.copy(0.05f)),
-            state = listStateTop
+                .padding(PaddingValues(top = paddingValues.calculateTopPadding()))
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .fillMaxSize(),
+            state = listStateTop,
+            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
         ) {
             stickyHeader {
                 Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
