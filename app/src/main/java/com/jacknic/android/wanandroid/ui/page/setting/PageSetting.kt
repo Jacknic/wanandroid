@@ -63,8 +63,8 @@ fun PageSetting() {
         }, scrollBehavior = scrollBehavior)
     }) { padding ->
         LazyColumn(
+            contentPadding = padding,
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize(1f)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
