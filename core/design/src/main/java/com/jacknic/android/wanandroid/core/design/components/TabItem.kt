@@ -2,15 +2,15 @@ package com.jacknic.android.wanandroid.core.design.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -20,7 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +38,7 @@ fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
             text,
             color = styleColor,
             fontSize = 12.sp,
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .clip(cornerShape)
                 .clickable { onClick() }
@@ -53,16 +54,11 @@ fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
 fun PreviewTabItem() {
     MaterialTheme {
         var selectedTabIndex by remember { mutableIntStateOf(0) }
-        SecondaryScrollableTabRow(
-            selectedTabIndex = selectedTabIndex,
-            modifier = Modifier.padding(4.dp),
-            edgePadding = 8.dp,
-            containerColor = Color.Unspecified,
-            divider = {},
-            indicator = {}
+        LazyRow(
+            contentPadding = PaddingValues(8.dp)
         ) {
             for (i in 0 until 15) {
-                Row {
+                item {
                     if (i != 0) {
                         Spacer(Modifier.width(8.dp))
                     }
