@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.core.text.parseAsHtml
 import coil.compose.AsyncImage
 import com.jacknic.android.wanandroid.core.model.Article
@@ -42,16 +43,16 @@ import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
  */
 @Composable
 fun ArticleListItem(article: Article, onClick: () -> Unit = {}) {
-    Column(modifier = Modifier
-        .clickable { onClick() }
-        .background(MaterialTheme.colorScheme.surface)
-        .padding(8.dp)) {
+    Column(
+        modifier = Modifier
+            .clickable { onClick() }
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(8.dp)) {
         val html = article.title.parseAsHtml()
         Text(html.toString(), fontSize = 18.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
         Spacer(Modifier.size(6.dp))
         Row {
-            val defaultUrl = "https://developer.android.google.cn/images/home/droid.svg"
-            val imgUrl = article.envelopePic.ifEmpty { defaultUrl }
+            val imgUrl = article.envelopePic
             Column(Modifier.weight(1f)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -62,14 +63,16 @@ fun ArticleListItem(article: Article, onClick: () -> Unit = {}) {
                 }
                 Text(article.descMd)
             }
-            AsyncImage(
-                modifier = Modifier
-                    .width(108.dp)
-                    .height(72.dp),
-                contentScale = ContentScale.Crop,
-                model = imgUrl,
-                contentDescription = null,
-            )
+            if (imgUrl.isNotBlank()) {
+                AsyncImage(
+                    modifier = Modifier
+                        .width(108.dp)
+                        .height(72.dp),
+                    contentScale = ContentScale.Crop,
+                    model = imgUrl,
+                    contentDescription = null,
+                )
+            }
 
         }
         val colorFilter = LocalContentColor.current.copy(0.5f)
@@ -95,9 +98,9 @@ fun ArticleListItem(article: Article, onClick: () -> Unit = {}) {
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    val uri = article.link.toUri()
                     Text(
-                        "Android",
-
+                        "${uri.host}",
                         modifier = Modifier
                             .background(bgColor, RoundedCornerShape(6.dp))
                             .padding(3.dp),
