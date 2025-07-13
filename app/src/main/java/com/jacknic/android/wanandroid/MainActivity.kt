@@ -2,6 +2,7 @@ package com.jacknic.android.wanandroid
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         log.tag().d("onCreate: MainActivity")
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             WanandroidTheme {
                 Surface(
