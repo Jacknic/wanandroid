@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         log.tag().d("onCreate: MainActivity")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
         setContent {
             WanandroidTheme {
                 Surface(
