@@ -1,11 +1,7 @@
 [versions]
 agp = "8.7.3"
-compileSdk = "35"
-minSdk = "24"
-targetSdk = "35"
 org-jetbrains-kotlin-android = "1.9.25"
 junit = "4.13.2"
-module = "0.0.1"
 hilt = "2.52"
 retrofit = "2.11.0"
 kotlinx-coroutines = "1.9.0"
@@ -14,6 +10,7 @@ coil = "2.7.0"
 gson = "2.10.1"
 
 [libraries]
+catalog = { group = "com.jacknic.android.wanandroid", name = "catalog", version = "0.0.1" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

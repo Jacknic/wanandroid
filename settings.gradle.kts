@@ -40,3 +40,4 @@ fun installSubmodule(dir: String) {
 
 installSubmodule("core")
 installSubmodule("apps")
+include(":catalog")

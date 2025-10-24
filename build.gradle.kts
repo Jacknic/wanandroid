@@ -3,12 +3,12 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.sdklib.AndroidVersion.VersionCodes
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 
-val namespacePrefix = "com.jacknic.android.wanandroid"
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -42,14 +42,14 @@ fun getGitTag(dir: String): String? {
  */
 fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
     with(target) {
-        version = libs.versions.module.get()
+        version = libs.catalog.get().version ?: "unknow"
         pluginManager.apply("org.jetbrains.kotlin.android")
         pluginManager.apply("kotlin-kapt")
     }
 
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = VersionCodes.VANILLA_ICE_CREAM
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk = VersionCodes.N
     }
 
     compileOptions {
@@ -122,7 +122,7 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
             "androidTestImplementation"(androidx.testEspresso.espressoCore)
         }
     }
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = VersionCodes.VANILLA_ICE_CREAM
 
     signingConfigs {
         getByName("debug") {
@@ -134,8 +134,8 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     }
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk = VersionCodes.N
+        targetSdk = VersionCodes.VANILLA_ICE_CREAM
         versionCode = 1
         versionName = "1.0"
         signingConfig = signingConfigs["debug"]
@@ -166,12 +166,12 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
  * 库模块统一配置
  */
 fun LibraryExtension.configLibrary(target: Project) {
-    val names = mutableListOf(namespacePrefix)
-    val parent = target.parent
-    if (parent != null && parent != rootProject) {
-        names.add(parent.name)
+    val names = mutableListOf(libs.catalog.get().group)
+    val p = target.parent
+    if (p != null && p != rootProject) {
+        names.add(p.name)
     }
-    names.add(target.name)
+    names.add(target.name.replace("-", "."))
     namespace = names.joinToString(".")
     configCommon(target)
     target.pluginManager.apply("maven-publish")
@@ -190,6 +190,7 @@ subprojects {
     }
     pluginManager.withPlugin("kotlin") {
         // println("${this.name} 插件已使用")
+        version = libs.catalog.get().version ?: "unknow"
         pluginManager.apply("maven-publish")
         configure<KotlinProjectExtension> {
             jvmToolchain {
@@ -206,7 +207,8 @@ subprojects {
     }
 
     pluginManager.withPlugin("maven-publish") {
-        version = libs.versions.module.get()
+        val gitTag = getGitTag(target.projectDir.absolutePath)
+        version = gitTag ?: "${target.version}-SNAPSHOT"
         afterEvaluate {
             configure<PublishingExtension> {
                 repositories {
@@ -221,31 +223,25 @@ subprojects {
                 }
                 publications {
                     create<MavenPublication>("main") {
-                        val groupIdBuilder = StringBuilder(namespacePrefix)
+                        val groupIdBuilder = StringBuilder(libs.catalog.get().group)
                         if (parent != null && parent != rootProject) {
-                            groupIdBuilder.append(".${parent!!.name}")
+                            val parentName = parent!!.name
+                            artifactId = "${parentName}-${project.name}"
                         }
-                        val gitTag = getGitTag(target.projectDir.absolutePath)
                         groupId = groupIdBuilder.toString()
-                        version = gitTag ?: "${target.version}-SNAPSHOT"
                         var targetComponent: SoftwareComponent? = components.findByName("release")
-                        var packType = "aar"
                         if (targetComponent == null) {
-                            targetComponent = components["java"]
-                            packType = "jar"
+                            targetComponent = components.first {
+                                it.name in listOf("java", "versionCatalog")
+                            }
+                            tasks.firstOrNull {
+                                it.name in listOf("releaseSourcesJar", "kotlinSourcesJar")
+                            }?.let { artifact(it) }
                         }
                         from(targetComponent!!)
-                        if (packType == "jar") {
-                            val artifactTask = tasks.run {
-                                findByName("releaseSourcesJar") ?: getByName("kotlinSourcesJar")
-                            }
-                            artifact(artifactTask)
-                        }
                         pom {
                             version = version
-                            description.set(target.description)
-                            packaging = packType
-                            url.set("https://github.com/Jacknic/wanandroid")
+                            description.set(project.description)
                         }
                     }
                 }
