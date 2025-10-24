@@ -18,6 +18,6 @@ dependencies {
 //    implementation(libs.kotlinx.datetime)
 //    implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(project(":core:datastore_test"))
+    testImplementation(project(":core:datastore-test"))
     testImplementation(project(":core:testing"))
 }
