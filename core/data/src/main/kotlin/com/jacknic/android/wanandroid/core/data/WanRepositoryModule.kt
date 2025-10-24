@@ -7,7 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 /**
- * com.jacknic.android.wanandroid.core.domain.WanRepository 模块默认绑定配置
+ * [WanRepository] 模块默认绑定配置
  *
  * @author Jacknic
  */
