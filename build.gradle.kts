@@ -47,7 +47,7 @@ fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
         pluginManager.apply("kotlin-kapt")
     }
 
-    compileSdk = VersionCodes.VANILLA_ICE_CREAM
+    compileSdk = VersionCodes.BAKLAVA
     defaultConfig {
         minSdk = VersionCodes.N
     }
@@ -122,7 +122,6 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
             "androidTestImplementation"(androidx.testEspresso.espressoCore)
         }
     }
-    compileSdk = VersionCodes.VANILLA_ICE_CREAM
 
     signingConfigs {
         getByName("debug") {
@@ -134,8 +133,7 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     }
 
     defaultConfig {
-        minSdk = VersionCodes.N
-        targetSdk = VersionCodes.VANILLA_ICE_CREAM
+        targetSdk = VersionCodes.BAKLAVA
         versionCode = 1
         versionName = "1.0"
         signingConfig = signingConfigs["debug"]
