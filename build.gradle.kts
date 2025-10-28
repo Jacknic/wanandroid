@@ -4,6 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.sdklib.AndroidVersion.VersionCodes
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
@@ -53,8 +54,8 @@ fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     buildFeatures {
@@ -105,6 +106,9 @@ fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
         }
         (this as ExtensionAware).extensions.configure<KotlinAndroidProjectExtension>("kotlin") {
             jvmToolchain(17)
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_1_8)
+            }
         }
     }
 }
