@@ -50,9 +50,9 @@ import kotlinx.coroutines.launch
 import com.jacknic.android.wanandroid.core.ui.R as UR
 
 enum class NavDestinations(
-    @StringRes val label: Int,
-    @RawRes val icon: Int,
-    @StringRes val contentDescription: Int,
+    @field:StringRes val label: Int,
+    @field:RawRes val icon: Int,
+    @field:StringRes val contentDescription: Int,
 ) {
     HOME(R.string.title_home, UR.raw.tabbar_animate_home, R.string.title_home),
     CATEGORY(R.string.title_category, UR.raw.tabbar_animate_course, R.string.title_category),

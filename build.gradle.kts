@@ -6,17 +6,17 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.sdklib.AndroidVersion.VersionCodes
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    alias(libs.plugins.com.android.application) apply false
-    alias(libs.plugins.com.android.library) apply false
-    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.compose.compiler) apply false
     alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin) apply false
 }
 
@@ -43,7 +43,6 @@ fun getGitTag(dir: String): String? {
  */
 fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
     with(target) {
-        version = libs.catalog.get().version ?: "unknow"
         pluginManager.apply("org.jetbrains.kotlin.android")
         pluginManager.apply("kotlin-kapt")
     }
@@ -60,10 +59,6 @@ fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
 
     buildFeatures {
         buildConfig = true
-    }
-
-    (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
-        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     with(target) {
@@ -177,6 +172,11 @@ fun LibraryExtension.configLibrary(target: Project) {
     namespace = names.joinToString(".")
     configCommon(target)
     target.pluginManager.apply("maven-publish")
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 subprojects {
@@ -192,7 +192,6 @@ subprojects {
     }
     pluginManager.withPlugin("kotlin") {
         // println("${this.name} 插件已使用")
-        version = libs.catalog.get().version ?: "unknow"
         pluginManager.apply("maven-publish")
         configure<KotlinProjectExtension> {
             jvmToolchain {
@@ -210,7 +209,7 @@ subprojects {
 
     pluginManager.withPlugin("maven-publish") {
         val gitTag = getGitTag(target.projectDir.absolutePath)
-        version = gitTag ?: "${target.version}-SNAPSHOT"
+        version = gitTag ?: "${libs.catalog.get().version}-SNAPSHOT"
         afterEvaluate {
             configure<PublishingExtension> {
                 repositories {
@@ -242,7 +241,6 @@ subprojects {
                         }
                         from(targetComponent!!)
                         pom {
-                            version = version
                             description.set(project.description)
                         }
                     }

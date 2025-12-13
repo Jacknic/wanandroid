@@ -1,11 +1,13 @@
 plugins {
-    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     buildFeatures {
         compose = true
     }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = androidx.composeCompiler.compiler.get().version
     }

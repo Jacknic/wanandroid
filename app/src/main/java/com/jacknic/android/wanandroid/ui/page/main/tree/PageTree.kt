@@ -21,8 +21,10 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -33,6 +35,7 @@ fun PageTree(
     scaffoldNavigator: ThreePaneScaffoldNavigator<ContentItem> = rememberListDetailPaneScaffoldNavigator<ContentItem>(),
     state: LazyListState = rememberLazyListState()
 ) {
+    val scope = rememberCoroutineScope()
     ListDetailPaneScaffold(
         directive = scaffoldNavigator.scaffoldDirective,
         value = scaffoldNavigator.scaffoldValue,
@@ -51,10 +54,12 @@ fun PageTree(
                             ListItem(
                                 headlineContent = { Text(text) },
                                 modifier = Modifier.clickable {
-                                    scaffoldNavigator.navigateTo(
-                                        ListDetailPaneScaffoldRole.Detail,
-                                        ContentItem(text)
-                                    )
+                                    scope.launch {
+                                        scaffoldNavigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            ContentItem(text)
+                                        )
+                                    }
                                 })
                         }
                     }
@@ -62,11 +67,15 @@ fun PageTree(
             }
         },
         detailPane = {
-            val content = scaffoldNavigator.currentDestination?.content
+            val content = scaffoldNavigator.currentDestination?.contentKey
             if (content != null) {
                 AnimatedPane(modifier = Modifier.systemBarsPadding()) {
                     Surface(
-                        onClick = { scaffoldNavigator.navigateBack() }
+                        onClick = {
+                            scope.launch {
+                                scaffoldNavigator.navigateBack()
+                            }
+                        }
                     ) {
                         Text("Details => ${content.text}")
                     }

@@ -1,8 +1,9 @@
 plugins {
-    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.android.application)
     alias(libs.plugins.hilt.android)
     alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin)
     id("kotlin-parcelize")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -16,6 +17,7 @@ android {
     buildFeatures {
         compose = true
     }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = androidx.composeCompiler.compiler.get().version
     }
@@ -33,6 +35,7 @@ dependencies {
     implementation(androidx.composeMaterial3.material3)
     implementation(androidx.composeMaterial3Adaptive.adaptiveNavigation)
     implementation(androidx.composeMaterial3.material3AdaptiveNavigationSuite)
+    implementation(androidx.composeMaterial.materialIconsExtended)
 
     implementation(libs.coil.kt.compose)
     implementation(libs.lottie.compose)

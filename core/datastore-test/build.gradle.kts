@@ -1,3 +1,3 @@
 plugins {
-    alias(libs.plugins.com.android.library)
+    alias(libs.plugins.android.library)
 }
