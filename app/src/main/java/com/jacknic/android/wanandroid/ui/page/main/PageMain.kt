@@ -14,11 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -66,8 +63,6 @@ enum class NavDestinations(
 @Composable
 fun PageMain() {
     var currentDestination by rememberSaveable { mutableStateOf(NavDestinations.HOME) }
-    val navSuiteType =
-        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(currentDestination.ordinal) {
         NavDestinations.entries.size
@@ -76,19 +71,15 @@ fun PageMain() {
         currentDestination = NavDestinations.entries[pagerState.targetPage]
     }
     NavigationSuiteScaffold(
-        layoutType = navSuiteType,
         navigationSuiteItems = {
             NavDestinations.entries.forEach {
-                val selected by derivedStateOf {
-                    it == currentDestination
-                }
-
+                val selected by derivedStateOf { it == currentDestination }
                 item(
                     icon = {
                         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))
                         val progress by animateLottieCompositionAsState(
                             composition,
-                            speed = if (selected) 1f else -3f,
+                            speed = if (selected) 1f else -1.5f,
                         )
                         LottieAnimation(
                             modifier = Modifier.size(24.dp),
@@ -116,7 +107,6 @@ fun PageMain() {
                             pagerState.animateScrollToPage(currentDestination.ordinal)
                         }
                     },
-                    alwaysShowLabel = navSuiteType == NavigationSuiteType.NavigationBar,
                 )
             }
         },
