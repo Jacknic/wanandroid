@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.hilt.android)
-    alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin)
     id("kotlin-parcelize")
     alias(libs.plugins.compose.compiler)
 }
