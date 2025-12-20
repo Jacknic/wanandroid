@@ -17,8 +17,6 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,13 +65,10 @@ fun PageMain() {
     val pagerState = rememberPagerState(currentDestination.ordinal) {
         NavDestinations.entries.size
     }
-    LaunchedEffect(pagerState.targetPage) {
-        currentDestination = NavDestinations.entries[pagerState.targetPage]
-    }
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             NavDestinations.entries.forEach {
-                val selected by derivedStateOf { it == currentDestination }
+                val selected = it.ordinal == pagerState.targetPage
                 item(
                     icon = {
                         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))
