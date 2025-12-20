@@ -15,7 +15,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
@@ -23,7 +22,6 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -40,45 +38,37 @@ fun PageTree(
         directive = scaffoldNavigator.scaffoldDirective,
         value = scaffoldNavigator.scaffoldValue,
         listPane = {
-            AnimatedPane(
-                modifier = Modifier
-                    .preferredWidth(200.dp)
+            LazyColumn(
+                state = state,
+                contentPadding = WindowInsets.statusBars.asPaddingValues()
             ) {
-                Surface {
-                    LazyColumn(
-                        state = state,
-                        contentPadding = WindowInsets.statusBars.asPaddingValues()
-                    ) {
-                        items(100) {
-                            val text = "List item $it"
-                            ListItem(
-                                headlineContent = { Text(text) },
-                                modifier = Modifier.clickable {
-                                    scope.launch {
-                                        scaffoldNavigator.navigateTo(
-                                            ListDetailPaneScaffoldRole.Detail,
-                                            ContentItem(text)
-                                        )
-                                    }
-                                })
-                        }
-                    }
+                items(100) {
+                    val text = "List item $it"
+                    ListItem(
+                        headlineContent = { Text(text) },
+                        modifier = Modifier.clickable {
+                            scope.launch {
+                                scaffoldNavigator.navigateTo(
+                                    ListDetailPaneScaffoldRole.Detail,
+                                    ContentItem(text)
+                                )
+                            }
+                        })
                 }
             }
         },
         detailPane = {
             val content = scaffoldNavigator.currentDestination?.contentKey
             if (content != null) {
-                AnimatedPane(modifier = Modifier.systemBarsPadding()) {
-                    Surface(
-                        onClick = {
-                            scope.launch {
-                                scaffoldNavigator.navigateBack()
-                            }
+                Surface(
+                    modifier = Modifier.systemBarsPadding(),
+                    onClick = {
+                        scope.launch {
+                            scaffoldNavigator.navigateBack()
                         }
-                    ) {
-                        Text("Details => ${content.text}")
                     }
+                ) {
+                    Text("Details => ${content.text}")
                 }
             }
         }
