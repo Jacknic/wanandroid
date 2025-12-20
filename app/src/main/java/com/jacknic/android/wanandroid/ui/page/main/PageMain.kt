@@ -10,11 +10,13 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShortNavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -66,6 +68,9 @@ fun PageMain() {
         NavDestinations.entries.size
     }
     NavigationSuiteScaffold(
+        navigationSuiteColors = NavigationSuiteDefaults.colors(
+            navigationRailContainerColor = ShortNavigationBarDefaults.containerColor,
+        ),
         navigationSuiteItems = {
             NavDestinations.entries.forEach {
                 val selected = it.ordinal == pagerState.targetPage
