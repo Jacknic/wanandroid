@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:data"))
+    implementation(projects.core.data)
     implementation(androidx.lifecycle.lifecycleLivedataKtx)
 
     implementation(androidx.composeUi.uiToolingPreview)

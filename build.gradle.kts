@@ -77,17 +77,17 @@ fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
         val isApp = pluginManager.hasPlugin("com.android.application")
         if (parent?.name == "feature" || isApp) {
             dependencies {
-                "implementation"(project(":core:model"))
-                "implementation"(project(":core:ui"))
-                "implementation"(project(":core:design"))
-                "implementation"(project(":core:data"))
-                "implementation"(project(":core:domain"))
-                "implementation"(project(":core:analytics"))
+                "implementation"(projects.core.model)
+                "implementation"(projects.core.ui)
+                "implementation"(projects.core.design)
+                "implementation"(projects.core.data)
+                "implementation"(projects.core.domain)
+                "implementation"(projects.core.analytics)
 
                 "testImplementation"(kotlin("test"))
-                "testImplementation"(project(":core:testing"))
+                "testImplementation"(projects.core.testing)
                 "androidTestImplementation"(kotlin("test"))
-                "androidTestImplementation"(project(":core:testing"))
+                "androidTestImplementation"(projects.core.testing)
             }
         }
 

@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.android.library)
+    kotlin("jvm")
 }
 
 dependencies {
-    implementation(project(":core:model"))
+    implementation(projects.core.model)
 }

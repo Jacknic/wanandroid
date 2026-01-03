@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+import org.gradle.api.internal.FeaturePreviews
 import java.io.FileFilter
 
 pluginManagement {
@@ -22,6 +23,7 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview(FeaturePreviews.Feature.TYPESAFE_PROJECT_ACCESSORS.name)
 rootProject.name = "Wanandroid"
 include(":app")
 
