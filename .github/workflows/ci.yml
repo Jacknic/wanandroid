@@ -1,6 +1,21 @@
-name: android CI
+name: Android CI
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+# 并发策略
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  # 如果有新的运行实例，取消正在进行的实例
+  cancel-in-progress: true
+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,10 +35,16 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: 执行单元测试
-        run: |
-          chmod +x ./gradlew
-          ./gradlew testDebugUnitTest
+      - name: gradlew 添加可执行权限
+        run: chmod +x ./gradlew
+
+      - name: 构建和测试 (Debug)
+        if: env.HAS_RELEASE_TAG != 'true'
+        run: ./gradlew testDebugUnitTest publishMainPublicationToGitHubPackagesRepository assembleDebug
+
+      - name: 构建、测试和发布 (Release)
+        if: env.HAS_RELEASE_TAG == 'true'
+        run: ./gradlew testDebugUnitTest publishMainPublicationToGitHubPackagesRepository assembleRelease
 
       - name: 上传单元测试报告
         if: ${{ always() }}
@@ -31,22 +52,6 @@ jobs:
         with:
           name: test-artifact
           path: ./**/build/reports/**
-
-      - name: 发布组件包
-        if: ${{ env.HAS_RELEASE_TAG == 'true' }}
-        run: |
-          ./gradlew publishMainPublicationToGitHubPackagesRepository
-
-      - name: 打包产出物(debug)
-        if: ${{ ! env.HAS_RELEASE_TAG == 'true' }}
-        run: |
-          ./gradlew publishMainPublicationToGitHubPackagesRepository
-          ./gradlew assembleDebug
-
-      - name: 打包产出物(release)
-        if: ${{ env.HAS_RELEASE_TAG == 'true' }}
-        run: |
-          ./gradlew assembleRelease
 
       - name: 上传产出物
         uses: actions/upload-artifact@v4
@@ -66,9 +71,9 @@ jobs:
 
       - name: 上传渠道包(GitHub)
         if: ${{ env.HAS_RELEASE_TAG == 'true' }}
-        uses: actions/upload-release-asset@v1
+        uses: ncipollo/release-action@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/release/app-release.apk
-          asset_name: com.jacknic.android.wanandroid.apk
-          asset_content_type: application/vnd.android.package-archive
+          draft: false
+          artifacts: "build/*/outputs/*/*.apk"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
