@@ -74,6 +74,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           draft: false
-          artifacts: "build/*/outputs/*/*.apk"
+          artifacts: "app/build/outputs/apk/*/*.apk,apps/*/build/outputs/apk/*/*.apk"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
