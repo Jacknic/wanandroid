@@ -1,5 +1,8 @@
 package com.jacknic.android.wanandroid.core.common
 
+import com.jacknic.android.wanandroid.core.common.StateResult.Loading
+import com.jacknic.android.wanandroid.core.common.StateResult.Success
+
 /**
  * 通用状态数据密封类
  *
@@ -111,3 +114,18 @@ inline fun <R, T> Result<T>.toStateResult(transformer: (T) -> R): StateResult<R>
         is StateResult.Success -> StateResult.Success(transformer(result.data))
     }
 }
+
+/**
+ * 是否加载中
+ */
+fun <T> StateResult<T>?.loading() = this is Loading
+
+/**
+ * 是否加载成功
+ */
+fun <T> StateResult<T>?.success() = this is Success
+
+/**
+ * 是否加载失败
+ */
+fun <T> StateResult<T>?.error() = this is StateResult.Error

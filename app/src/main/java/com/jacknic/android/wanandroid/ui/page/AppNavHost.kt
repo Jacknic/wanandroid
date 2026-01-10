@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jacknic.android.wanandroid.ui.page.browser.PageBrowser
+import com.jacknic.android.wanandroid.ui.page.login.PageLogin
 import com.jacknic.android.wanandroid.ui.page.main.PageMain
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
 import com.jacknic.android.wanandroid.ui.page.setting.PageSetting
@@ -27,6 +28,7 @@ object Page {
     const val Search = "PageSearch"
     const val Browser = "PageBrowser"
     const val Setting = "PageSetting"
+    const val Login = "PageLogin"
 
 }
 
@@ -41,7 +43,7 @@ val LocalNavCtrl = compositionLocalOf<NavHostController>(structuralEqualityPolic
 fun AppNavHost(
     modifier: Modifier = Modifier,
     nav: NavHostController = rememberNavController(),
-    startDestination: String = Page.Main
+    startDestination: String = Page.Login
 ) {
     CompositionLocalProvider(LocalNavCtrl provides nav) {
         NavHost(
@@ -53,6 +55,7 @@ fun AppNavHost(
             composable(Page.Search) { PageSearch() }
             composable(Page.Browser) { PageBrowser() }
             composable(Page.Setting) { PageSetting() }
+            composable(Page.Login) { PageLogin(nav) }
         }
     }
 }

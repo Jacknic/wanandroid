@@ -8,6 +8,12 @@
     <string name="title_theme_mode">主题模式</string>
     <string name="title_dynamic_theme_color">动态颜色</string>
     <string name="desc_dynamic_theme_color">自动匹配壁纸颜色样式</string>
+    <string name="login_hit_label_password">密码</string>
+    <string name="login_hit_label_username">用户名</string>
+    <string name="login_tips_login_success">登录成功</string>
+    <string name="login_tips_login_failed">登录失败</string>
+    <string name="login_btn_login">登录</string>
+    <string name="login_btn_skip_login">跳过</string>
     <string-array name="tab_titles">
         <item>@string/title_home</item>
         <item>@string/title_category</item>

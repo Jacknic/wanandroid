@@ -5,7 +5,10 @@ import com.jacknic.android.wanandroid.core.model.Banner
 import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
 import com.jacknic.android.wanandroid.core.model.Paging
+import com.jacknic.android.wanandroid.core.model.UserInfo
 import com.jacknic.android.wanandroid.core.model.WanResult
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -366,8 +369,12 @@ interface WanApi {
      * @param username 用户名
      * @param password 密码
      */
+    @FormUrlEncoded
     @POST("/user/login")
-    suspend fun postUserLogin(username: String, password: String): WanResult<Paging<Article>>
+    suspend fun postUserLogin(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): WanResult<UserInfo>
 
     /**
      * 退出
