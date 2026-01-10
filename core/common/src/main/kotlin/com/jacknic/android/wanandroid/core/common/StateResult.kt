@@ -142,5 +142,11 @@ suspend fun <T> MutableStateFlow<StateResult<T>?>.withLoading(
     if (loading) {
         update { Loading }
     }
-    update { action(it) }
+    update {
+        try {
+            action(it)
+        } catch (e: Exception) {
+            StateResult.Error(e)
+        }
+    }
 }
