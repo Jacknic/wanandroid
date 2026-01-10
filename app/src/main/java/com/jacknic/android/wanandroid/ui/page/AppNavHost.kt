@@ -32,6 +32,23 @@ object Page {
 
 }
 
+/**
+ * 置顶并清空页面
+ */
+fun NavHostController.navTop(page: String) {
+    navigate(page) {
+        launchSingleTop = true
+        popUpTo(graph.startDestinationId) {
+            inclusive = true
+        }
+    }
+}
+
+/**
+ * 跳转到首页
+ */
+fun NavHostController.toMain() = navTop(Page.Main)
+
 val LocalNavCtrl = compositionLocalOf<NavHostController>(structuralEqualityPolicy()) {
     throw IllegalAccessException("未初始化导航组件")
 }

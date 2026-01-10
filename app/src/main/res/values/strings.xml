@@ -13,6 +13,7 @@
     <string name="login_tips_login_success">登录成功</string>
     <string name="login_tips_login_failed">登录失败</string>
     <string name="login_btn_login">登录</string>
+    <string name="login_btn_login_loading">登录中</string>
     <string name="login_btn_skip_login">跳过</string>
     <string-array name="tab_titles">
         <item>@string/title_home</item>

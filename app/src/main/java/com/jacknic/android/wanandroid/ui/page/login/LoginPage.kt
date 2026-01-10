@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +47,7 @@ import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.loading
 import com.jacknic.android.wanandroid.core.common.onError
 import com.jacknic.android.wanandroid.core.common.onSuccess
-import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.toMain
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 
 
@@ -56,10 +57,10 @@ fun PageLogin(
     nav: NavHostController, vm: LoginViewModel = hiltViewModel<LoginViewModel>()
 ) {
     val userInfo by vm.userInfo.collectAsStateWithLifecycle()
-    var username by remember { mutableStateOf("") }
+    var username by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
     var usernameFocus by remember { mutableStateOf(false) }
     var passwordFocus by remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf("") }
     val context = LocalContext.current
     val loggingIn = userInfo.loading()
     val validInput = username.isNotBlank() && password.isNotBlank()
@@ -69,7 +70,7 @@ fun PageLogin(
         Toast.makeText(
             context, stringResource(R.string.login_tips_login_success), Toast.LENGTH_SHORT
         ).show()
-        nav.navigate(Page.Main)
+        nav.toMain()
     }?.onError {
         Toast.makeText(
             context,
@@ -82,7 +83,7 @@ fun PageLogin(
         topBar = {
             TopAppBar(title = { }, actions = {
                 TextButton(onClick = {
-                    nav.navigate(Page.Main)
+                    nav.toMain()
                 }) {
                     Text(stringResource(R.string.login_btn_skip_login))
                 }
@@ -109,6 +110,7 @@ fun PageLogin(
                     imeAction = ImeAction.Next, keyboardType = KeyboardType.Text
                 ),
                 shape = CircleShape,
+                enabled = !loggingIn,
                 trailingIcon = {
                     if (username.isNotEmpty() && usernameFocus) {
                         IconButton(onClick = { username = "" }) {
@@ -138,6 +140,7 @@ fun PageLogin(
                     skc?.hide()
                 }),
                 shape = CircleShape,
+                enabled = !loggingIn,
                 trailingIcon = {
                     if (password.isNotEmpty() && passwordFocus) {
                         IconButton(onClick = { password = "" }) {
@@ -158,7 +161,7 @@ fun PageLogin(
                 },
                 enabled = !loggingIn && validInput,
             ) {
-                Text(stringResource(R.string.login_btn_login))
+                Text(stringResource(if (loggingIn) R.string.login_btn_login_loading else R.string.login_btn_login))
             }
         }
     }
