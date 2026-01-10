@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api(libs.timber)
     implementation(libs.logger) { exclude(group = "com.android.support") }
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(androidx.startup.startupRuntime)
 }

@@ -2,6 +2,8 @@ package com.jacknic.android.wanandroid.core.common
 
 import com.jacknic.android.wanandroid.core.common.StateResult.Loading
 import com.jacknic.android.wanandroid.core.common.StateResult.Success
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * 通用状态数据密封类
@@ -129,3 +131,16 @@ fun <T> StateResult<T>?.success() = this is Success
  * 是否加载失败
  */
 fun <T> StateResult<T>?.error() = this is StateResult.Error
+
+/**
+ * 带加载状态数据流转换
+ */
+suspend fun <T> MutableStateFlow<StateResult<T>?>.withLoading(
+    loading: Boolean = true,
+    action: suspend (StateResult<T>?) -> StateResult<T>
+) {
+    if (loading) {
+        update { Loading }
+    }
+    update { action(it) }
+}
