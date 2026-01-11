@@ -14,6 +14,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.twotone.AccountCircle
+import androidx.compose.material.icons.twotone.Clear
+import androidx.compose.material.icons.twotone.Visibility
+import androidx.compose.material.icons.twotone.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,6 +41,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -61,6 +67,7 @@ fun PageLogin(
     var password by rememberSaveable { mutableStateOf("") }
     var usernameFocus by remember { mutableStateOf(false) }
     var passwordFocus by remember { mutableStateOf(false) }
+    var visibility by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val loggingIn = userInfo.loading()
     val validInput = username.isNotBlank() && password.isNotBlank()
@@ -83,6 +90,7 @@ fun PageLogin(
         topBar = {
             TopAppBar(title = { }, actions = {
                 TextButton(onClick = {
+                    vm.setSkipLogin(true)
                     nav.toMain()
                 }) {
                     Text(stringResource(R.string.login_btn_skip_login))
@@ -111,6 +119,7 @@ fun PageLogin(
                 ),
                 shape = CircleShape,
                 enabled = !loggingIn,
+                leadingIcon = { Icon(Icons.TwoTone.AccountCircle, "") },
                 trailingIcon = {
                     if (username.isNotEmpty() && usernameFocus) {
                         IconButton(onClick = { username = "" }) {
@@ -130,6 +139,7 @@ fun PageLogin(
                 onValueChange = { password = it },
                 label = { Text(stringResource(R.string.login_hit_label_password)) },
                 singleLine = true,
+                visualTransformation = if (visibility) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Go, keyboardType = KeyboardType.Password
                 ),
@@ -141,11 +151,20 @@ fun PageLogin(
                 }),
                 shape = CircleShape,
                 enabled = !loggingIn,
+                leadingIcon = {
+                    IconButton(onClick = {
+                        visibility = !visibility
+                    }) {
+                        val icon =
+                            if (visibility) Icons.TwoTone.Visibility else Icons.TwoTone.VisibilityOff
+                        Icon(icon, "")
+                    }
+                },
                 trailingIcon = {
                     if (password.isNotEmpty() && passwordFocus) {
                         IconButton(onClick = { password = "" }) {
                             Icon(
-                                imageVector = Icons.Filled.Clear,
+                                imageVector = Icons.TwoTone.Clear,
                                 contentDescription = ""
                             )
                         }

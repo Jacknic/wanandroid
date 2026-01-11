@@ -14,6 +14,7 @@ import com.jacknic.android.wanandroid.ui.page.login.PageLogin
 import com.jacknic.android.wanandroid.ui.page.main.PageMain
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
 import com.jacknic.android.wanandroid.ui.page.setting.PageSetting
+import com.jacknic.android.wanandroid.ui.page.splash.PageSplash
 
 object Page {
 
@@ -21,6 +22,8 @@ object Page {
      * 主页面
      */
     const val Main = "PageMain"
+
+    const val Splash = "PageSplash"
 
     /**
      * 搜索页面
@@ -60,7 +63,7 @@ val LocalNavCtrl = compositionLocalOf<NavHostController>(structuralEqualityPolic
 fun AppNavHost(
     modifier: Modifier = Modifier,
     nav: NavHostController = rememberNavController(),
-    startDestination: String = Page.Login
+    startDestination: String = Page.Splash
 ) {
     CompositionLocalProvider(LocalNavCtrl provides nav) {
         NavHost(
@@ -68,6 +71,7 @@ fun AppNavHost(
             navController = nav,
             startDestination = startDestination
         ) {
+            composable(Page.Splash) { PageSplash(nav) }
             composable(Page.Main) { PageMain() }
             composable(Page.Search) { PageSearch() }
             composable(Page.Browser) { PageBrowser() }
