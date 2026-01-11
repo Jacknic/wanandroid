@@ -16,7 +16,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class WanRepositoryModule {
 
     @Binds
-    abstract fun bindWanRepository(
+    internal abstract fun bindWanRepository(
         repo: DefaultWanRepository
     ): WanRepository
 }

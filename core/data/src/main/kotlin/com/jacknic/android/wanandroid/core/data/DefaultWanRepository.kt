@@ -14,7 +14,7 @@ import javax.inject.Singleton
  * @author Jacknic
  */
 @Singleton
-class DefaultWanRepository @Inject constructor(private val api: WanApi) : WanRepository {
+internal class DefaultWanRepository @Inject constructor(private val api: WanApi) : WanRepository {
 
     override suspend fun getHomeArticleList(
         page: Int,
