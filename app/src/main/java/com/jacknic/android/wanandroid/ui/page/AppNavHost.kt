@@ -40,9 +40,8 @@ object Page {
  */
 fun NavHostController.navTop(page: String) {
     navigate(page) {
-        launchSingleTop = true
-        popUpTo(graph.startDestinationId) {
-            inclusive = true
+        popUpTo(page) {
+            inclusive = false
         }
     }
 }

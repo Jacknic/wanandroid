@@ -15,7 +15,7 @@
             android:name=".MainActivity"
             android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize"
             android:exported="true"
-            android:theme="@style/Theme.Wanandroid">
+            android:theme="@style/Theme.Wanandroid.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
