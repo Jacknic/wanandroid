@@ -33,4 +33,8 @@ interface WanRepository {
      */
     suspend fun login(username: String, password: String): Result<UserInfo>
 
+    /**
+     * 用户登出
+     */
+    suspend fun logout(): Result<Any?>
 }

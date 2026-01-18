@@ -43,4 +43,11 @@ class LoginViewModel @Inject constructor(
             userDataRepo.setSkipLogin(skipLogin)
         }
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            userDataRepo.setSkipLogin(false)
+            repo.logout()
+        }
+    }
 }
