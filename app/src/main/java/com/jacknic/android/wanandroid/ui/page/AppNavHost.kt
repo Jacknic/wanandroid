@@ -38,10 +38,10 @@ object Page {
 /**
  * 置顶并清空页面
  */
-fun NavHostController.navTop(page: String) {
+fun NavHostController.navTop(page: String, pagePop: String) {
     navigate(page) {
-        popUpTo(page) {
-            inclusive = false
+        popUpTo(pagePop) {
+            inclusive = true
         }
     }
 }
@@ -49,7 +49,7 @@ fun NavHostController.navTop(page: String) {
 /**
  * 跳转到首页
  */
-fun NavHostController.toMain() = navTop(Page.Main)
+fun NavHostController.toMain() = navTop(Page.Main, Page.Splash)
 
 val LocalNavCtrl = compositionLocalOf<NavHostController>(structuralEqualityPolicy()) {
     throw IllegalAccessException("未初始化导航组件")

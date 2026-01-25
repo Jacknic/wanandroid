@@ -40,7 +40,7 @@ fun PageSplash(nav: NavHostController, vm: SplashViewModel = hiltViewModel()) {
         if (skipLogin == true) {
             nav.toMain()
         } else if (skipLogin == false) {
-            nav.navTop(Page.Login)
+            nav.navTop(Page.Login, Page.Splash)
         }
     }
 }

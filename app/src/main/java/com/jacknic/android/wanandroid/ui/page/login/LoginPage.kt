@@ -53,6 +53,8 @@ import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.loading
 import com.jacknic.android.wanandroid.core.common.onError
 import com.jacknic.android.wanandroid.core.common.onSuccess
+ import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.navTop
 import com.jacknic.android.wanandroid.ui.page.toMain
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 
@@ -91,7 +93,7 @@ fun PageLogin(
             TopAppBar(title = { }, actions = {
                 TextButton(onClick = {
                     vm.setSkipLogin(true)
-                    nav.toMain()
+                    nav.navTop(Page.Main, Page.Login)
                 }) {
                     Text(stringResource(R.string.login_btn_skip_login))
                 }
