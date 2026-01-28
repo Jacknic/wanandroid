@@ -134,7 +134,8 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     defaultConfig {
         targetSdk = VersionCodes.BAKLAVA
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
+        applicationId = namespace
         signingConfig = signingConfigs["debug"]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
