@@ -10,4 +10,8 @@ internal class DefaultUserDataRepository @Inject constructor(
 ) : UserDataRepository {
     override fun skipLoginFlow(): Flow<Boolean> = dataSource.skipLoginFlow()
     override suspend fun setSkipLogin(skip: Boolean) = dataSource.setSkipLogin(skip)
+    override fun searchHistoryFlow(): Flow<Set<String>> = dataSource.searchHistoryFlow()
+    override suspend fun addSearchHistory(keyword: String) = dataSource.addSearchHistory(keyword)
+    override suspend fun removeSearchHistory(keyword: String) = dataSource.removeSearchHistory(keyword)
+    override suspend fun clearSearchHistory() = dataSource.clearSearchHistory()
 }

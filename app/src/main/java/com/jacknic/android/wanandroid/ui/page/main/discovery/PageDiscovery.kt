@@ -45,6 +45,7 @@ import com.jacknic.android.wanandroid.core.model.HotKeyword
 import com.jacknic.android.wanandroid.core.model.ProjectTree
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.search.SEARCH_KEY
 
 /**
  * 发现页
@@ -94,6 +95,7 @@ fun PageDiscovery(
                         icon = Icons.TwoTone.Search
                     ) {
                         HotkeyFlow(hotkeys = hotkeys) { key ->
+                            nav.currentBackStackEntry?.savedStateHandle?.set(SEARCH_KEY, key)
                             nav.navigate(Page.Search)
                         }
                     }
