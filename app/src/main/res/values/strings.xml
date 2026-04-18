@@ -5,6 +5,9 @@
     <string name="title_discovery">发现</string>
     <string name="title_system">体系</string>
     <string name="title_mine">我的</string>
+    <string name="title_hot_search">搜索热词</string>
+    <string name="title_useful_sites">常用网站</string>
+    <string name="title_project_category">项目分类</string>
     <string name="title_theme_mode">主题模式</string>
     <string name="title_dynamic_theme_color">动态颜色</string>
     <string name="desc_dynamic_theme_color">自动匹配壁纸颜色样式</string>
