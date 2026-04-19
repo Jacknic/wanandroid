@@ -1,8 +1,6 @@
 package com.jacknic.android.wanandroid.ui.page.main.home
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +13,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material3.Button
@@ -23,11 +24,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryScrollableTabRow
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,31 +35,30 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.text.HtmlCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
-import com.jacknic.android.wanandroid.core.design.components.PreviewTabItem
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.HomeBanner
 import com.jacknic.android.wanandroid.ui.component.SearchBar
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
+import kotlinx.coroutines.launch
 
 /**
  * 首页
  *
  * @author Jacknic
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PageHome(
     vm: HomeViewModel = hiltViewModel(),
@@ -67,10 +66,14 @@ fun PageHome(
     listStateTop: LazyListState = rememberLazyListState()
 ) {
     val nav = LocalNavCtrl.current
-    val pagingItems = vm.articleListFlow.collectAsLazyPagingItems()
     val bannerResult by vm.bannerList.collectAsState()
+    val categoryResult by vm.categories.collectAsState()
     val banners = bannerResult.getDataOrNull() ?: emptyList()
-    var tabIndex by rememberSaveable { mutableIntStateOf(0) }
+    val categories = categoryResult.getDataOrNull() ?: emptyList()
+
+    val pagerState = rememberPagerState { categories.size }
+    val scope = rememberCoroutineScope()
+
     val containerColor = MaterialTheme.colorScheme.surfaceContainer
     Scaffold(
         containerColor = containerColor,
@@ -95,93 +98,118 @@ fun PageHome(
                     .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
             )
         }) { paddingValues ->
-        LazyColumn(
-            Modifier
-                .padding(PaddingValues(top = paddingValues.calculateTopPadding()))
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .fillMaxSize(),
-            state = listStateTop,
-            contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
+                .fillMaxSize()
         ) {
-            stickyHeader {
-                Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
-                    SecondaryScrollableTabRow(
-                        selectedTabIndex = tabIndex,
-                        modifier = Modifier.fillParentMaxWidth(),
-                        edgePadding = 8.dp,
-                        containerColor = Color.Unspecified,
-                        divider = {},
-                        indicator = {
-                            TabRowDefaults.PrimaryIndicator(
-                                modifier = Modifier.tabIndicatorOffset(tabIndex),
-                                width = 16.dp,
-                            )
-                        }
-                    ) {
-                        for (i in 0 until 15) {
-                            val alpha = if (i == tabIndex) 1f else 0.6f
-                            val color = LocalContentColor.current.copy(alpha)
-                            Text(
-                                text = "Tab内容 $i",
-                                color = color,
-                                modifier = Modifier
-                                    .align(Alignment.CenterHorizontally)
-                                    .clickable(
-                                        interactionSource = null,
-                                        indication = null
-                                    ) { tabIndex = i }
-                                    .padding(12.dp, 8.dp)
-                            )
-                        }
+            if (categories.isNotEmpty()) {
+                SecondaryScrollableTabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    modifier = Modifier.fillMaxWidth(),
+                    edgePadding = 8.dp,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    divider = {},
+                    indicator = {
+                        Box(
+                            Modifier
+                                .tabIndicatorOffset(pagerState.currentPage, true)
+                                .height(4.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                        )
                     }
-                    PreviewTabItem()
-                    HorizontalDivider(color = containerColor)
-                }
-            }
-            item {
-                HomeBanner(banners)
-            }
-            items(pagingItems.itemCount) {
-                val article = pagingItems[it] ?: return@items
-                Spacer(modifier = Modifier.size(8.dp))
-                ArticleListItem(article) {
-                    nav.currentBackStackEntry?.savedStateHandle?.set("link", article.link)
-                    nav.navigate(Page.Browser)
-                }
-            }
-            val state = pagingItems.loadState
-            val modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-            when {
-                state.refresh is LoadState.Loading || state.append is LoadState.Loading -> {
-                    item {
-                        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                        }
+                ) {
+                    categories.forEachIndexed { index, category ->
+                        val selected = index == pagerState.currentPage
+                        Tab(
+                            selected = selected,
+                            onClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                            text = {
+                                Text(
+                                    text = HtmlCompat.fromHtml(
+                                        category.name,
+                                        HtmlCompat.FROM_HTML_MODE_LEGACY
+                                    ).toString(),
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            },
+                            selectedContentColor = MaterialTheme.colorScheme.primary,
+                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
+                HorizontalDivider(color = containerColor)
+            }
 
-                state.refresh is LoadState.Error -> {
-                    item {
-                        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                            Button(
-                                onClick = { pagingItems.refresh() },
-                                modifier = Modifier.height(50.dp)
-                            ) {
-                                Text("加载错误,重新加载")
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.weight(1f)
+            ) { pageIndex ->
+                val category = categories[pageIndex]
+                val pagingItems = vm.getArticleListFlow(category.id).collectAsLazyPagingItems()
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(bottom = 16.dp)
+                ) {
+                    if (pageIndex == 0 && banners.isNotEmpty()) {
+                        item {
+                            HomeBanner(banners)
+                        }
+                    }
+                    items(pagingItems.itemCount) {
+                        val article = pagingItems[it] ?: return@items
+                        Spacer(modifier = Modifier.size(8.dp))
+                        ArticleListItem(article) {
+                            nav.currentBackStackEntry?.savedStateHandle?.set("link", article.link)
+                            nav.navigate(Page.Browser)
+                        }
+                    }
+                    val state = pagingItems.loadState
+                    val modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                    when {
+                        state.refresh is LoadState.Loading || state.append is LoadState.Loading -> {
+                            item {
+                                Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                                }
                             }
                         }
-                    }
-                }
 
-                state.append is LoadState.Error -> {
-                    item {
-                        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                            Button(
-                                onClick = { pagingItems.retry() }, modifier = Modifier.height(50.dp)
-                            ) {
-                                Text("加载错误,点击重试")
+                        state.refresh is LoadState.Error -> {
+                            item {
+                                Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                                    Button(
+                                        onClick = { pagingItems.refresh() },
+                                        modifier = Modifier.height(50.dp)
+                                    ) {
+                                        Text("加载错误,重新加载")
+                                    }
+                                }
+                            }
+                        }
+
+                        state.append is LoadState.Error -> {
+                            item {
+                                Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                                    Button(
+                                        onClick = { pagingItems.retry() },
+                                        modifier = Modifier.height(50.dp)
+                                    ) {
+                                        Text("加载错误,点击重试")
+                                    }
+                                }
                             }
                         }
                     }
