@@ -3,19 +3,20 @@ package com.jacknic.android.wanandroid.core.model
 import com.google.gson.annotations.SerializedName
 
 /**
- * 常用网站
+ * 收藏的网址
  *
- * @param category 分类
+ * @param desc 描述
  * @param icon 图标
- * @param id 友链ID
+ * @param id 收藏ID
  * @param link 链接
  * @param name 名称
  * @param order 排序
+ * @param userId 用户ID
  * @param visible 可见性，1为可见
  */
-data class FriendLink(
-    @SerializedName("category")
-    val category: String = "",
+data class CollectTool(
+    @SerializedName("desc")
+    val desc: String = "",
     @SerializedName("icon")
     val icon: String = "",
     @SerializedName("id")
@@ -26,6 +27,8 @@ data class FriendLink(
     val name: String = "",
     @SerializedName("order")
     val order: Int = 0,
+    @SerializedName("userId")
+    val userId: Int = 0,
     @SerializedName("visible")
     val visible: Int = 0
 )

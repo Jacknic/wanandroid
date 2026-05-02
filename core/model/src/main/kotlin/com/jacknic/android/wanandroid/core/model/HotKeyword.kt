@@ -4,14 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 /**
  * 搜索热词
+ *
  * @param id 热词ID
  * @param name 热词值
  * @param order 排序
  * @param visible 可见标志
- * @param link
+ * @param link 链接，可为null
  */
-
-data class HotKeyword (
+data class HotKeyword(
     @SerializedName("id")
     val id: Int = 0,
     @SerializedName("name")

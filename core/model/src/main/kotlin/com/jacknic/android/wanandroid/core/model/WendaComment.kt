@@ -5,24 +5,24 @@ import com.google.gson.annotations.SerializedName
 /**
  * 问答评论
  *
- * @param anonymous
- * @param appendForContent
- * @param articleId
- * @param canEdit
- * @param content
- * @param contentMd
- * @param id
- * @param niceDate
- * @param publishDate
- * @param replyCommentId
- * @param replyComments
- * @param rootCommentId
- * @param status
- * @param toUserId
- * @param toUserName
- * @param userId
- * @param userName
- * @param zan
+ * @param anonymous 是否匿名，0为非匿名
+ * @param appendForContent 追加评论标志
+ * @param articleId 文章ID
+ * @param canEdit 是否可编辑
+ * @param content 评论内容
+ * @param contentMd 评论内容(Markdown格式)
+ * @param id 评论ID，后续回复、删除都依赖此ID
+ * @param niceDate 友好时间
+ * @param publishDate 发布时间(时间戳)
+ * @param replyCommentId 回复的评论ID
+ * @param replyComments 回复评论列表
+ * @param rootCommentId 根评论ID
+ * @param status 状态
+ * @param toUserId 被回复用户ID
+ * @param toUserName 被回复用户名
+ * @param userId 评论者用户ID
+ * @param userName 评论者用户名
+ * @param zan 点赞数
  */
 data class WendaComment(
     @SerializedName("anonymous")

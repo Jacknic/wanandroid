@@ -4,14 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 /**
  * 积分排行
- * @param coinCount 总分
+ *
+ * @param coinCount 总积分
  * @param level 用户等级
  * @param nickname 昵称
- * @param rank 排名
+ * @param rank 排名，注意类型为String
  * @param userId 用户ID
  * @param username 用户名
  */
-
 data class Rank(
     @SerializedName("coinCount")
     val coinCount: Int = 0,
