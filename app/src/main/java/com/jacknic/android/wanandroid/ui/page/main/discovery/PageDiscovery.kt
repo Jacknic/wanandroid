@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
+import com.jacknic.android.wanandroid.core.model.Chapter
 import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
-import com.jacknic.android.wanandroid.core.model.ProjectTree
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.search.SEARCH_KEY
@@ -208,7 +208,7 @@ fun FriendLinkFlow(links: List<FriendLink>, onLinkClick: (FriendLink) -> Unit) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ProjectTreeFlow(trees: List<ProjectTree>, onTreeClick: (ProjectTree) -> Unit) {
+fun ProjectTreeFlow(trees: List<Chapter>, onTreeClick: (Chapter) -> Unit) {
     FlowRow(
         modifier = Modifier.padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),

@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.core.common.toStateResult
 import com.jacknic.android.wanandroid.core.domain.WanRepository
+import com.jacknic.android.wanandroid.core.model.Chapter
 import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
-import com.jacknic.android.wanandroid.core.model.ProjectTree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,8 +30,8 @@ class DiscoveryViewModel @Inject constructor(
     private val _friendResult = MutableStateFlow<StateResult<List<FriendLink>>>(StateResult.Loading)
     val friendResult = _friendResult.asStateFlow()
 
-    private val _projectTreeResult = MutableStateFlow<StateResult<List<ProjectTree>>>(StateResult.Loading)
-    val projectTreeResult = _projectTreeResult.asStateFlow()
+    private val _chapterResult = MutableStateFlow<StateResult<List<Chapter>>>(StateResult.Loading)
+    val projectTreeResult = _chapterResult.asStateFlow()
 
     init {
         refresh()
@@ -45,7 +45,7 @@ class DiscoveryViewModel @Inject constructor(
             _friendResult.emit(repo.getFriend().toStateResult())
         }
         viewModelScope.launch {
-            _projectTreeResult.emit(repo.getProjectTree().toStateResult())
+            _chapterResult.emit(repo.getProjectTree().toStateResult())
         }
     }
 }

@@ -2,6 +2,7 @@ package com.jacknic.android.wanandroid.core.network
 
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Banner
+import com.jacknic.android.wanandroid.core.model.Chapter
 import com.jacknic.android.wanandroid.core.model.CoinInfo
 import com.jacknic.android.wanandroid.core.model.CourseInfo
 import com.jacknic.android.wanandroid.core.model.FriendLink
@@ -9,7 +10,6 @@ import com.jacknic.android.wanandroid.core.model.HotKeyword
 import com.jacknic.android.wanandroid.core.model.NavInfo
 import com.jacknic.android.wanandroid.core.model.Paging
 import com.jacknic.android.wanandroid.core.model.PersonalInfo
-import com.jacknic.android.wanandroid.core.model.ProjectTree
 import com.jacknic.android.wanandroid.core.model.Rank
 import com.jacknic.android.wanandroid.core.model.ShareArticles
 import com.jacknic.android.wanandroid.core.model.Tree
@@ -85,7 +85,7 @@ interface WanApi {
      * 项目分类
      */
     @GET("/project/tree/json")
-    suspend fun getProjectTree(): WanResult<List<ProjectTree>>
+    suspend fun getProjectTree(): WanResult<List<Chapter>>
 
     /**
      * 项目列表数据

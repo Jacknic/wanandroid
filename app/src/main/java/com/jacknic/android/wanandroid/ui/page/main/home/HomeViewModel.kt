@@ -13,7 +13,7 @@ import com.jacknic.android.wanandroid.core.common.toStateResult
 import com.jacknic.android.wanandroid.core.domain.WanRepository
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Banner
-import com.jacknic.android.wanandroid.core.model.ProjectTree
+import com.jacknic.android.wanandroid.core.model.Chapter
 import com.jacknic.android.wanandroid.util.PagingListDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     private val _bannerList = MutableStateFlow<StateResult<List<Banner>>>(StateResult.Loading)
     val bannerList = _bannerList.asStateFlow()
 
-    private val _categories = MutableStateFlow<StateResult<List<ProjectTree>>>(StateResult.Loading)
+    private val _categories = MutableStateFlow<StateResult<List<Chapter>>>(StateResult.Loading)
     val categories = _categories.asStateFlow()
 
     private val pagingFlows = mutableMapOf<Int, Flow<PagingData<Article>>>()
@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
             val result = repo.getProjectTree().toStateResult()
             if (result is StateResult.Success) {
                 // 添加“全部分类”或者“推荐”
-                val allCategory = ProjectTree(name = "推荐", id = -1)
+                val allCategory = Chapter(name = "推荐", id = -1)
                 _categories.emit(StateResult.Success(listOf(allCategory) + result.data))
             } else {
                 _categories.emit(result)
