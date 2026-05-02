@@ -1,0 +1,4447 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "默认模块",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "分页"
+    },
+    {
+      "name": "需登录"
+    }
+  ],
+  "paths": {
+    "/article/list/{page}/json": {
+      "get": {
+        "summary": "单个教程下所有文章列表",
+        "deprecated": false,
+        "description": "列表接口返回的教程合集，注意教程对象中有个 id 需要在此接口使用。",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "query",
+            "description": "教程ID",
+            "required": false,
+            "example": "549",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": true,
+            "example": 30,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "type": "object",
+                      "properties": {
+                        "curPage": {
+                          "type": "integer",
+                          "title": "当前页"
+                        },
+                        "datas": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Article"
+                          },
+                          "title": "数据列表"
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "title": "数据偏移量"
+                        },
+                        "over": {
+                          "type": "boolean",
+                          "title": "是否已越界"
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "title": "分页总数"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "title": "分页大小"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": "数据总数"
+                        }
+                      },
+                      "required": [
+                        "curPage",
+                        "datas",
+                        "offset",
+                        "over",
+                        "pageCount",
+                        "size",
+                        "total"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/banner/json": {
+      "get": {
+        "summary": "首页banner",
+        "deprecated": false,
+        "description": "首页banner",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Banner"
+                      }
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "desc": "我们支持订阅啦~",
+                      "id": 30,
+                      "imagePath": "https://www.wanandroid.com/blogimgs/42da12d8-de56-4439-b40c-eab66c227a4b.png",
+                      "isVisible": 1,
+                      "order": 2,
+                      "title": "我们支持订阅啦~",
+                      "type": 0,
+                      "url": "https://www.wanandroid.com/blog/show/3352"
+                    },
+                    {
+                      "desc": "",
+                      "id": 6,
+                      "imagePath": "https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png",
+                      "isVisible": 1,
+                      "order": 1,
+                      "title": "我们新增了一个常用导航Tab~",
+                      "type": 1,
+                      "url": "https://www.wanandroid.com/navi"
+                    },
+                    {
+                      "desc": "一起来做个App吧",
+                      "id": 10,
+                      "imagePath": "https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
+                      "isVisible": 1,
+                      "order": 1,
+                      "title": "一起来做个App吧",
+                      "type": 1,
+                      "url": "https://www.wanandroid.com/blog/show/2"
+                    }
+                  ],
+                  "errorCode": 0,
+                  "errorMsg": ""
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/friend/json": {
+      "get": {
+        "summary": "常用网站",
+        "deprecated": false,
+        "description": "常用网站",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FriendLink"
+                      }
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/hotkey/json": {
+      "get": {
+        "summary": "搜索热词",
+        "deprecated": false,
+        "description": "搜索热词",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/HotKeyword"
+                      }
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 6,
+                      "link": "",
+                      "name": "面试",
+                      "order": 1,
+                      "visible": 1
+                    },
+                    {
+                      "id": 9,
+                      "link": "",
+                      "name": "Studio3",
+                      "order": 1,
+                      "visible": 1
+                    },
+                    {
+                      "id": 5,
+                      "link": "",
+                      "name": "动画",
+                      "order": 2,
+                      "visible": 1
+                    },
+                    {
+                      "id": 1,
+                      "link": "",
+                      "name": "自定义View",
+                      "order": 3,
+                      "visible": 1
+                    },
+                    {
+                      "id": 2,
+                      "link": "",
+                      "name": "性能优化 速度",
+                      "order": 4,
+                      "visible": 1
+                    },
+                    {
+                      "id": 3,
+                      "link": "",
+                      "name": "gradle",
+                      "order": 5,
+                      "visible": 1
+                    },
+                    {
+                      "id": 4,
+                      "link": "",
+                      "name": "Camera 相机",
+                      "order": 6,
+                      "visible": 1
+                    },
+                    {
+                      "id": 7,
+                      "link": "",
+                      "name": "代码混淆 安全",
+                      "order": 7,
+                      "visible": 1
+                    },
+                    {
+                      "id": 8,
+                      "link": "",
+                      "name": "逆向 加固",
+                      "order": 8,
+                      "visible": 1
+                    }
+                  ],
+                  "errorCode": 0,
+                  "errorMsg": ""
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/article/top/json": {
+      "get": {
+        "summary": "置顶文章",
+        "deprecated": false,
+        "description": "置顶文章",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Article"
+                      }
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/tree/json": {
+      "get": {
+        "summary": "体系数据",
+        "deprecated": false,
+        "description": "体系数据",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tree"
+                      },
+                      "title": "数据"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/navi/json": {
+      "get": {
+        "summary": "导航数据",
+        "deprecated": false,
+        "description": "导航数据",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/NavInfo"
+                      },
+                      "title": "数据"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/project/tree/json": {
+      "get": {
+        "summary": "项目分类",
+        "deprecated": false,
+        "description": "项目分类",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProjectTree"
+                      },
+                      "title": "数据"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/project/list/{page}/json": {
+      "get": {
+        "summary": "项目列表数据",
+        "deprecated": false,
+        "description": "项目列表数据",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "query",
+            "description": "分类ID",
+            "required": false,
+            "example": 294,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "type": "object",
+                      "properties": {
+                        "curPage": {
+                          "type": "integer",
+                          "title": "当前页"
+                        },
+                        "datas": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Article"
+                          },
+                          "title": "数据列表"
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "title": "数据偏移量"
+                        },
+                        "over": {
+                          "type": "boolean",
+                          "title": "是否已越界"
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "title": "分页总数"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "title": "分页大小"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": "数据总数"
+                        }
+                      },
+                      "required": [
+                        "curPage",
+                        "datas",
+                        "offset",
+                        "over",
+                        "pageCount",
+                        "size",
+                        "total"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "登录",
+        "deprecated": false,
+        "description": "登录后会在cookie中返回账号密码，只要在客户端做cookie持久化存储即可自动登录验证。APIFox 默认记录cookie信息，类似浏览器页面登录，调用该接口后会自动记录登录cookie信息及状态",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "description": "用户名",
+                    "example": "Jacknic",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "密码",
+                    "example": "xxxxxxx",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "admin": {
+                          "type": "boolean"
+                        },
+                        "chapterTops": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "coinCount": {
+                          "type": "integer"
+                        },
+                        "collectIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "icon": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "publicName": {
+                          "type": "string"
+                        },
+                        "token": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "integer"
+                        },
+                        "username": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "admin",
+                        "chapterTops",
+                        "coinCount",
+                        "collectIds",
+                        "email",
+                        "icon",
+                        "id",
+                        "nickname",
+                        "password",
+                        "publicName",
+                        "token",
+                        "type",
+                        "username"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer"
+                    },
+                    "errorMsg": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                },
+                "example": {
+                  "data": null,
+                  "errorCode": -1,
+                  "errorMsg": "账号密码不匹配！"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/user/register": {
+      "post": {
+        "summary": "注册",
+        "deprecated": false,
+        "description": "注册用户",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "description": "用户名",
+                    "example": "Jacknic",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "密码",
+                    "example": "xxxxxx",
+                    "type": "string"
+                  },
+                  "repassword": {
+                    "description": "密码确认",
+                    "example": "xxxxxx",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password",
+                  "repassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/user/logout/json": {
+      "get": {
+        "summary": "退出",
+        "deprecated": false,
+        "description": "访问了 logout 后，服务端会让客户端清除 Cookie（即cookie max-Age=0），如果客户端 Cookie 实现合理，可以实现自动清理，如果本地做了用户账号密码和保存，及时清理。",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/list/{page}/json": {
+      "get": {
+        "summary": "收藏文章列表",
+        "deprecated": false,
+        "description": "收藏文章列表",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "curPage": {
+                            "type": "integer",
+                            "title": "当前页"
+                          },
+                          "datas": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/components/schemas/Article"
+                            },
+                            "title": "数据列表"
+                          },
+                          "offset": {
+                            "type": "integer",
+                            "title": "数据偏移量"
+                          },
+                          "over": {
+                            "type": "boolean",
+                            "title": "是否已越界"
+                          },
+                          "pageCount": {
+                            "type": "integer",
+                            "title": "分页总数"
+                          },
+                          "size": {
+                            "type": "integer",
+                            "title": "分页大小"
+                          },
+                          "total": {
+                            "type": "integer",
+                            "title": "数据总数"
+                          }
+                        },
+                        "required": [
+                          "curPage",
+                          "datas",
+                          "offset",
+                          "over",
+                          "pageCount",
+                          "size",
+                          "total"
+                        ]
+                      },
+                      "title": "数据"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/collect/{article_id}/json": {
+      "get": {
+        "summary": "收藏站内文章",
+        "deprecated": false,
+        "description": "收藏站内文章",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "article_id",
+            "in": "path",
+            "description": "文章ID",
+            "required": true,
+            "example": 1165,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "nullable": true,
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/add/json": {
+      "post": {
+        "summary": "收藏站外文章",
+        "deprecated": false,
+        "description": "收藏站外文章",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "标题",
+                    "example": "开发指南",
+                    "type": "string"
+                  },
+                  "author": {
+                    "description": "作者",
+                    "example": "Jacknic",
+                    "type": "string"
+                  },
+                  "link": {
+                    "description": "链接地址",
+                    "example": "https://jacknic.com/",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/user_article/update/{article_id}/json": {
+      "post": {
+        "summary": "编辑收藏的文章",
+        "deprecated": false,
+        "description": "编辑收藏的文章",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "article_id",
+            "in": "path",
+            "description": "文章ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "标题",
+                    "example": "开发指南",
+                    "type": "string"
+                  },
+                  "author": {
+                    "description": "作者",
+                    "example": "Jacknic",
+                    "type": "string"
+                  },
+                  "link": {
+                    "description": "链接地址",
+                    "example": "https://jacknic.com/",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/uncollect_originId/{article_id}/json": {
+      "post": {
+        "summary": "取消收藏-文章列表",
+        "deprecated": false,
+        "description": "取消收藏-文章列表",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "article_id",
+            "in": "path",
+            "description": "文章ID",
+            "required": true,
+            "example": 2333,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/uncollect/{collec_id}/json": {
+      "post": {
+        "summary": "取消收藏-我的收藏页面",
+        "deprecated": false,
+        "description": "取消收藏-我的收藏页面",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "collec_id",
+            "in": "path",
+            "description": "收藏ID",
+            "required": true,
+            "example": 123,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/usertools/json": {
+      "get": {
+        "summary": " 收藏网站列表",
+        "deprecated": false,
+        "description": " 收藏网站列表",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/addtool/json": {
+      "post": {
+        "summary": "收藏网址",
+        "deprecated": false,
+        "description": "收藏网址",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "网站名称",
+                    "example": "GitHub",
+                    "type": "string"
+                  },
+                  "link": {
+                    "description": "链接地址",
+                    "example": "https://github.com/",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/updatetool/json": {
+      "post": {
+        "summary": "编辑收藏网址",
+        "deprecated": false,
+        "description": "编辑收藏网址",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "网站名称",
+                    "example": "GitHub",
+                    "type": "string"
+                  },
+                  "link": {
+                    "description": "链接地址",
+                    "example": "https://github.com/",
+                    "type": "string"
+                  },
+                  "id": {
+                    "description": "收藏ID",
+                    "example": 123,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/collect/deletetool/json": {
+      "post": {
+        "summary": "删除收藏网址",
+        "deprecated": false,
+        "description": "删除收藏网址",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "description": "收藏ID",
+                    "example": 123,
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/article/query/{page}/json": {
+      "post": {
+        "summary": "搜索",
+        "deprecated": false,
+        "description": "搜索",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "description": "关键词",
+            "required": "true",
+            "example": "Android",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 30,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "type": "object",
+                      "properties": {
+                        "curPage": {
+                          "type": "integer",
+                          "title": "当前页"
+                        },
+                        "datas": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Article"
+                          },
+                          "title": "数据列表"
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "title": "数据偏移量"
+                        },
+                        "over": {
+                          "type": "boolean",
+                          "title": "是否已越界"
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "title": "分页总数"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "title": "分页大小"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": "数据总数"
+                        }
+                      },
+                      "required": [
+                        "curPage",
+                        "datas",
+                        "offset",
+                        "over",
+                        "pageCount",
+                        "size",
+                        "total"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/coin/rank/{page}/json": {
+      "get": {
+        "summary": "积分排行榜",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "curPage": {
+                          "type": "integer",
+                          "title": "当前页"
+                        },
+                        "datas": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Rank"
+                          }
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "title": "数据偏移量"
+                        },
+                        "over": {
+                          "type": "boolean",
+                          "title": "是否已越界"
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "title": "分页总数"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "title": "分页大小"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": "数据总数"
+                        }
+                      },
+                      "required": [
+                        "curPage",
+                        "datas",
+                        "offset",
+                        "over",
+                        "pageCount",
+                        "size",
+                        "total"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "curPage": 1,
+                    "datas": [
+                      {
+                        "coinCount": 124605,
+                        "level": 1247,
+                        "nickname": "",
+                        "rank": "1",
+                        "userId": 20382,
+                        "username": "g**eii"
+                      },
+                      {
+                        "coinCount": 78033,
+                        "level": 781,
+                        "nickname": "",
+                        "rank": "2",
+                        "userId": 29303,
+                        "username": "深**士"
+                      },
+                      {
+                        "coinCount": 69804,
+                        "level": 699,
+                        "nickname": "",
+                        "rank": "3",
+                        "userId": 7809,
+                        "username": "1**23822235"
+                      },
+                      {
+                        "coinCount": 69233,
+                        "level": 693,
+                        "nickname": "",
+                        "rank": "4",
+                        "userId": 29390,
+                        "username": "L**ing"
+                      },
+                      {
+                        "coinCount": 65421,
+                        "level": 655,
+                        "nickname": "",
+                        "rank": "5",
+                        "userId": 28457,
+                        "username": "w**dla"
+                      },
+                      {
+                        "coinCount": 62370,
+                        "level": 624,
+                        "nickname": "",
+                        "rank": "6",
+                        "userId": 3825,
+                        "username": "请**娃哈哈"
+                      },
+                      {
+                        "coinCount": 61642,
+                        "level": 617,
+                        "nickname": "",
+                        "rank": "7",
+                        "userId": 7710,
+                        "username": "i**Cola7"
+                      },
+                      {
+                        "coinCount": 61635,
+                        "level": 617,
+                        "nickname": "",
+                        "rank": "8",
+                        "userId": 25128,
+                        "username": "f**wandroid"
+                      },
+                      {
+                        "coinCount": 61289,
+                        "level": 613,
+                        "nickname": "鸿洋",
+                        "rank": "9",
+                        "userId": 2,
+                        "username": "x**oyang"
+                      },
+                      {
+                        "coinCount": 60996,
+                        "level": 610,
+                        "nickname": "",
+                        "rank": "10",
+                        "userId": 13273,
+                        "username": "1**17315362"
+                      },
+                      {
+                        "coinCount": 60832,
+                        "level": 609,
+                        "nickname": "",
+                        "rank": "11",
+                        "userId": 25419,
+                        "username": "蔡**打篮球"
+                      },
+                      {
+                        "coinCount": 60101,
+                        "level": 602,
+                        "nickname": "",
+                        "rank": "12",
+                        "userId": 833,
+                        "username": "w**lwaywang6"
+                      },
+                      {
+                        "coinCount": 60092,
+                        "level": 601,
+                        "nickname": "",
+                        "rank": "13",
+                        "userId": 42260,
+                        "username": "C**nY"
+                      },
+                      {
+                        "coinCount": 59508,
+                        "level": 596,
+                        "nickname": "",
+                        "rank": "14",
+                        "userId": 2068,
+                        "username": "i**Cola"
+                      },
+                      {
+                        "coinCount": 59407,
+                        "level": 595,
+                        "nickname": "",
+                        "rank": "15",
+                        "userId": 26707,
+                        "username": "p**xc.com"
+                      },
+                      {
+                        "coinCount": 59120,
+                        "level": 592,
+                        "nickname": "",
+                        "rank": "16",
+                        "userId": 12351,
+                        "username": "w**igeny"
+                      },
+                      {
+                        "coinCount": 57720,
+                        "level": 578,
+                        "nickname": "",
+                        "rank": "17",
+                        "userId": 14839,
+                        "username": "x**y_sjc"
+                      },
+                      {
+                        "coinCount": 54514,
+                        "level": 546,
+                        "nickname": "",
+                        "rank": "18",
+                        "userId": 2657,
+                        "username": "a**111993@163.com"
+                      },
+                      {
+                        "coinCount": 53874,
+                        "level": 539,
+                        "nickname": "",
+                        "rank": "19",
+                        "userId": 7891,
+                        "username": "h**zkp"
+                      },
+                      {
+                        "coinCount": 52628,
+                        "level": 527,
+                        "nickname": "",
+                        "rank": "20",
+                        "userId": 14829,
+                        "username": "l**changwen"
+                      },
+                      {
+                        "coinCount": 52065,
+                        "level": 521,
+                        "nickname": "",
+                        "rank": "21",
+                        "userId": 2160,
+                        "username": "R**iner"
+                      },
+                      {
+                        "coinCount": 51934,
+                        "level": 520,
+                        "nickname": "",
+                        "rank": "22",
+                        "userId": 671,
+                        "username": "L**Chich"
+                      },
+                      {
+                        "coinCount": 51045,
+                        "level": 511,
+                        "nickname": "",
+                        "rank": "23",
+                        "userId": 25793,
+                        "username": "F**_2014"
+                      },
+                      {
+                        "coinCount": 50357,
+                        "level": 504,
+                        "nickname": "",
+                        "rank": "24",
+                        "userId": 16289,
+                        "username": "Ａ**ｒｏｉｄ"
+                      },
+                      {
+                        "coinCount": 49432,
+                        "level": 495,
+                        "nickname": "",
+                        "rank": "25",
+                        "userId": 2786,
+                        "username": "8**408834@qq.com"
+                      },
+                      {
+                        "coinCount": 49316,
+                        "level": 494,
+                        "nickname": "",
+                        "rank": "26",
+                        "userId": 17180,
+                        "username": "l**ngchao"
+                      },
+                      {
+                        "coinCount": 49117,
+                        "level": 492,
+                        "nickname": "",
+                        "rank": "27",
+                        "userId": 1580,
+                        "username": "k**od21"
+                      },
+                      {
+                        "coinCount": 48110,
+                        "level": 482,
+                        "nickname": "",
+                        "rank": "28",
+                        "userId": 13143,
+                        "username": "P**ceHolder"
+                      },
+                      {
+                        "coinCount": 47426,
+                        "level": 475,
+                        "nickname": "",
+                        "rank": "29",
+                        "userId": 1534,
+                        "username": "j**gbin"
+                      },
+                      {
+                        "coinCount": 46536,
+                        "level": 466,
+                        "nickname": "",
+                        "rank": "30",
+                        "userId": 29811,
+                        "username": "虚**菜鸡"
+                      }
+                    ],
+                    "offset": 0,
+                    "over": false,
+                    "pageCount": 4264,
+                    "size": 30,
+                    "total": 127914
+                  },
+                  "errorCode": 0,
+                  "errorMsg": ""
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/coin/userinfo/json": {
+      "get": {
+        "summary": "获取个人积分",
+        "deprecated": false,
+        "description": "获取个人积分，需要登录后访问",
+        "tags": [
+          "需登录"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/coin/list/{page}/json": {
+      "get": {
+        "summary": "获取个人积分获取列表",
+        "deprecated": false,
+        "description": "获取个人积分，需要登录后访问",
+        "tags": [
+          "分页",
+          "需登录"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/user_article/list/{page}/json": {
+      "get": {
+        "summary": "广场列表数据",
+        "deprecated": false,
+        "description": "该接口支持传入 `page_size` 控制分页数量，取值为`[1-40]`，不传则使用默认值，一旦传入了 `page_size`，后续该接口分页都需要带上，否则会造成分页读取错误。",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小1-40",
+            "required": false,
+            "example": 20,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "type": "object",
+                      "properties": {
+                        "curPage": {
+                          "type": "integer",
+                          "title": "当前页"
+                        },
+                        "datas": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Article"
+                          },
+                          "title": "数据列表"
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "title": "数据偏移量"
+                        },
+                        "over": {
+                          "type": "boolean",
+                          "title": "是否已越界"
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "title": "分页总数"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "title": "分页大小"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": "数据总数"
+                        }
+                      },
+                      "required": [
+                        "curPage",
+                        "datas",
+                        "offset",
+                        "over",
+                        "pageCount",
+                        "size",
+                        "total"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "curPage": 1,
+                    "datas": [
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27432,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7294150742112878618",
+                        "niceDate": "1天前",
+                        "niceShareDate": "1天前",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1698370661000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1698370661000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "鸿蒙开发之常用组件(二)",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27425,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7293786573677625371",
+                        "niceDate": "2天前",
+                        "niceShareDate": "2天前",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1698280082000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1698280082000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "鸿蒙开发之常用组件(一)",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27424,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7293175592162836514",
+                        "niceDate": "2023-10-25 08:34",
+                        "niceShareDate": "2023-10-25 08:34",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1698194073000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1698194073000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "面试 | 再也不怕被问 Binder 机制了",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27414,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7293122002724945955",
+                        "niceDate": "2023-10-24 08:51",
+                        "niceShareDate": "2023-10-24 08:51",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1698108696000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1698108696000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "利用ASM完成第三方SDK安全整改",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27412,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7292428123849343039",
+                        "niceDate": "2023-10-23 08:51",
+                        "niceShareDate": "2023-10-23 08:51",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1698022296000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1698022296000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "Android渲染系列(4)之Surface与SurfaceFlinger",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27411,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7249605942576578618",
+                        "niceDate": "2023-10-22 22:36",
+                        "niceShareDate": "2023-10-22 22:36",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697985414000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697985414000,
+                        "shareUser": "鸿洋",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "优化 Android Handler提升性能与稳定性",
+                        "type": 0,
+                        "userId": 2,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27402,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7291479799519526967",
+                        "niceDate": "2023-10-20 08:31",
+                        "niceShareDate": "2023-10-20 08:31",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697761898000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697761898000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "鸿蒙开发之页面路由(router)",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27400,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7291244228126294071",
+                        "niceDate": "2023-10-19 15:33",
+                        "niceShareDate": "2023-10-19 15:33",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697700787000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697700787000,
+                        "shareUser": "趣阅编程",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "FlutterBoost 路由实现原理分析",
+                        "type": 0,
+                        "userId": 13273,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27398,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7291186128363159608",
+                        "niceDate": "2023-10-19 08:51",
+                        "niceShareDate": "2023-10-19 08:51",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697676674000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697676674000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "体验一下使用 ArkUI 进行 HarmonyOS 开发并与 Compose 简单对比",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27391,
+                        "isAdminAdd": false,
+                        "link": "https://mp.weixin.qq.com/s/4_Zan9NqdAFYTtdKmRTN0Q",
+                        "niceDate": "2023-10-18 17:39",
+                        "niceShareDate": "2023-10-18 17:39",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697621969000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697621969000,
+                        "shareUser": "趣阅编程",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "Jetpack WindowManager 1.1 稳定版",
+                        "type": 0,
+                        "userId": 13273,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27390,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7290801256490844217",
+                        "niceDate": "2023-10-18 08:32",
+                        "niceShareDate": "2023-10-18 08:32",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697589164000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697589164000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "【JNI】C，CPP概念及使用方法",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27375,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7289952867052978235",
+                        "niceDate": "2023-10-17 08:46",
+                        "niceShareDate": "2023-10-17 08:46",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697503598000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697503598000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "自定义动画效果的Drawable",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27372,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7289360317352329276",
+                        "niceDate": "2023-10-16 08:35",
+                        "niceShareDate": "2023-10-16 08:35",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697416556000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697416556000,
+                        "shareUser": "goweii",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "插件式换肤框架原理解析",
+                        "type": 0,
+                        "userId": 20382,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27204,
+                        "isAdminAdd": false,
+                        "link": "https://github.com/qianyue0317/MindMapView",
+                        "niceDate": "2023-10-15 22:33",
+                        "niceShareDate": "2023-09-14 18:01",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697380433000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1694685668000,
+                        "shareUser": "qianyue0317",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "Android自定义view&mdash;&mdash;思维导图控件",
+                        "type": 0,
+                        "userId": 151898,
+                        "visible": 0,
+                        "zan": 0
+                      },
+                      {
+                        "adminAdd": false,
+                        "apkLink": "",
+                        "audit": 1,
+                        "author": "",
+                        "canEdit": false,
+                        "chapterId": 494,
+                        "chapterName": "广场",
+                        "collect": false,
+                        "courseId": 13,
+                        "desc": "",
+                        "descMd": "",
+                        "envelopePic": "",
+                        "fresh": false,
+                        "host": "",
+                        "id": 27358,
+                        "isAdminAdd": false,
+                        "link": "https://juejin.cn/post/7289330618977599544",
+                        "niceDate": "2023-10-15 21:02",
+                        "niceShareDate": "2023-10-15 21:02",
+                        "origin": "",
+                        "prefix": "",
+                        "projectLink": "",
+                        "publishTime": 1697374926000,
+                        "realSuperChapterId": 493,
+                        "selfVisible": 0,
+                        "shareDate": 1697374926000,
+                        "shareUser": "鸿洋",
+                        "superChapterId": 494,
+                        "superChapterName": "广场Tab",
+                        "tags": [],
+                        "title": "Android 音频可视化",
+                        "type": 0,
+                        "userId": 2,
+                        "visible": 0,
+                        "zan": 0
+                      }
+                    ],
+                    "offset": 0,
+                    "over": false,
+                    "pageCount": 243,
+                    "size": 20,
+                    "total": 4856
+                  },
+                  "errorCode": 0,
+                  "errorMsg": ""
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/user/{user_id}/share_articles/{page}/json": {
+      "get": {
+        "summary": "分享人对应列表数据",
+        "deprecated": false,
+        "description": "这个展示的文章数据都是审核通过的，一般是点击分享人然后展示的列表。",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "用户id",
+            "required": true,
+            "example": 2,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "$ref": "#/components/schemas/ShareArticles"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/user/lg/private_articles/{page}/json": {
+      "get": {
+        "summary": "自己的分享的文章列表",
+        "deprecated": false,
+        "description": "该接口支持传入 `page_size` 控制分页数量，取值为 `[1-40]`，不传则使用默认值，一旦传入了 `page_size`，后续该接口分页都需要带上，否则会造成分页读取错误。",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 20,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "type": "object",
+                      "properties": {
+                        "curPage": {
+                          "type": "integer",
+                          "title": "当前页"
+                        },
+                        "datas": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Article"
+                          },
+                          "title": "数据列表"
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "title": "数据偏移量"
+                        },
+                        "over": {
+                          "type": "boolean",
+                          "title": "是否已越界"
+                        },
+                        "pageCount": {
+                          "type": "integer",
+                          "title": "分页总数"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "title": "分页大小"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "title": "数据总数"
+                        }
+                      },
+                      "required": [
+                        "curPage",
+                        "datas",
+                        "offset",
+                        "over",
+                        "pageCount",
+                        "size",
+                        "total"
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/user_article/delete/{article_id}/json": {
+      "post": {
+        "summary": "删除自己分享的文章",
+        "deprecated": false,
+        "description": "建议测试方式：登陆网站后，自己分享一篇文章在广场，然后与删除按钮，打开chrome调试模式，查看Network里面有请求。",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "article_id",
+            "in": "path",
+            "description": "文章id",
+            "required": true,
+            "example": 9475,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/user_article/add/json": {
+      "post": {
+        "summary": "分享文章",
+        "deprecated": false,
+        "description": "注意需要登录后查看，如果为CSDN，简书等链接会直接通过审核，在对外的分享文章列表中展示。",
+        "tags": [
+          "需登录"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "标题",
+                    "example": "Android基础开发指南",
+                    "type": "string"
+                  },
+                  "link": {
+                    "description": "链接地址",
+                    "example": "https://github.com/Jacknic",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "link"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/wenda/list/{page}/json": {
+      "get": {
+        "summary": "问答列表",
+        "deprecated": false,
+        "description": "问答列表",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小",
+            "required": false,
+            "example": 30,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/wenda/comments/{wenda_id}/json": {
+      "get": {
+        "summary": "问答评论列表",
+        "deprecated": false,
+        "description": "问答评论列表",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "wenda_id",
+            "in": "path",
+            "description": "问答ID",
+            "required": true,
+            "example": 25098,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "example": 0,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-200",
+            "required": false,
+            "example": 50,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "nullable": true,
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/user/lg/userinfo/json": {
+      "get": {
+        "summary": "个人信息接口",
+        "deprecated": false,
+        "description": "个人信息接口",
+        "tags": [
+          "需登录"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "$ref": "#/components/schemas/PersonalInfo"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/message/lg/count_unread/json": {
+      "get": {
+        "summary": "未读消息数量",
+        "deprecated": false,
+        "description": "返回当前登录用户未读消息数量。",
+        "tags": [
+          "需登录"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "integer",
+                      "title": "数据"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/message/lg/readed_list/{page}/json": {
+      "get": {
+        "summary": "已读消息列表",
+        "deprecated": false,
+        "description": "返回当前已经登录用户已读消息列表，分页展示。",
+        "tags": [
+          "需登录",
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 30,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "nullable": true,
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/message/lg/unreaded_list/{page}/json": {
+      "get": {
+        "summary": "未读消息列表",
+        "deprecated": false,
+        "description": "返回当前登录用户未读消息列表，分页展示。\n\n注意1：此接口需要登录。\n注意 2：此接口一旦访问，则所有该用户的消息都会被认为已读，即第二次只能从已读消息列表获取，想获取未读数量不要访问此接口。\n注：该接口支持传入 page_size 控制分页数量，取值为[1-40]，不传则使用默认值，一旦传入了 page_size，后续该接口分页都需要带上，否则会造成分页读取错误。",
+        "tags": [
+          "需登录",
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "title": "数据",
+                      "nullable": true,
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/wxarticle/chapters/json": {
+      "get": {
+        "summary": "获取公众号列表",
+        "deprecated": false,
+        "description": "获取公众号列表",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/wxarticle/list/{wx_id}/{page}/json": {
+      "get": {
+        "summary": "在某个公众号中搜索历史文章",
+        "deprecated": false,
+        "description": "在某个公众号中搜索历史文章",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "wx_id",
+            "in": "path",
+            "description": "公众号 ID",
+            "required": true,
+            "example": 405,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 20,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "description": "搜索关键词",
+            "required": false,
+            "example": "kotlin",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/article/listproject/{page}/json": {
+      "get": {
+        "summary": "最新项目列表",
+        "deprecated": false,
+        "description": "最新项目列表",
+        "tags": [
+          "分页"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 20,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WanResult"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/chapter/547/sublist/json": {
+      "get": {
+        "summary": " 教程列表",
+        "deprecated": false,
+        "description": "教程列表，GET请求，直接访问即可；547是固定值不会变化。",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CourseInfo"
+                      },
+                      "title": "数据"
+                    },
+                    "errorCode": {
+                      "type": "integer",
+                      "title": "响应码",
+                      "description": "0 为正常返回，其他异常"
+                    },
+                    "errorMsg": {
+                      "type": "string",
+                      "title": "响应信息",
+                      "description": "错误码响应信息描述"
+                    }
+                  },
+                  "required": [
+                    "errorCode",
+                    "errorMsg"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "type": "object",
+        "properties": {
+          "adminAdd": {
+            "type": "boolean",
+            "title": "管理员添加标志"
+          },
+          "apkLink": {
+            "type": "string"
+          },
+          "audit": {
+            "type": "integer"
+          },
+          "author": {
+            "type": "string",
+            "title": "作者"
+          },
+          "canEdit": {
+            "type": "boolean",
+            "title": "是否可编辑"
+          },
+          "chapterId": {
+            "type": "integer"
+          },
+          "chapterName": {
+            "type": "string"
+          },
+          "collect": {
+            "type": "boolean",
+            "title": "是否已收藏"
+          },
+          "courseId": {
+            "type": "integer",
+            "title": "教程ID"
+          },
+          "desc": {
+            "type": "string",
+            "title": "描述"
+          },
+          "descMd": {
+            "type": "string"
+          },
+          "envelopePic": {
+            "type": "string",
+            "title": "封面图"
+          },
+          "fresh": {
+            "type": "boolean"
+          },
+          "host": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "isAdminAdd": {
+            "type": "boolean"
+          },
+          "link": {
+            "type": "string"
+          },
+          "niceDate": {
+            "type": "string"
+          },
+          "niceShareDate": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "projectLink": {
+            "type": "string"
+          },
+          "publishTime": {
+            "type": "integer"
+          },
+          "realSuperChapterId": {
+            "type": "integer"
+          },
+          "selfVisible": {
+            "type": "integer"
+          },
+          "shareDate": {
+            "type": "integer",
+            "nullable": true
+          },
+          "shareUser": {
+            "type": "string"
+          },
+          "superChapterId": {
+            "type": "integer"
+          },
+          "superChapterName": {
+            "type": "string",
+            "title": "父级分类ID"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {}
+            },
+            "title": "附加标签信息"
+          },
+          "title": {
+            "type": "string",
+            "title": "标题"
+          },
+          "type": {
+            "type": "integer",
+            "title": "类型"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "visible": {
+            "type": "integer"
+          },
+          "zan": {
+            "type": "integer",
+            "title": "点赞数"
+          }
+        },
+        "required": [
+          "adminAdd",
+          "audit",
+          "author",
+          "canEdit",
+          "chapterId",
+          "chapterName",
+          "collect",
+          "courseId",
+          "desc",
+          "descMd",
+          "envelopePic",
+          "fresh",
+          "host",
+          "id",
+          "isAdminAdd",
+          "link",
+          "niceDate",
+          "niceShareDate",
+          "origin",
+          "prefix",
+          "projectLink",
+          "publishTime",
+          "realSuperChapterId",
+          "selfVisible",
+          "shareDate",
+          "shareUser",
+          "superChapterId",
+          "superChapterName",
+          "tags",
+          "title",
+          "type",
+          "userId",
+          "visible",
+          "zan",
+          "apkLink"
+        ],
+        "title": "文章信息"
+      },
+      "Banner": {
+        "type": "object",
+        "properties": {
+          "desc": {
+            "type": "string",
+            "title": "描述信息"
+          },
+          "id": {
+            "type": "integer",
+            "title": "ID"
+          },
+          "imagePath": {
+            "type": "string",
+            "title": "图片路径"
+          },
+          "isVisible": {
+            "type": "integer",
+            "title": "是否可见"
+          },
+          "order": {
+            "type": "integer",
+            "title": "排序"
+          },
+          "title": {
+            "type": "string",
+            "title": "标题"
+          },
+          "type": {
+            "type": "integer",
+            "title": "类型"
+          },
+          "url": {
+            "type": "string",
+            "title": "链接URL"
+          }
+        },
+        "required": [
+          "desc",
+          "id",
+          "imagePath",
+          "isVisible",
+          "order",
+          "title",
+          "type",
+          "url"
+        ],
+        "title": "首页banner"
+      },
+      "Rank": {
+        "type": "object",
+        "properties": {
+          "coinCount": {
+            "type": "integer",
+            "title": "总分"
+          },
+          "level": {
+            "type": "integer",
+            "title": "用户等级"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "昵称"
+          },
+          "rank": {
+            "type": "string",
+            "title": "排名"
+          },
+          "userId": {
+            "type": "integer",
+            "title": "用户ID"
+          },
+          "username": {
+            "type": "string",
+            "title": "用户名"
+          }
+        },
+        "required": [
+          "coinCount",
+          "level",
+          "nickname",
+          "rank",
+          "userId",
+          "username"
+        ],
+        "title": "积分排行"
+      },
+      "FriendLink": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "title": "分类"
+          },
+          "icon": {
+            "type": "string",
+            "title": "图标"
+          },
+          "id": {
+            "type": "integer",
+            "title": "友链ID"
+          },
+          "link": {
+            "type": "string",
+            "title": "链接"
+          },
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "order": {
+            "type": "integer",
+            "title": "排序"
+          },
+          "visible": {
+            "type": "integer",
+            "title": "可见性"
+          }
+        },
+        "required": [
+          "category",
+          "icon",
+          "id",
+          "link",
+          "name",
+          "order",
+          "visible"
+        ],
+        "title": "常用网站"
+      },
+      "HotKeyword": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "热词ID"
+          },
+          "link": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "title": "热词值"
+          },
+          "order": {
+            "type": "integer",
+            "title": "排序"
+          },
+          "visible": {
+            "type": "integer",
+            "title": "可见标志"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "order",
+          "visible"
+        ],
+        "title": "搜索热词"
+      },
+      "Tree": {
+        "type": "object",
+        "properties": {
+          "articleList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            }
+          },
+          "author": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "articleList": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                },
+                "author": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "courseId": {
+                  "type": "integer"
+                },
+                "cover": {
+                  "type": "string"
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "lisense": {
+                  "type": "string"
+                },
+                "lisenseLink": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "order": {
+                  "type": "integer"
+                },
+                "parentChapterId": {
+                  "type": "integer"
+                },
+                "type": {
+                  "type": "integer"
+                },
+                "userControlSetTop": {
+                  "type": "boolean"
+                },
+                "visible": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "articleList",
+                "author",
+                "children",
+                "courseId",
+                "cover",
+                "desc",
+                "id",
+                "lisense",
+                "lisenseLink",
+                "name",
+                "order",
+                "parentChapterId",
+                "type",
+                "userControlSetTop",
+                "visible"
+              ]
+            }
+          },
+          "courseId": {
+            "type": "integer"
+          },
+          "cover": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "lisense": {
+            "type": "string"
+          },
+          "lisenseLink": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "parentChapterId": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "userControlSetTop": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "articleList",
+          "author",
+          "children",
+          "courseId",
+          "cover",
+          "desc",
+          "id",
+          "lisense",
+          "lisenseLink",
+          "name",
+          "order",
+          "parentChapterId",
+          "type",
+          "userControlSetTop",
+          "visible"
+        ],
+        "title": "体系"
+      },
+      "NavInfo": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            },
+            "title": "文章列表"
+          },
+          "cid": {
+            "type": "integer",
+            "title": "分类ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "分类名称"
+          }
+        },
+        "required": [
+          "articles",
+          "cid",
+          "name"
+        ],
+        "title": "导航信息"
+      },
+      "ProjectTree": {
+        "type": "object",
+        "properties": {
+          "articleList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            }
+          },
+          "author": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "courseId": {
+            "type": "integer"
+          },
+          "cover": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "lisense": {
+            "type": "string"
+          },
+          "lisenseLink": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "parentChapterId": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "userControlSetTop": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "articleList",
+          "author",
+          "children",
+          "courseId",
+          "cover",
+          "desc",
+          "id",
+          "lisense",
+          "lisenseLink",
+          "name",
+          "order",
+          "parentChapterId",
+          "type",
+          "userControlSetTop",
+          "visible"
+        ],
+        "title": "项目分类"
+      },
+      "CoinInfo": {
+        "type": "object",
+        "properties": {
+          "coinCount": {
+            "description": "总积分",
+            "type": "integer",
+            "title": "总积分"
+          },
+          "level": {
+            "type": "integer",
+            "title": "等级"
+          },
+          "rank": {
+            "type": "string",
+            "title": "当前排名",
+            "description": "当前排名"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "title": "用户ID"
+          },
+          "username": {
+            "type": "string",
+            "description": "用户名",
+            "title": "用户名"
+          }
+        },
+        "required": [
+          "coinCount",
+          "rank",
+          "userId",
+          "username",
+          "level"
+        ],
+        "title": "个人积分信息"
+      },
+      "CoinDetails": {
+        "type": "object",
+        "properties": {},
+        "title": "个人积分获取列表信息"
+      },
+      "ShareArticles": {
+        "type": "object",
+        "properties": {
+          "coinInfo": {
+            "$ref": "#/components/schemas/CoinInfo"
+          },
+          "shareArticles": {
+            "type": "object",
+            "properties": {
+              "curPage": {
+                "type": "integer",
+                "title": "当前页"
+              },
+              "datas": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Article"
+                },
+                "title": "数据列表"
+              },
+              "offset": {
+                "type": "integer",
+                "title": "数据偏移量"
+              },
+              "over": {
+                "type": "boolean",
+                "title": "是否已越界"
+              },
+              "pageCount": {
+                "type": "integer",
+                "title": "分页总数"
+              },
+              "size": {
+                "type": "integer",
+                "title": "分页大小"
+              },
+              "total": {
+                "type": "integer",
+                "title": "数据总数"
+              }
+            },
+            "required": [
+              "curPage",
+              "datas",
+              "offset",
+              "over",
+              "pageCount",
+              "size",
+              "total"
+            ]
+          }
+        },
+        "required": [
+          "coinInfo",
+          "shareArticles"
+        ],
+        "title": "分享文章信息"
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "admin": {
+            "type": "boolean"
+          },
+          "chapterTops": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "coinCount": {
+            "description": "可用",
+            "type": "integer"
+          },
+          "collectIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "可用"
+          },
+          "email": {
+            "description": "可用",
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "id": {
+            "description": "可用",
+            "type": "integer"
+          },
+          "nickname": {
+            "description": "可用",
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "publicName": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer"
+          },
+          "username": {
+            "description": "可用",
+            "type": "string"
+          }
+        },
+        "required": [
+          "admin",
+          "chapterTops",
+          "coinCount",
+          "collectIds",
+          "email",
+          "icon",
+          "id",
+          "nickname",
+          "password",
+          "publicName",
+          "token",
+          "type",
+          "username"
+        ],
+        "title": "用户信息"
+      },
+      "PersonalInfo": {
+        "type": "object",
+        "properties": {
+          "coinInfo": {
+            "$ref": "#/components/schemas/CoinInfo",
+            "title": "积分信息"
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo",
+            "title": "用户信息"
+          }
+        },
+        "required": [
+          "coinInfo",
+          "userInfo"
+        ],
+        "title": "用户个人信息"
+      },
+      "WendaComment": {
+        "type": "object",
+        "properties": {
+          "anonymous": {
+            "type": "integer"
+          },
+          "appendForContent": {
+            "type": "integer"
+          },
+          "articleId": {
+            "type": "integer"
+          },
+          "canEdit": {
+            "type": "boolean"
+          },
+          "content": {
+            "type": "string"
+          },
+          "contentMd": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "niceDate": {
+            "type": "string"
+          },
+          "publishDate": {
+            "type": "integer"
+          },
+          "replyCommentId": {
+            "type": "integer"
+          },
+          "replyComments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WendaComment"
+            }
+          },
+          "rootCommentId": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "toUserId": {
+            "type": "integer"
+          },
+          "toUserName": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "zan": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "anonymous",
+          "appendForContent",
+          "articleId",
+          "canEdit",
+          "content",
+          "contentMd",
+          "id",
+          "niceDate",
+          "publishDate",
+          "replyCommentId",
+          "replyComments",
+          "rootCommentId",
+          "status",
+          "toUserId",
+          "toUserName",
+          "userId",
+          "userName",
+          "zan"
+        ],
+        "title": "问答评论"
+      },
+      "CourseInfo": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "string",
+            "title": "作者"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "下属文章"
+          },
+          "courseId": {
+            "type": "integer",
+            "title": "教程ID"
+          },
+          "cover": {
+            "type": "string",
+            "title": "封面图"
+          },
+          "desc": {
+            "type": "string",
+            "title": "描述"
+          },
+          "id": {
+            "description": "单个教程下所有文章列表会使用到",
+            "type": "integer",
+            "title": "教程ID"
+          },
+          "lisense": {
+            "type": "string"
+          },
+          "lisenseLink": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "title": "教程名称"
+          },
+          "order": {
+            "type": "integer",
+            "title": "排序"
+          },
+          "parentChapterId": {
+            "type": "integer"
+          },
+          "userControlSetTop": {
+            "type": "boolean"
+          },
+          "visible": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "author",
+          "children",
+          "courseId",
+          "cover",
+          "desc",
+          "id",
+          "lisense",
+          "lisenseLink",
+          "name",
+          "order",
+          "parentChapterId",
+          "userControlSetTop",
+          "visible"
+        ],
+        "title": "教程信息"
+      },
+      "Paging": {
+        "type": "object",
+        "properties": {
+          "curPage": {
+            "type": "integer",
+            "title": "当前页"
+          },
+          "datas": {
+            "type": "array",
+            "items": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "array"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "title": "数据列表"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "数据偏移量"
+          },
+          "over": {
+            "type": "boolean",
+            "title": "是否已越界"
+          },
+          "pageCount": {
+            "type": "integer",
+            "title": "分页总数"
+          },
+          "size": {
+            "type": "integer",
+            "title": "分页大小"
+          },
+          "total": {
+            "type": "integer",
+            "title": "数据总数"
+          }
+        },
+        "required": [
+          "curPage",
+          "datas",
+          "offset",
+          "over",
+          "pageCount",
+          "size",
+          "total"
+        ],
+        "title": "统一分页结构"
+      },
+      "WanResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "数据",
+            "nullable": true,
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "errorCode": {
+            "type": "integer",
+            "title": "响应码",
+            "description": "0 为正常返回，其他异常"
+          },
+          "errorMsg": {
+            "type": "string",
+            "title": "响应信息",
+            "description": "错误码响应信息描述"
+          }
+        },
+        "required": [
+          "errorCode",
+          "errorMsg"
+        ],
+        "title": "统一响应结构"
+      }
+    },
+    "responses": {
+      "未登录状态": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "examples": {
+              "成功示例": {
+                "summary": "成功示例",
+                "value": {
+                  "errorCode": -1001,
+                  "errorMsg": "请先登录！"
+                }
+              }
+            }
+          }
+        }
+      },
+      "响应结果": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/WanResult"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
