@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "玩Android开放API",
-    "description": "基于 https://wanandroid.com/blog/show/2 的开放API文档。所有接口基础路径为 https://wanandroid.com ，请使用HTTPS协议。\n\n## 通用说明\n\n### 返回数据结构\n所有接口返回结构均为：\n```json\n{\n  \"data\": ...,\n  \"errorCode\": 0,\n  \"errorMsg\": \"\"\n}\n```\n\n### 错误码说明\n| errorCode | 含义 |\n|-----------|------|\n| 0 | 请求成功 |\n| -1 | 通用错误（参数错误、操作失败等） |\n| -1001 | 未登录或登录已失效，需重新登录 |\n\n> 建议对 errorCode 判断：当不为0时均视为错误。不建议依赖任何非0的 errorCode。\n\n### 分页说明\n- 部分接口页码从 **0** 开始（首页文章列表、收藏列表、广场列表、搜索等）\n- 部分接口页码从 **1** 开始（项目列表、公众号文章、积分排行、问答等）\n- 支持 `page_size` 参数的接口：取值范围 [1-40]，不传使用默认值；一旦传入，后续分页都需带上，否则会读取错误\n\n### 登录认证\n- 需登录的接口通过 Cookie 认证，登录后 Cookie 中包含账号密码\n- 客户端需做 Cookie 持久化存储即可实现自动登录\n- 未登录访问需认证接口返回 `errorCode: -1001`\n\n### author 与 shareUser\n- 网站上的文章可能由作者 author 撰写，也可能由分享人 shareUser 分享\n- 如果是分享人分享的，author 为空字符串\n- 除标题、链接外，其他字段都可能为空，需注意布局处理",
+    "description": "基于 https://wanandroid.com/blog/show/2 的开放API文档。所有接口基础路径为 https://wanandroid.com ，请使用HTTPS协议。\n\n## 通用说明\n\n### 返回数据结构\n所有接口返回结构均遵循 WanResult 通用响应格式：\n```json\n{\n  \"data\": ...,\n  \"errorCode\": 0,\n  \"errorMsg\": \"\"\n}\n```\n- `errorCode` 为 0 表示请求成功，非0均为失败\n- `errorMsg` 成功时为空字符串，失败时为错误描述\n- `data` 为实际业务数据，类型因接口而异（对象、数组、分页对象、基本类型等）\n- 所有接口响应均可用统一的 WanResult<T> 泛型结构解析，前端只需判断 errorCode 即可分流处理\n\n### 错误码说明\n| errorCode | 含义 |\n|-----------|------|\n| 0 | 请求成功 |\n| -1 | 通用错误（参数错误、操作失败等） |\n| -1001 | 未登录或登录已失效，需重新登录 |\n\n> 建议对 errorCode 判断：当不为0时均视为错误。不建议依赖任何非0的 errorCode。\n\n### 分页说明\n- 部分接口页码从 **0** 开始（首页文章列表、收藏列表、广场列表、搜索等）\n- 部分接口页码从 **1** 开始（项目列表、公众号文章、积分排行、问答等）\n- 支持 `page_size` 参数的接口：取值范围 [1-40]，不传使用默认值；一旦传入，后续分页都需带上，否则会读取错误\n\n### 登录认证\n- 需登录的接口通过 Cookie 认证，登录后 Cookie 中包含账号密码\n- 客户端需做 Cookie 持久化存储即可实现自动登录\n- 未登录访问需认证接口返回 `errorCode: -1001`\n\n### author 与 shareUser\n- 网站上的文章可能由作者 author 撰写，也可能由分享人 shareUser 分享\n- 如果是分享人分享的，author 为空字符串\n- 除标题、链接外，其他字段都可能为空，需注意布局处理",
     "version": "2.0.0"
   },
   "tags": [
@@ -81,9 +81,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArticlePageResult"
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -102,18 +100,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Banner" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultBannerList" }
               }
             }
           }
@@ -132,18 +119,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/FriendLink" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultFriendLinkList" }
               }
             }
           }
@@ -162,18 +138,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/HotKeyword" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultHotKeywordList" }
               }
             }
           }
@@ -192,18 +157,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Article" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultArticleList" }
               }
             }
           }
@@ -222,19 +176,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Tree" },
-                      "title": "数据"
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultTreeList" }
               }
             }
           }
@@ -253,19 +195,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/NavInfo" },
-                      "title": "数据"
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultNavInfoList" }
               }
             }
           }
@@ -284,19 +214,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Chapter" },
-                      "title": "数据"
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultChapterList" }
               }
             }
           }
@@ -340,7 +258,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -381,15 +299,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/UserInfo" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultUserInfo" }
               }
             }
           }
@@ -435,22 +345,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "title": "数据",
-                      "nullable": true,
-                      "oneOf": [
-                        { "$ref": "#/components/schemas/UserInfo" },
-                        { "type": "string" }
-                      ]
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultRegister" }
               }
             }
           }
@@ -505,7 +400,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -725,18 +620,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/CollectTool" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultCollectToolList" }
               }
             }
           }
@@ -903,7 +787,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -931,17 +815,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/RankPageData"
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultRankPage" }
               }
             }
           }
@@ -960,15 +834,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/CoinInfo" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultCoinInfo" }
               }
             }
           }
@@ -996,15 +862,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/CoinDetailPageData" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultCoinDetailPage" }
               }
             }
           }
@@ -1040,7 +898,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -1076,15 +934,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/ShareArticles" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultShareArticles" }
               }
             }
           }
@@ -1120,7 +970,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -1225,7 +1075,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -1261,31 +1111,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "curPage": { "type": "integer", "title": "当前页" },
-                        "datas": {
-                          "type": "array",
-                          "items": { "$ref": "#/components/schemas/WendaComment" },
-                          "title": "评论列表"
-                        },
-                        "offset": { "type": "integer", "title": "数据偏移量" },
-                        "over": { "type": "boolean", "title": "是否已越界" },
-                        "pageCount": { "type": "integer", "title": "分页总数" },
-                        "size": { "type": "integer", "title": "分页大小" },
-                        "total": { "type": "integer", "title": "数据总数" }
-                      },
-                      "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"]
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultWendaCommentPage" }
               }
             }
           }
@@ -1304,15 +1130,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/PersonalInfo" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultPersonalInfo" }
               }
             }
           }
@@ -1331,18 +1149,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "integer",
-                      "title": "未读消息数量"
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultUnreadCount" }
               }
             }
           }
@@ -1378,15 +1185,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/MessagePageData" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultMessagePage" }
               }
             }
           }
@@ -1422,15 +1221,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": { "$ref": "#/components/schemas/MessagePageData" },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultMessagePage" }
               }
             }
           }
@@ -1449,18 +1240,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/WxArticleChapter" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultWxArticleChapterList" }
               }
             }
           }
@@ -1512,7 +1292,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -1548,7 +1328,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ArticlePageResult" }
+                "schema": { "$ref": "#/components/schemas/WanResultArticlePage" }
               }
             }
           }
@@ -1567,19 +1347,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/CourseInfo" },
-                      "title": "数据"
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultCourseInfoList" }
               }
             }
           }
@@ -1598,34 +1366,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "links": {
-                          "type": "array",
-                          "items": { "$ref": "#/components/schemas/Chapter" },
-                          "description": "常用链接"
-                        },
-                        "open_sources": {
-                          "type": "array",
-                          "items": { "$ref": "#/components/schemas/Chapter" },
-                          "description": "开源项目"
-                        },
-                        "tools": {
-                          "type": "array",
-                          "items": { "$ref": "#/components/schemas/Chapter" },
-                          "description": "常用工具"
-                        }
-                      }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultHarmonyIndex" }
               }
             }
           }
@@ -1644,18 +1385,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Chapter" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultChapterList" }
               }
             }
           }
@@ -1674,18 +1404,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Chapter" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultChapterList" }
               }
             }
           }
@@ -1704,18 +1423,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/Chapter" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultChapterList" }
               }
             }
           }
@@ -1734,18 +1442,7 @@
             "description": "成功",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": { "$ref": "#/components/schemas/ToolItem" }
-                    },
-                    "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-                    "errorMsg": { "type": "string" }
-                  },
-                  "required": ["errorCode", "errorMsg"]
-                }
+                "schema": { "$ref": "#/components/schemas/WanResultToolItemList" }
               }
             }
           }
@@ -2676,6 +2373,28 @@
         "required": ["id", "name"],
         "title": "工具项"
       },
+      "HarmonyIndex": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Chapter" },
+            "description": "常用链接"
+          },
+          "open_sources": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Chapter" },
+            "description": "开源项目"
+          },
+          "tools": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Chapter" },
+            "description": "常用工具"
+          }
+        },
+        "required": ["links", "open_sources", "tools"],
+        "title": "鸿蒙专栏数据"
+      },
       "ArticlePageData": {
         "type": "object",
         "properties": {
@@ -2693,16 +2412,6 @@
         },
         "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
         "title": "文章分页数据"
-      },
-      "ArticlePageResult": {
-        "type": "object",
-        "properties": {
-          "data": { "$ref": "#/components/schemas/ArticlePageData" },
-          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-          "errorMsg": { "type": "string" }
-        },
-        "required": ["errorCode", "errorMsg"],
-        "title": "文章分页响应"
       },
       "RankPageData": {
         "type": "object",
@@ -2758,26 +2467,338 @@
         "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
         "title": "消息分页数据"
       },
+      "WendaCommentPageData": {
+        "type": "object",
+        "properties": {
+          "curPage": { "type": "integer", "title": "当前页" },
+          "datas": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WendaComment" },
+            "title": "评论列表"
+          },
+          "offset": { "type": "integer", "title": "数据偏移量" },
+          "over": { "type": "boolean", "title": "是否已越界" },
+          "pageCount": { "type": "integer", "title": "分页总数" },
+          "size": { "type": "integer", "title": "分页大小" },
+          "total": { "type": "integer", "title": "数据总数" }
+        },
+        "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
+        "title": "问答评论分页数据"
+      },
       "WanResult": {
         "type": "object",
+        "description": "通用响应结构，所有接口均遵循此格式。errorCode为0表示成功，非0表示失败。用于无需返回具体数据的操作类接口（如收藏、取消收藏、删除等）。",
+        "properties": {
+          "data": {
+            "description": "操作类接口通常为null",
+            "nullable": true
+          },
+          "errorCode": {
+            "$ref": "#/components/schemas/ErrorCode"
+          },
+          "errorMsg": {
+            "type": "string",
+            "description": "错误信息，成功时为空字符串"
+          }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "通用响应结构(WanResult)"
+      },
+      "WanResultArticlePage": {
+        "type": "object",
+        "description": "文章分页列表响应，data为文章分页数据",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/ArticlePageData" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "文章分页响应(WanResult<ArticlePageData>)"
+      },
+      "WanResultArticleList": {
+        "type": "object",
+        "description": "文章列表响应，data为文章数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Article" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "文章列表响应(WanResult<List<Article>>)"
+      },
+      "WanResultBannerList": {
+        "type": "object",
+        "description": "Banner列表响应，data为Banner数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Banner" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "Banner列表响应(WanResult<List<Banner>>)"
+      },
+      "WanResultFriendLinkList": {
+        "type": "object",
+        "description": "常用网站列表响应，data为友链数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FriendLink" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "常用网站响应(WanResult<List<FriendLink>>)"
+      },
+      "WanResultHotKeywordList": {
+        "type": "object",
+        "description": "搜索热词列表响应，data为热词数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/HotKeyword" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "搜索热词响应(WanResult<List<HotKeyword>>)"
+      },
+      "WanResultTreeList": {
+        "type": "object",
+        "description": "体系数据列表响应，data为体系数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Tree" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "体系数据响应(WanResult<List<Tree>>)"
+      },
+      "WanResultNavInfoList": {
+        "type": "object",
+        "description": "导航数据列表响应，data为导航数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/NavInfo" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "导航数据响应(WanResult<List<NavInfo>>)"
+      },
+      "WanResultChapterList": {
+        "type": "object",
+        "description": "分类列表响应，data为分类数组。用于项目分类、最受欢迎等接口。",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Chapter" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "分类列表响应(WanResult<List<Chapter>>)"
+      },
+      "WanResultUserInfo": {
+        "type": "object",
+        "description": "登录响应，data为用户信息",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/UserInfo" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "登录响应(WanResult<UserInfo>)"
+      },
+      "WanResultRegister": {
+        "type": "object",
+        "description": "注册响应，data为用户信息或错误提示字符串。注册成功时data为UserInfo对象，失败时可能为错误提示字符串。",
         "properties": {
           "data": {
             "title": "数据",
             "nullable": true,
             "oneOf": [
-              { "type": "string" },
-              { "type": "integer" },
-              { "type": "boolean" },
-              { "type": "array" },
-              { "type": "object" },
-              { "type": "number" }
+              { "$ref": "#/components/schemas/UserInfo" },
+              { "type": "string" }
             ]
           },
           "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
-          "errorMsg": { "type": "string", "title": "响应信息" }
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
         },
         "required": ["errorCode", "errorMsg"],
-        "title": "通用响应结构"
+        "title": "注册响应(WanResult<UserInfo>)"
+      },
+      "WanResultCoinInfo": {
+        "type": "object",
+        "description": "个人积分响应，data为积分信息",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/CoinInfo" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "个人积分响应(WanResult<CoinInfo>)"
+      },
+      "WanResultRankPage": {
+        "type": "object",
+        "description": "积分排行分页响应，data为排行分页数据",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/RankPageData" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "积分排行响应(WanResult<RankPageData>)"
+      },
+      "WanResultCoinDetailPage": {
+        "type": "object",
+        "description": "积分明细分页响应，data为积分明细分页数据",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/CoinDetailPageData" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "积分明细响应(WanResult<CoinDetailPageData>)"
+      },
+      "WanResultShareArticles": {
+        "type": "object",
+        "description": "分享文章响应，data包含用户积分信息和分享文章分页",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/ShareArticles" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "分享文章响应(WanResult<ShareArticles>)"
+      },
+      "WanResultPersonalInfo": {
+        "type": "object",
+        "description": "个人信息响应，data包含积分和用户信息",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/PersonalInfo" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "个人信息响应(WanResult<PersonalInfo>)"
+      },
+      "WanResultUnreadCount": {
+        "type": "object",
+        "description": "未读消息数量响应，data为整数",
+        "properties": {
+          "data": {
+            "type": "integer",
+            "description": "未读消息数量"
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "未读消息数响应(WanResult<Int>)"
+      },
+      "WanResultMessagePage": {
+        "type": "object",
+        "description": "消息分页列表响应，data为消息分页数据",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/MessagePageData" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "消息列表响应(WanResult<MessagePageData>)"
+      },
+      "WanResultWendaCommentPage": {
+        "type": "object",
+        "description": "问答评论分页响应，data为评论分页数据",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/WendaCommentPageData" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "问答评论响应(WanResult<WendaCommentPageData>)"
+      },
+      "WanResultWxArticleChapterList": {
+        "type": "object",
+        "description": "公众号列表响应，data为公众号数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/WxArticleChapter" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "公众号列表响应(WanResult<List<WxArticleChapter>>)"
+      },
+      "WanResultCourseInfoList": {
+        "type": "object",
+        "description": "教程列表响应，data为教程数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CourseInfo" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "教程列表响应(WanResult<List<CourseInfo>>)"
+      },
+      "WanResultCollectToolList": {
+        "type": "object",
+        "description": "收藏网站列表响应，data为收藏网址数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CollectTool" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "收藏网站响应(WanResult<List<CollectTool>>)"
+      },
+      "WanResultHarmonyIndex": {
+        "type": "object",
+        "description": "鸿蒙专栏响应，data包含链接、开源项目和工具",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/HarmonyIndex" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "鸿蒙专栏响应(WanResult<HarmonyIndex>)"
+      },
+      "WanResultToolItemList": {
+        "type": "object",
+        "description": "工具列表响应，data为工具项数组",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ToolItem" }
+          },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "工具列表响应(WanResult<List<ToolItem>>)"
       }
     },
     "responses": {
@@ -2787,6 +2808,7 @@
           "application/json": {
             "schema": {
               "type": "object",
+              "description": "未登录响应，遵循WanResult通用结构",
               "properties": {
                 "data": { "title": "数据", "nullable": true },
                 "errorCode": {
