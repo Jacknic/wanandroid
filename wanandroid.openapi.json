@@ -2395,95 +2395,110 @@
         "required": ["links", "open_sources", "tools"],
         "title": "鸿蒙专栏数据"
       },
-      "ArticlePageData": {
+      "PageData": {
         "type": "object",
+        "description": "通用分页数据结构，所有分页接口的data字段均遵循此结构。不同接口仅datas数组中的元素类型不同。",
         "properties": {
-          "curPage": { "type": "integer", "title": "当前页" },
+          "curPage": { "type": "integer", "title": "当前页码" },
           "datas": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/Article" },
-            "title": "数据列表"
+            "items": {},
+            "title": "数据列表",
+            "description": "分页数据列表，具体元素类型因接口而异"
           },
           "offset": { "type": "integer", "title": "数据偏移量" },
-          "over": { "type": "boolean", "title": "是否已越界" },
-          "pageCount": { "type": "integer", "title": "分页总数" },
-          "size": { "type": "integer", "title": "分页大小" },
-          "total": { "type": "integer", "title": "数据总数" }
+          "over": { "type": "boolean", "title": "是否已越界（无更多数据）" },
+          "pageCount": { "type": "integer", "title": "总页数" },
+          "size": { "type": "integer", "title": "每页数据条数" },
+          "total": { "type": "integer", "title": "数据总条数" }
         },
         "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
-        "title": "文章分页数据"
+        "title": "通用分页数据(PageData)"
+      },
+      "ArticlePageData": {
+        "description": "文章分页数据，继承PageData，datas为Article数组",
+        "allOf": [
+          { "$ref": "#/components/schemas/PageData" },
+          {
+            "type": "object",
+            "properties": {
+              "datas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Article" },
+                "title": "文章数据列表"
+              }
+            }
+          }
+        ],
+        "title": "文章分页数据(PageData<Article>)"
       },
       "RankPageData": {
-        "type": "object",
-        "properties": {
-          "curPage": { "type": "integer", "title": "当前页" },
-          "datas": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Rank" },
-            "title": "排行数据列表"
-          },
-          "offset": { "type": "integer", "title": "数据偏移量" },
-          "over": { "type": "boolean", "title": "是否已越界" },
-          "pageCount": { "type": "integer", "title": "分页总数" },
-          "size": { "type": "integer", "title": "分页大小" },
-          "total": { "type": "integer", "title": "数据总数" }
-        },
-        "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
-        "title": "积分排行分页数据"
+        "description": "积分排行分页数据，继承PageData，datas为Rank数组",
+        "allOf": [
+          { "$ref": "#/components/schemas/PageData" },
+          {
+            "type": "object",
+            "properties": {
+              "datas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Rank" },
+                "title": "排行数据列表"
+              }
+            }
+          }
+        ],
+        "title": "积分排行分页数据(PageData<Rank>)"
       },
       "CoinDetailPageData": {
-        "type": "object",
-        "properties": {
-          "curPage": { "type": "integer", "title": "当前页" },
-          "datas": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/CoinDetail" },
-            "title": "积分明细列表"
-          },
-          "offset": { "type": "integer", "title": "数据偏移量" },
-          "over": { "type": "boolean", "title": "是否已越界" },
-          "pageCount": { "type": "integer", "title": "分页总数" },
-          "size": { "type": "integer", "title": "分页大小" },
-          "total": { "type": "integer", "title": "数据总数" }
-        },
-        "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
-        "title": "积分明细分页数据"
+        "description": "积分明细分页数据，继承PageData，datas为CoinDetail数组",
+        "allOf": [
+          { "$ref": "#/components/schemas/PageData" },
+          {
+            "type": "object",
+            "properties": {
+              "datas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/CoinDetail" },
+                "title": "积分明细列表"
+              }
+            }
+          }
+        ],
+        "title": "积分明细分页数据(PageData<CoinDetail>)"
       },
       "MessagePageData": {
-        "type": "object",
-        "properties": {
-          "curPage": { "type": "integer", "title": "当前页" },
-          "datas": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Message" },
-            "title": "消息列表"
-          },
-          "offset": { "type": "integer", "title": "数据偏移量" },
-          "over": { "type": "boolean", "title": "是否已越界" },
-          "pageCount": { "type": "integer", "title": "分页总数" },
-          "size": { "type": "integer", "title": "分页大小" },
-          "total": { "type": "integer", "title": "数据总数" }
-        },
-        "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
-        "title": "消息分页数据"
+        "description": "消息分页数据，继承PageData，datas为Message数组",
+        "allOf": [
+          { "$ref": "#/components/schemas/PageData" },
+          {
+            "type": "object",
+            "properties": {
+              "datas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Message" },
+                "title": "消息列表"
+              }
+            }
+          }
+        ],
+        "title": "消息分页数据(PageData<Message>)"
       },
       "WendaCommentPageData": {
-        "type": "object",
-        "properties": {
-          "curPage": { "type": "integer", "title": "当前页" },
-          "datas": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/WendaComment" },
-            "title": "评论列表"
-          },
-          "offset": { "type": "integer", "title": "数据偏移量" },
-          "over": { "type": "boolean", "title": "是否已越界" },
-          "pageCount": { "type": "integer", "title": "分页总数" },
-          "size": { "type": "integer", "title": "分页大小" },
-          "total": { "type": "integer", "title": "数据总数" }
-        },
-        "required": ["curPage", "datas", "offset", "over", "pageCount", "size", "total"],
-        "title": "问答评论分页数据"
+        "description": "问答评论分页数据，继承PageData，datas为WendaComment数组",
+        "allOf": [
+          { "$ref": "#/components/schemas/PageData" },
+          {
+            "type": "object",
+            "properties": {
+              "datas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/WendaComment" },
+                "title": "评论列表"
+              }
+            }
+          }
+        ],
+        "title": "问答评论分页数据(PageData<WendaComment>)"
       },
       "WanResult": {
         "type": "object",
