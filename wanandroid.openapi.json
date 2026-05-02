@@ -808,6 +808,14 @@
             "required": true,
             "example": 1,
             "schema": { "type": "integer" }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 20,
+            "schema": { "type": "integer" }
           }
         ],
         "responses": {
@@ -854,6 +862,14 @@
             "description": "页码，从1开始",
             "required": true,
             "example": 1,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "分页大小 1-40",
+            "required": false,
+            "example": 20,
             "schema": { "type": "integer" }
           }
         ],
