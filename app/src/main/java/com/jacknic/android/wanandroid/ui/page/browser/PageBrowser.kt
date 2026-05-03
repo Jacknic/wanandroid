@@ -85,8 +85,7 @@ fun PageBrowser() {
                 onReset = {
                     it.stopLoading()
                     it.loadUrl("about:blank")
-                },
-                update = {}
+                }
             )
             LaunchedEffect(Unit) {
                 if (saveBundle.isEmpty) {
