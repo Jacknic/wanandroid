@@ -64,6 +64,7 @@ import com.jacknic.android.wanandroid.ui.component.HomeBanner
 import com.jacknic.android.wanandroid.ui.component.SearchBar
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.openBrowser
 import kotlinx.coroutines.launch
 
 /**
@@ -213,8 +214,7 @@ fun PageHome(
                     isWideScreen = isWideScreen,
                     gridState = gridState,
                     onArticleClick = { article ->
-                        nav.currentBackStackEntry?.savedStateHandle?.set("link", article.link)
-                        nav.navigate(Page.Browser)
+                        nav.openBrowser(article.link)
                     }
                 )
             }

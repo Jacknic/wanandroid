@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.text.parseAsHtml
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
@@ -45,6 +46,7 @@ import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.openBrowser
 import com.jacknic.android.wanandroid.ui.page.search.SEARCH_KEY
 
 /**
@@ -109,8 +111,7 @@ fun PageDiscovery(
                         icon = Icons.TwoTone.Language
                     ) {
                         FriendLinkFlow(links = friendLinks) { link ->
-                            nav.currentBackStackEntry?.savedStateHandle?.set("link", link.link)
-                            nav.navigate(Page.Browser)
+                            nav.openBrowser(link.link)
                         }
                     }
                 }
@@ -162,7 +163,7 @@ fun DiscoveryCardSection(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = title,
+                    text = title.parseAsHtml().toString(),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -183,7 +184,7 @@ fun HotkeyFlow(hotkeys: List<HotKeyword>, onKeyClick: (String) -> Unit) {
         hotkeys.forEach { key ->
             SuggestionChip(
                 onClick = { onKeyClick(key.name) },
-                label = { Text(key.name) }
+                label = { Text(key.name.parseAsHtml().toString()) }
             )
         }
     }
@@ -217,7 +218,7 @@ fun ProjectTreeFlow(trees: List<Chapter>, onTreeClick: (Chapter) -> Unit) {
         trees.forEach { tree ->
             AssistChip(
                 onClick = { onTreeClick(tree) },
-                label = { Text(tree.name) }
+                label = { Text(tree.name.parseAsHtml().toString()) }
             )
         }
     }

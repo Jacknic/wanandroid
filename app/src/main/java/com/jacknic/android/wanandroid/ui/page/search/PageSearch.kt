@@ -56,9 +56,9 @@ import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
-import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.main.discovery.DiscoveryCardSection
 import com.jacknic.android.wanandroid.ui.page.main.discovery.HotkeyFlow
+import com.jacknic.android.wanandroid.ui.page.openBrowser
 
 /**
  * 搜索页
@@ -186,8 +186,7 @@ fun PageSearch(
                 val article = pagingItems[it] ?: return@items
                 Spacer(modifier = Modifier.size(8.dp))
                 ArticleListItem(article) {
-                    nav.currentBackStackEntry?.savedStateHandle?.set("link", article.link)
-                    nav.navigate(Page.Browser)
+                    nav.openBrowser(article.link)
                 }
             }
 

@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jacknic.android.wanandroid.ui.page.browser.PageBrowser
+import com.jacknic.android.wanandroid.ui.page.browser.openBrowser
 import com.jacknic.android.wanandroid.ui.page.login.PageLogin
 import com.jacknic.android.wanandroid.ui.page.main.PageMain
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
@@ -50,6 +51,11 @@ fun NavHostController.navTop(page: String, pagePop: String) {
  * 跳转到首页
  */
 fun NavHostController.toMain() = navTop(Page.Main, Page.Splash)
+
+/**
+ * 打开浏览器页面
+ */
+fun NavHostController.openBrowser(url: String) = openBrowser(this, url)
 
 val LocalNavCtrl = compositionLocalOf<NavHostController>(structuralEqualityPolicy()) {
     throw IllegalAccessException("未初始化导航组件")

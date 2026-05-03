@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,12 +15,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.jacknic.android.wanandroid.core.model.Banner
+import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.openBrowser
 
 /**
  * 首页 banner 组件
  */
 @Composable
 fun HomeBanner(bannerList: List<Banner>) {
+    val nav = LocalNavCtrl.current
     val pagerState = rememberPagerState { bannerList.size }
     HorizontalPager(
         modifier = Modifier
@@ -31,7 +35,11 @@ fun HomeBanner(bannerList: List<Banner>) {
     ) {
         val banner = bannerList[it]
         AsyncImage(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    nav.openBrowser(banner.url)
+                },
             contentScale = ContentScale.Crop,
             model = banner.imagePath,
             contentDescription = null,

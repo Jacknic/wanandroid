@@ -33,7 +33,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.os.bundleOf
+import androidx.navigation.NavHostController
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.Page
+
+private const val KEY_LINK = "link"
+
+/**
+ * 打开浏览器页面
+ */
+fun openBrowser(
+    nav: NavHostController,
+    url: String
+) {
+    nav.currentBackStackEntry?.savedStateHandle?.set(KEY_LINK, url)
+    nav.navigate(Page.Browser)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SetJavaScriptEnabled", "UnusedMaterial3ScaffoldPaddingParameter")
@@ -43,7 +58,7 @@ fun PageBrowser() {
     val nav = LocalNavCtrl.current
     val backStackEntry = nav.previousBackStackEntry
     val savedStateHandle = backStackEntry?.savedStateHandle
-    val link = savedStateHandle?.get<String?>("link")
+    val link = savedStateHandle?.get<String?>(KEY_LINK)
     var titleState by remember { mutableStateOf("") }
     var progress by remember { mutableFloatStateOf(0f) }
     var launchUrl by rememberSaveable { mutableStateOf<String?>(null) }
