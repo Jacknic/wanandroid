@@ -60,7 +60,7 @@ fun PageDiscovery(
     val nav = LocalNavCtrl.current
     val hotkeyResult by vm.hotkeyResult.collectAsState()
     val friendResult by vm.friendResult.collectAsState()
-    val projectTreeResult by vm.projectTreeResult.collectAsState()
+    val projectTreeResult by vm.chapterResult.collectAsState()
 
     val hotkeys = hotkeyResult.getDataOrNull() ?: emptyList()
     val friendLinks = friendResult.getDataOrNull() ?: emptyList()

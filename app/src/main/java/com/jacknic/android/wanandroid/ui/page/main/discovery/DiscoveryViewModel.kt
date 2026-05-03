@@ -31,7 +31,7 @@ class DiscoveryViewModel @Inject constructor(
     val friendResult = _friendResult.asStateFlow()
 
     private val _chapterResult = MutableStateFlow<StateResult<List<Chapter>>>(StateResult.Loading)
-    val projectTreeResult = _chapterResult.asStateFlow()
+    val chapterResult = _chapterResult.asStateFlow()
 
     init {
         refresh()
@@ -40,11 +40,7 @@ class DiscoveryViewModel @Inject constructor(
     private fun refresh() {
         viewModelScope.launch {
             _hotkeyResult.emit(repo.getHotkey().toStateResult())
-        }
-        viewModelScope.launch {
             _friendResult.emit(repo.getFriend().toStateResult())
-        }
-        viewModelScope.launch {
             _chapterResult.emit(repo.getProjectTree().toStateResult())
         }
     }
