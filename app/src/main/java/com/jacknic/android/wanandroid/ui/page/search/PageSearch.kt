@@ -108,8 +108,7 @@ fun PageSearch(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = { Text("搜索文章关键词") },
-                        leadingIcon = { Icon(Icons.TwoTone.Search, null) },
-                        trailingIcon = {
+                        suffix = {
                             if (inputText.isNotEmpty()) {
                                 IconButton(onClick = {
                                     inputText = ""
@@ -118,6 +117,14 @@ fun PageSearch(
                                     Icon(Icons.TwoTone.Clear, null)
                                 }
                             }
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                if (inputText.isNotEmpty()) {
+                                    vm.search(inputText)
+                                    keyboardController?.hide()
+                                }
+                            }) { Icon(Icons.TwoTone.Search, null) }
                         },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -137,7 +144,14 @@ fun PageSearch(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { nav.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (inputText.isNotEmpty()) {
+                            inputText = ""
+                            vm.clearSearch()
+                        } else {
+                            nav.popBackStack()
+                        }
+                    }) {
                         Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "返回")
                     }
                 }
@@ -195,7 +209,7 @@ fun PageSearch(
                 .fillMaxWidth()
                 .height(80.dp)
             when {
-                state.refresh is LoadState.Loading || state.append is LoadState.Loading -> {
+                state.refresh is LoadState.Loading || state.prepend is LoadState.Loading -> {
                     item {
                         Box(modifier = modifier, contentAlignment = Alignment.Center) {
                             CircularProgressIndicator()
