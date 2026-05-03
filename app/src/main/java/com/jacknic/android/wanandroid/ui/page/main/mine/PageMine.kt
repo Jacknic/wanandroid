@@ -269,13 +269,14 @@ private fun FeatureCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             tabs.forEach { (label, icon) ->
                 Column(
                     modifier = Modifier
                         .clip(MaterialTheme.shapes.small)
+                        .weight(1f)
                         .clickable { }
                         .padding(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -358,13 +359,14 @@ private fun CreatorCenter() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 creatorItems.forEach { (label, icon) ->
                     Column(
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.small)
+                            .weight(1f)
                             .clickable { }
                             .padding(12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -427,22 +429,22 @@ private fun MoreFeatures() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 4.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 moreItems.take(4).forEach { item ->
-                    FeatureGridItem(item)
+                    FeatureGridItem(item, Modifier.weight(1f))
                 }
             }
             // 第二行
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 12.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 moreItems.drop(4).forEach { item ->
-                    FeatureGridItem(item)
+                    FeatureGridItem(item, Modifier.weight(1f))
                 }
             }
         }
@@ -455,9 +457,9 @@ private data class MoreFeatureItem(
 )
 
 @Composable
-private fun FeatureGridItem(item: MoreFeatureItem) {
+private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .clickable { }
             .padding(vertical = 8.dp, horizontal = 8.dp),
