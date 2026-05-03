@@ -1,6 +1,8 @@
 package com.jacknic.android.wanandroid.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,10 +30,41 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.core.text.parseAsHtml
 import coil.compose.AsyncImage
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
+
+/**
+ * 链接类型枚举
+ */
+enum class LinkType(val domains: List<String>, val label: String, val color: Color) {
+    JUEJIN(listOf("juejin.cn", "juejin.im"), "掘金", Color(0xFF0066FF)),
+    WECHAT(listOf("mp.weixin.qq.com"), "微信", Color(0xFF07C160)),
+    WANANDROID(listOf("wanandroid.com"), "玩安卓", Color(0xFF276692)),
+    CSDN(listOf("csdn.net"), "CSDN", Color(0xFFFA7040)),
+    JIANSHU(listOf("jianshu.com"), "简书", Color(0xFFE67E22)),
+    ZHIHU(listOf("zhihu.com", "zhuanlan.zhihu.com"), "知乎", Color(0xFF0066FF)),
+    GITHUB(listOf("github.com"), "GitHub", Color(0xFF181717)),
+    ANDROID_DEVELOPER(listOf("developer.android.com"), "Android", Color(0xFF3DDC84)),
+    OTHER(listOf(""), "其他", Color(0xFF868686)),
+}
+
+/**
+ * 根据链接获取链接类型
+ */
+private fun getLinkType(link: String): LinkType? {
+    if (link.isBlank()) return LinkType.OTHER
+    return try {
+        val host = link.toUri().host ?: return null
+        LinkType.entries.find { linkType ->
+            linkType.domains.any { domain -> host.contains(domain) }
+        }
+    } catch (_: Exception) {
+        LinkType.OTHER
+    }
+}
 
 /**
  * 文章列表项 - 掘金风格卡片
@@ -45,6 +79,8 @@ fun ArticleListItem(
     val displayTitle = remember(article.title) {
         article.title.parseAsHtml().toString()
     }
+    // 获取链接类型
+    val linkType = remember(article.link) { getLinkType(article.link) }
 
     Card(
         modifier = modifier
@@ -118,25 +154,48 @@ fun ArticleListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // 作者信息
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = article.author.ifBlank { article.shareUser },
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                Text(
+                    text = article.author.ifBlank { article.shareUser } + " " + article.niceDate,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
 
-                    if (article.niceDate.isNotBlank()) {
-                        Text(
-                            text = " · ${article.niceDate}",
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                // 链接类型徽章
+                linkType?.let { type ->
+                    LinkTypeBadge(
+                        text = type.label,
+                        color = type.color
+                    )
                 }
             }
         }
+    }
+}
+
+/**
+ * 链接类型徽章
+ */
+@Composable
+fun LinkTypeBadge(
+    text: String,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(color.copy(alpha = 0.12f))
+            .padding(horizontal = 6.dp)
+    ) {
+        Text(
+            text = text,
+            fontSize = 10.sp,
+            color = color,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
 
@@ -149,7 +208,8 @@ private fun Preview() {
             author = "FaceBlack",
             desc = "简介这是一个怎么样的工具，简介这是一个怎么样的工具，简介这是一个怎么样的工具，简介这是一个怎么样的工具，",
             zan = 666,
-            niceDate = "2小时前"
+            niceDate = "2小时前",
+            link = "https://juejin.cn/post/123456789"
         )
         ArticleListItem(article)
     }
