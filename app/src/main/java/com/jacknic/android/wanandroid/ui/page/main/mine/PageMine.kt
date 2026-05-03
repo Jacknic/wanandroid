@@ -3,7 +3,6 @@ package com.jacknic.android.wanandroid.ui.page.main.mine
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,8 +28,6 @@ import androidx.compose.material.icons.twotone.Notifications
 import androidx.compose.material.icons.twotone.QrCodeScanner
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material.icons.twotone.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,13 +38,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -66,40 +61,40 @@ import com.jacknic.android.wanandroid.ui.page.Page
 @Composable
 fun PageMine(vm: MineViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val personalInfoState by vm.personalInfo.collectAsStateWithLifecycle()
     val data = (personalInfoState as? StateResult.Success)?.data
     val userInfo = data?.userInfo
     val coinInfo = data?.coinInfo
 
-    Scaffold(topBar = {
-        TopAppBar(
-            title = { },
-            navigationIcon = {
-                IconButton(onClick = { }) {
-                    Icon(Icons.TwoTone.QrCodeScanner, "扫码")
-                }
-            },
-            actions = {
-                IconButton(onClick = { }) {
-                    Icon(Icons.TwoTone.Brightness4, "深色模式")
-                }
-                IconButton(onClick = { }) {
-                    Icon(Icons.TwoTone.Notifications, "通知")
-                }
-                IconButton(onClick = {
-                    nav.navigate(Page.Setting)
-                }) {
-                    Icon(Icons.TwoTone.Settings, "设置")
-                }
-            },
-            scrollBehavior = scrollBehavior
-        )
-    }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { },
+                navigationIcon = {
+                    IconButton(onClick = { }) {
+                        Icon(Icons.TwoTone.QrCodeScanner, "扫码")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(Icons.TwoTone.Brightness4, "深色模式")
+                    }
+                    IconButton(onClick = { }) {
+                        Icon(Icons.TwoTone.Notifications, "通知")
+                    }
+                    IconButton(onClick = {
+                        nav.navigate(Page.Setting)
+                    }) {
+                        Icon(Icons.TwoTone.Settings, "设置")
+                    }
+                },
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+    ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
         ) {
             // 用户信息区域
@@ -110,11 +105,6 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                 rank = coinInfo?.rank ?: "-",
                 collectCount = userInfo?.collectIds?.size ?: 0,
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // 会员推广横幅
-            VipBanner()
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -147,7 +137,7 @@ private fun UserInfoSection(
     rank: String,
     collectCount: Int,
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.padding(16.dp)) {
         // 头像和用户名
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -257,54 +247,6 @@ private fun StatItem(label: String, value: String) {
 }
 
 /**
- * 会员推广横幅
- */
-@Composable
-private fun VipBanner() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "年度会员限时五折",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
-                )
-                Text(
-                    "领小册周边福利",
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Button(
-                onClick = { },
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                    horizontal = 16.dp, vertical = 4.dp
-                )
-            ) {
-                Text("了解一下", fontSize = 12.sp)
-            }
-        }
-    }
-}
-
-/**
  * 功能卡片
  */
 @Composable
@@ -313,7 +255,10 @@ private fun FeatureCard() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         val tabs = listOf(
             "每日签到" to Icons.TwoTone.Star,
@@ -330,6 +275,7 @@ private fun FeatureCard() {
             tabs.forEach { (label, icon) ->
                 Column(
                     modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
                         .clickable { }
                         .padding(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -365,7 +311,10 @@ private fun CreatorCenter() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Column {
             // 标题行
@@ -415,6 +364,7 @@ private fun CreatorCenter() {
                 creatorItems.forEach { (label, icon) ->
                     Column(
                         modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
                             .clickable { }
                             .padding(12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -430,44 +380,6 @@ private fun CreatorCenter() {
                     }
                 }
             }
-
-            // 活动推广条
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.surfaceVariant
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { }
-                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Surface(
-                        shape = RoundedCornerShape(4.dp),
-                        color = MaterialTheme.colorScheme.errorContainer
-                    ) {
-                        Text(
-                            "活动",
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "豆包Marscode 体验有奖",
-                        fontSize = 13.sp,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Icon(
-                        Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
-                        contentDescription = "",
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
         }
     }
 }
@@ -481,7 +393,10 @@ private fun MoreFeatures() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Column {
             Row(
@@ -543,8 +458,9 @@ private data class MoreFeatureItem(
 private fun FeatureGridItem(item: MoreFeatureItem) {
     Column(
         modifier = Modifier
+            .clip(MaterialTheme.shapes.small)
             .clickable { }
-            .padding(vertical = 8.dp, horizontal = 4.dp),
+            .padding(vertical = 8.dp, horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
