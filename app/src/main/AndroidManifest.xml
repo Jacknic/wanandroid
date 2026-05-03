@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wanandroid"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:localeConfig="@xml/locales_config"
+        tools:targetApi="33">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenLayout|screenSize|smallestScreenSize"

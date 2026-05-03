@@ -12,18 +12,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = darkPrimaryColor,
-    secondary = darkSecondaryColor,
-    tertiary = darkTertiaryColor
+private fun darkColorSchemeFor(scheme: ThemeColorScheme) = darkColorScheme(
+    primary = scheme.darkPrimary,
+    secondary = scheme.darkSecondary,
+    tertiary = scheme.darkTertiary
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = lightPrimaryColor,
-    secondary = lightSecondaryColor,
-    tertiary = lightTertiaryColor
+private fun lightColorSchemeFor(scheme: ThemeColorScheme) = lightColorScheme(
+    primary = scheme.lightPrimary,
+    secondary = scheme.lightSecondary,
+    tertiary = scheme.lightTertiary
+)
+
+private fun darkColorSchemeForCustom(data: CustomColorData) = darkColorScheme(
+    primary = data.primary,
+    secondary = data.secondary,
+    tertiary = data.tertiary
+)
+
+private fun lightColorSchemeForCustom(data: CustomColorData) = lightColorScheme(
+    primary = data.primary,
+    secondary = data.secondary,
+    tertiary = data.tertiary
 )
 
 /**
@@ -47,6 +60,29 @@ fun useThemeMode(mode: ThemeMode) {
 
 var dynamicThemeColor by mutableStateOf(false)
 
+var themeColorScheme by mutableStateOf(ThemeColorScheme.DEFAULT)
+
+var customColorData by mutableStateOf(CustomColorData(Color(0xFF4483F4)))
+
+fun useThemeColorScheme(scheme: ThemeColorScheme) {
+    themeColorScheme = scheme
+    // 选择预设主题颜色时自动关闭动态颜色
+    if (dynamicThemeColor) {
+        dynamicThemeColor = false
+    }
+}
+
+fun useDynamicThemeColor(enabled: Boolean) {
+    dynamicThemeColor = enabled
+}
+
+fun useCustomThemeColor(color: Color) {
+    customColorData = CustomColorData(color)
+    themeColorScheme = ThemeColorScheme.CUSTOM
+    if (dynamicThemeColor) {
+        dynamicThemeColor = false
+    }
+}
 
 @Composable
 fun WanandroidTheme(
@@ -61,8 +97,13 @@ fun WanandroidTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        themeColorScheme == ThemeColorScheme.CUSTOM -> {
+            if (darkTheme) darkColorSchemeForCustom(customColorData)
+            else lightColorSchemeForCustom(customColorData)
+        }
+
+        darkTheme -> darkColorSchemeFor(themeColorScheme)
+        else -> lightColorSchemeFor(themeColorScheme)
     }
 
     MaterialTheme(

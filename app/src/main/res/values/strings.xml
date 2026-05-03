@@ -30,4 +30,14 @@
         <item>浅色模式</item>
         <item>深色模式</item>
     </string-array>
+    <string-array name="language_names">
+        <item>跟随系统</item>
+        <item>简体中文</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>""</item>
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
 </resources>
