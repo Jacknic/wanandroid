@@ -315,6 +315,23 @@ private fun ArticleList(
                     EmptyView(message = "暂无文章")
                 }
             }
+
+            loadState.append is LoadState.NotLoading && (loadState.append as LoadState.NotLoading).endOfPaginationReached && pagingItems.itemCount > 0 -> {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "已加载全部",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
         }
     }
 }
