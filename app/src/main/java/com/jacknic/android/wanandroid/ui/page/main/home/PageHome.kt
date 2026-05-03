@@ -194,18 +194,17 @@ fun PageHome(
                     }
                 }
             }
-            val gridState = rememberSaveable(
-                saver = LazyGridState.Saver
-            ) { LazyGridState() }
             // 内容区域
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                key = { pageIndex -> pageIndex }
             ) { pageIndex ->
                 if (categories.isEmpty()) return@HorizontalPager
 
                 val category = categories[pageIndex]
                 val pagingItems = vm.getArticleListFlow(category.id).collectAsLazyPagingItems()
+                val gridState = rememberSaveable(saver = LazyGridState.Saver) { LazyGridState() }
 
                 ArticleList(
                     pagingItems = pagingItems,

@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShortNavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
@@ -111,10 +110,13 @@ fun PageMain() {
             }
         },
     ) {
-        val scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<ContentItem>()
         val state = rememberLazyListState()
-        HorizontalPager(pagerState) { index ->
+        HorizontalPager(
+            state = pagerState,
+            userScrollEnabled = false,
+        ) { index ->
             when (index) {
                 NavDestinations.HOME.ordinal -> {
                     PageHome(
