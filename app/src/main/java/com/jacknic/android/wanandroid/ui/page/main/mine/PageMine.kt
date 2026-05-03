@@ -46,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -278,7 +279,7 @@ private fun FeatureCard() {
                         .clip(MaterialTheme.shapes.small)
                         .weight(1f)
                         .clickable { }
-                        .padding(12.dp),
+                        .padding(vertical = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Surface(
@@ -368,7 +369,7 @@ private fun CreatorCenter() {
                             .clip(MaterialTheme.shapes.small)
                             .weight(1f)
                             .clickable { }
-                            .padding(12.dp),
+                            .padding(vertical = 8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -430,7 +431,7 @@ private fun MoreFeatures() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 moreItems.take(4).forEach { item ->
                     FeatureGridItem(item, Modifier.weight(1f))
@@ -441,7 +442,7 @@ private fun MoreFeatures() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 moreItems.drop(4).forEach { item ->
                     FeatureGridItem(item, Modifier.weight(1f))
@@ -462,7 +463,7 @@ private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .clickable { }
-            .padding(vertical = 8.dp, horizontal = 8.dp),
+            .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
@@ -472,6 +473,12 @@ private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(item.label, fontSize = 12.sp, textAlign = TextAlign.Center)
+        Text(
+            item.label,
+            fontSize = 12.sp,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
