@@ -1,32 +1,61 @@
 package com.jacknic.android.wanandroid.ui.page.main.mine
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.AccountCircle
+import androidx.compose.material.icons.twotone.Brightness4
+import androidx.compose.material.icons.twotone.Create
+import androidx.compose.material.icons.twotone.Drafts
 import androidx.compose.material.icons.twotone.Face
+import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material.icons.twotone.Group
+import androidx.compose.material.icons.twotone.LocalActivity
 import androidx.compose.material.icons.twotone.Notifications
+import androidx.compose.material.icons.twotone.QrCodeScanner
 import androidx.compose.material.icons.twotone.Settings
+import androidx.compose.material.icons.twotone.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 
@@ -35,72 +64,496 @@ import com.jacknic.android.wanandroid.ui.page.Page
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageMine() {
+fun PageMine(vm: MineViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val personalInfoState by vm.personalInfo.collectAsStateWithLifecycle()
+    val data = (personalInfoState as? StateResult.Success)?.data
+    val userInfo = data?.userInfo
+    val coinInfo = data?.coinInfo
+
     Scaffold(topBar = {
         TopAppBar(
-            title = { }, actions = {
+            title = { },
+            navigationIcon = {
                 IconButton(onClick = { }) {
-                    Icon(Icons.TwoTone.Notifications, "")
+                    Icon(Icons.TwoTone.QrCodeScanner, "扫码")
+                }
+            },
+            actions = {
+                IconButton(onClick = { }) {
+                    Icon(Icons.TwoTone.Brightness4, "深色模式")
+                }
+                IconButton(onClick = { }) {
+                    Icon(Icons.TwoTone.Notifications, "通知")
                 }
                 IconButton(onClick = {
                     nav.navigate(Page.Setting)
                 }) {
-                    Icon(Icons.TwoTone.Settings, "")
+                    Icon(Icons.TwoTone.Settings, "设置")
                 }
-            })
+            },
+            scrollBehavior = scrollBehavior
+        )
     }) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            Row {
-                Image(Icons.TwoTone.AccountCircle, "", modifier = Modifier.size(100.dp))
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            "Jacknic",
-                            modifier = Modifier.weight(1f),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text("个人主页", fontSize = 12.sp)
-                        Icon(
-                            Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
-                            "",
-                            modifier = Modifier.size(12.dp)
-                        )
-                    }
-                    Row {
-                        IconButton(onClick = { }) {
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .verticalScroll(rememberScrollState())
+        ) {
+            // 用户信息区域
+            UserInfoSection(
+                nickname = userInfo?.nickname ?: "未登录",
+                level = coinInfo?.level ?: 0,
+                coinCount = coinInfo?.coinCount ?: 0,
+                rank = coinInfo?.rank ?: "-",
+                collectCount = userInfo?.collectIds?.size ?: 0,
+            )
 
-                        }
-                    }
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 会员推广横幅
+            VipBanner()
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 功能卡片
+            FeatureCard()
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 创作者中心
+            CreatorCenter()
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 更多功能
+            MoreFeatures()
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+/**
+ * 用户信息区域
+ */
+@Composable
+private fun UserInfoSection(
+    nickname: String,
+    level: Int,
+    coinCount: Int,
+    rank: String,
+    collectCount: Int,
+) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        // 头像和用户名
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                Icons.TwoTone.AccountCircle,
+                contentDescription = "头像",
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        nickname,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        "个人主页",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Icon(
+                        Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
+                        contentDescription = "",
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
-            }
-            Card(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                val tabs = arrayOf(
-                    "每日签到" to Icons.TwoTone.Face,
-                    "幸运转盘" to Icons.TwoTone.Face,
-                    "Bug挑战赛" to Icons.TwoTone.Face,
-                    "福利兑换" to Icons.TwoTone.Face,
-                )
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    tabs.forEach {
-                        Column(
-                            modifier = Modifier
-                                .clickable { }
-                                .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Image(it.second, "")
-                            Text(it.first, fontSize = 12.sp)
-                        }
+                Spacer(modifier = Modifier.height(4.dp))
+                // 等级和徽章
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // 等级标签
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        modifier = Modifier
+                    ) {
+                        Text(
+                            "Lv.$level",
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                    // 积分标签
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                    ) {
+                        Text(
+                            "JY.$coinCount",
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                    // 排名
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                    ) {
+                        Text(
+                            "排名 $rank",
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
                     }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // 统计数据
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            StatItem("点赞", "33")
+            StatItem("收藏", collectCount.toString())
+            StatItem("关注", "12")
+        }
+    }
+}
+
+@Composable
+private fun StatItem(label: String, value: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            value,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            label,
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+/**
+ * 会员推广横幅
+ */
+@Composable
+private fun VipBanner() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    "年度会员限时五折",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+                Text(
+                    "领小册周边福利",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Button(
+                onClick = { },
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                    horizontal = 16.dp, vertical = 4.dp
+                )
+            ) {
+                Text("了解一下", fontSize = 12.sp)
+            }
+        }
+    }
+}
+
+/**
+ * 功能卡片
+ */
+@Composable
+private fun FeatureCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        val tabs = listOf(
+            "每日签到" to Icons.TwoTone.Star,
+            "幸运转盘" to Icons.TwoTone.LocalActivity,
+            "Bug挑战赛" to Icons.TwoTone.Favorite,
+            "福利兑换" to Icons.TwoTone.Create,
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            tabs.forEach { (label, icon) ->
+                Column(
+                    modifier = Modifier
+                        .clickable { }
+                        .padding(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Surface(
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        modifier = Modifier.size(44.dp)
+                    ) {
+                        Icon(
+                            icon,
+                            contentDescription = label,
+                            modifier = Modifier
+                                .size(44.dp)
+                                .padding(10.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(label, fontSize = 12.sp)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 创作者中心
+ */
+@Composable
+private fun CreatorCenter() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            // 标题行
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "创作者中心",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    modifier = Modifier.weight(1f)
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable { }
+                ) {
+                    Text(
+                        "进入首页",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Icon(
+                        Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
+                        contentDescription = "",
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            // 功能项
+            val creatorItems = listOf(
+                "内容数据" to Icons.TwoTone.Create,
+                "粉丝数据" to Icons.TwoTone.Group,
+                "创作活动" to Icons.TwoTone.LocalActivity,
+                "草稿箱" to Icons.TwoTone.Drafts,
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                creatorItems.forEach { (label, icon) ->
+                    Column(
+                        modifier = Modifier
+                            .clickable { }
+                            .padding(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            icon,
+                            contentDescription = label,
+                            modifier = Modifier.size(28.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(label, fontSize = 12.sp)
+                    }
+                }
+            }
+
+            // 活动推广条
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.surfaceVariant
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { }
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Surface(
+                        shape = RoundedCornerShape(4.dp),
+                        color = MaterialTheme.colorScheme.errorContainer
+                    ) {
+                        Text(
+                            "活动",
+                            fontSize = 10.sp,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "豆包Marscode 体验有奖",
+                        fontSize = 13.sp,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Icon(
+                        Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
+                        contentDescription = "",
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 更多功能
+ */
+@Composable
+private fun MoreFeatures() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "更多功能",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                )
+            }
+
+            val moreItems = listOf(
+                MoreFeatureItem("课程中心", Icons.TwoTone.Create),
+                MoreFeatureItem("推广中心", Icons.TwoTone.LocalActivity),
+                MoreFeatureItem("我的优惠券", Icons.TwoTone.Star),
+                MoreFeatureItem("我的圈子", Icons.TwoTone.Group),
+                MoreFeatureItem("阅读记录", Icons.TwoTone.Drafts),
+                MoreFeatureItem("标签管理", Icons.TwoTone.Favorite),
+                MoreFeatureItem("我的报名", Icons.TwoTone.Face),
+                MoreFeatureItem("意见反馈", Icons.TwoTone.Notifications),
+            )
+
+            // 第一行
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                moreItems.take(4).forEach { item ->
+                    FeatureGridItem(item)
+                }
+            }
+            // 第二行
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                moreItems.drop(4).forEach { item ->
+                    FeatureGridItem(item)
+                }
+            }
+        }
+    }
+}
+
+private data class MoreFeatureItem(
+    val label: String,
+    val icon: ImageVector,
+)
+
+@Composable
+private fun FeatureGridItem(item: MoreFeatureItem) {
+    Column(
+        modifier = Modifier
+            .clickable { }
+            .padding(vertical = 8.dp, horizontal = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            item.icon,
+            contentDescription = item.label,
+            modifier = Modifier.size(28.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(item.label, fontSize = 12.sp, textAlign = TextAlign.Center)
     }
 }
