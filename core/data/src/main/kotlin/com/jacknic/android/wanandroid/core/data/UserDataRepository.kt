@@ -33,4 +33,46 @@ interface UserDataRepository {
      * 清空搜索历史
      */
     suspend fun clearSearchHistory()
+
+    // === 主题设置 ===
+
+    /**
+     * 主题模式
+     */
+    fun themeModeFlow(): Flow<String>
+
+    /**
+     * 设置主题模式
+     */
+    suspend fun setThemeMode(mode: String)
+
+    /**
+     * 是否启用动态颜色
+     */
+    fun dynamicThemeColorFlow(): Flow<Boolean>
+
+    /**
+     * 设置动态颜色开关
+     */
+    suspend fun setDynamicThemeColor(enabled: Boolean)
+
+    /**
+     * 主题颜色方案
+     */
+    fun themeColorSchemeFlow(): Flow<String>
+
+    /**
+     * 设置主题颜色方案
+     */
+    suspend fun setThemeColorScheme(scheme: String)
+
+    /**
+     * 自定义主题颜色（ARGB 整数）
+     */
+    fun customColorPrimaryFlow(): Flow<Int>
+
+    /**
+     * 设置自定义主题颜色
+     */
+    suspend fun setCustomColorPrimary(argb: Int)
 }

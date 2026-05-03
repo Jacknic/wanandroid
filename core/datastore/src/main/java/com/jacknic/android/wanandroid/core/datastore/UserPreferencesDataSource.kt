@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -33,6 +35,26 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
          * 搜索历史
          */
         private val KEY_SEARCH_HISTORY = stringSetPreferencesKey("search_history")
+
+        /**
+         * 主题模式（SYSTEM/LIGHT/DARK）
+         */
+        private val KEY_THEME_MODE = stringPreferencesKey("theme_mode")
+
+        /**
+         * 是否启用动态颜色
+         */
+        private val KEY_DYNAMIC_THEME_COLOR = booleanPreferencesKey("dynamic_theme_color")
+
+        /**
+         * 主题颜色方案
+         */
+        private val KEY_THEME_COLOR_SCHEME = stringPreferencesKey("theme_color_scheme")
+
+        /**
+         * 自定义主题颜色（ARGB 整数）
+         */
+        private val KEY_CUSTOM_COLOR_PRIMARY = intPreferencesKey("custom_color_primary")
     }
 
     /**
@@ -86,6 +108,72 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
     suspend fun clearSearchHistory() {
         settings.edit { preferences ->
             preferences.remove(KEY_SEARCH_HISTORY)
+        }
+    }
+
+    // === 主题设置 ===
+
+    /**
+     * 主题模式
+     */
+    fun themeModeFlow() = settings.data.map { preferences ->
+        preferences[KEY_THEME_MODE] ?: "SYSTEM"
+    }
+
+    /**
+     * 设置主题模式
+     */
+    suspend fun setThemeMode(mode: String) {
+        settings.edit { preferences ->
+            preferences[KEY_THEME_MODE] = mode
+        }
+    }
+
+    /**
+     * 是否启用动态颜色
+     */
+    fun dynamicThemeColorFlow() = settings.data.map { preferences ->
+        preferences[KEY_DYNAMIC_THEME_COLOR] ?: false
+    }
+
+    /**
+     * 设置动态颜色开关
+     */
+    suspend fun setDynamicThemeColor(enabled: Boolean) {
+        settings.edit { preferences ->
+            preferences[KEY_DYNAMIC_THEME_COLOR] = enabled
+        }
+    }
+
+    /**
+     * 主题颜色方案
+     */
+    fun themeColorSchemeFlow() = settings.data.map { preferences ->
+        preferences[KEY_THEME_COLOR_SCHEME] ?: "DEFAULT"
+    }
+
+    /**
+     * 设置主题颜色方案
+     */
+    suspend fun setThemeColorScheme(scheme: String) {
+        settings.edit { preferences ->
+            preferences[KEY_THEME_COLOR_SCHEME] = scheme
+        }
+    }
+
+    /**
+     * 自定义主题颜色（ARGB 整数）
+     */
+    fun customColorPrimaryFlow() = settings.data.map { preferences ->
+        preferences[KEY_CUSTOM_COLOR_PRIMARY] ?: 0xFF4483F4.toInt()
+    }
+
+    /**
+     * 设置自定义主题颜色
+     */
+    suspend fun setCustomColorPrimary(argb: Int) {
+        settings.edit { preferences ->
+            preferences[KEY_CUSTOM_COLOR_PRIMARY] = argb
         }
     }
 }

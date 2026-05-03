@@ -175,8 +175,10 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                         })
                 }
             }
-            item {
-                ThemeColorSelector()
+            if (!dynamicThemeColor) {
+                item {
+                    ThemeColorSelector()
+                }
             }
             item {
                 val languageNames = stringArrayResource(R.array.language_names)
@@ -370,7 +372,11 @@ private fun ThemeColorSelector() {
                             .background(swatchColor)
                             .then(
                                 if (selected) {
-                                    Modifier.border(3.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                                    Modifier.border(
+                                        3.dp,
+                                        MaterialTheme.colorScheme.primary,
+                                        CircleShape
+                                    )
                                 } else Modifier
                             )
                             .then(
@@ -560,7 +566,11 @@ private fun LanguagePanel(
                     if (code.isEmpty()) {
                         AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
                     } else {
-                        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(code))
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.forLanguageTags(
+                                code
+                            )
+                        )
                     }
                     showLanguagePanel.value = false
                 }
