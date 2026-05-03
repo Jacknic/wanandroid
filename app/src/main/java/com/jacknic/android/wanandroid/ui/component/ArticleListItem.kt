@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -15,6 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,10 +41,16 @@ fun ArticleListItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+    // 预解析 HTML 标题，避免在测量过程中进行重度计算
+    val displayTitle = remember(article.title) {
+        article.title.parseAsHtml().toString()
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp, vertical = 2.dp)
+            .clip(RoundedCornerShape(12.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -64,12 +72,13 @@ fun ArticleListItem(
                 ) {
                     // 标题
                     Text(
-                        text = article.title.parseAsHtml().toString(),
+                        text = displayTitle,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        lineHeight = 22.sp
+                        lineHeight = 22.sp,
+                        modifier = Modifier.heightIn(min = 44.dp)
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
@@ -82,7 +91,8 @@ fun ArticleListItem(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
-                            lineHeight = 18.sp
+                            lineHeight = 18.sp,
+                            modifier = Modifier.heightIn(min = 36.dp)
                         )
                     }
                 }
@@ -103,7 +113,6 @@ fun ArticleListItem(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 作者信息 + 操作按钮
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
