@@ -25,7 +25,7 @@ class PagingListDataSource<T : Any>(
         val result = loadAction(page, params.loadSize)
         return result.fold({
             val prevKey = if (page <= initPage) null else page - 1
-            val nextKey = if (it.datas.isEmpty()) null else page + 1
+            val nextKey = if (it.datas.size < params.loadSize) null else page + 1
             LoadResult.Page(it.datas, prevKey, nextKey)
         }, {
             LoadResult.Error(it)
