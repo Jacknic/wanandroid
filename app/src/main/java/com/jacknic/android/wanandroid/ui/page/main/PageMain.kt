@@ -111,7 +111,6 @@ fun PageMain() {
             }
         },
     ) {
-        val listStateTop = rememberLazyListState()
         val scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<ContentItem>()
         val state = rememberLazyListState()
@@ -119,7 +118,6 @@ fun PageMain() {
             when (index) {
                 NavDestinations.HOME.ordinal -> {
                     PageHome(
-                        listStateTop = listStateTop,
                         scrollBehavior = scrollBehavior
                     )
                 }

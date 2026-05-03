@@ -14,13 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,6 +43,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -81,7 +79,6 @@ import kotlinx.coroutines.launch
 fun PageHome(
     vm: HomeViewModel = hiltViewModel(),
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
-    listStateTop: LazyListState = rememberLazyListState()
 ) {
     val nav = LocalNavCtrl.current
     val bannerResult by vm.bannerList.collectAsState()
@@ -197,7 +194,9 @@ fun PageHome(
                     }
                 }
             }
-
+            val gridState = rememberSaveable(
+                saver = LazyGridState.Saver
+            ) { LazyGridState() }
             // 内容区域
             HorizontalPager(
                 state = pagerState,
@@ -213,6 +212,7 @@ fun PageHome(
                     showBanner = pageIndex == 0 && banners.isNotEmpty(),
                     banners = banners,
                     isWideScreen = isWideScreen,
+                    gridState = gridState,
                     onArticleClick = { article ->
                         nav.currentBackStackEntry?.savedStateHandle?.set("link", article.link)
                         nav.navigate(Page.Browser)
@@ -229,8 +229,8 @@ private fun ArticleList(
     showBanner: Boolean,
     banners: List<Banner>,
     isWideScreen: Boolean,
+    gridState: LazyGridState,
     onArticleClick: (Article) -> Unit,
-    gridState: LazyGridState = rememberLazyGridState()
 ) {
     val loadState = pagingItems.loadState
 
