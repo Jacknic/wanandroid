@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowRight
@@ -41,6 +43,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -52,6 +55,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -64,6 +68,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
@@ -429,21 +435,37 @@ private fun ColorPickerDialog(
     onDismiss: () -> Unit,
     onConfirm: (Color) -> Unit
 ) {
-    var hue by remember { mutableStateOf(0f) }
-    var saturation by remember { mutableStateOf(1f) }
-    var lightness by remember { mutableStateOf(0.5f) }
+    var hue by remember { mutableFloatStateOf(0f) }
+    var saturation by remember { mutableFloatStateOf(1f) }
+    var lightness by remember { mutableFloatStateOf(0.5f) }
+    var hexText by remember { mutableStateOf(TextFieldValue("000000")) }
 
-    // 从 initialColor 初始化 HSV
+    // 从 initialColor 初始化 HSV 和 RGB
     LaunchedEffect(initialColor) {
         val hsv = FloatArray(3)
         android.graphics.Color.colorToHSV(initialColor.toArgb(), hsv)
         hue = hsv[0]
         saturation = hsv[1]
         lightness = hsv[2]
+        hexText = TextFieldValue(argbToHex(initialColor.toArgb()))
     }
 
     val selectedColor = remember(hue, saturation, lightness) {
         Color(android.graphics.Color.HSVToColor(floatArrayOf(hue, saturation, lightness)))
+    }
+
+    fun onHexChange() {
+        val rgb = hexToArgb(hexText.text) ?: return
+        val hsv = FloatArray(3)
+        android.graphics.Color.colorToHSV(rgb, hsv)
+        hue = hsv[0]
+        saturation = hsv[1]
+        lightness = hsv[2]
+    }
+
+    // HSV 变化时同步十六进制文本
+    LaunchedEffect(hue, saturation, lightness) {
+        hexText = TextFieldValue(argbToHex(selectedColor.toArgb()))
     }
 
     AlertDialog(
@@ -467,6 +489,25 @@ private fun ColorPickerDialog(
                         color = if (lightness > 0.5f) Color.Black else Color.White,
                         style = MaterialTheme.typography.titleMedium
                     )
+                }
+                // 十六进制 RGB 输入
+                Column {
+                    Text("十六进制", style = MaterialTheme.typography.bodySmall)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = hexText,
+                            onValueChange = { hexText = it; onHexChange() },
+                            label = { Text("RRGGBB") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                            modifier = Modifier.weight(1f),
+                            singleLine = true,
+                            prefix = { Text("#") }
+                        )
+                    }
                 }
                 // 色相
                 Column {
@@ -533,6 +574,26 @@ private fun ThemeModePanel(showModePanel: MutableState<Boolean>, themeModeNames:
                 }
             )
         }
+    }
+}
+
+private fun argbToHex(argb: Int): String {
+    val r = (argb shr 16) and 0xFF
+    val g = (argb shr 8) and 0xFF
+    val b = argb and 0xFF
+    return "%02X%02X%02X".format(r, g, b)
+}
+
+private fun hexToArgb(hex: String): Int? {
+    val clean = hex.removePrefix("#").trim()
+    if (clean.length != 6) return null
+    return try {
+        val r = clean.substring(0, 2).toInt(16)
+        val g = clean.substring(2, 4).toInt(16)
+        val b = clean.substring(4, 6).toInt(16)
+        (0xFF shl 24) or (r shl 16) or (g shl 8) or b
+    } catch (_: NumberFormatException) {
+        null
     }
 }
 
