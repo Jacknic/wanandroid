@@ -75,13 +75,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val result = repo.getProjectTree().toStateResult()
             if (result is StateResult.Success) {
-                // 添加“全部分类”或者“推荐”
+                // 添加"全部分类"或者"推荐"
                 val allCategory = Chapter(name = "推荐", id = -1)
                 _categories.emit(StateResult.Success(listOf(allCategory) + result.data))
             } else {
                 _categories.emit(result)
             }
         }
+    }
+
+    fun refresh() {
+        getBannerList()
+        getCategories()
     }
 
     override fun onCleared() {
