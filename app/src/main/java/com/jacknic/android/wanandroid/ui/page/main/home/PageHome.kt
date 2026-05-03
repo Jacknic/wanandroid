@@ -168,7 +168,6 @@ fun PageHome(
                     }
                     items(pagingItems.itemCount) {
                         val article = pagingItems[it] ?: return@items
-                        Spacer(modifier = Modifier.size(8.dp))
                         ArticleListItem(article) {
                             nav.currentBackStackEntry?.savedStateHandle?.set("link", article.link)
                             nav.navigate(Page.Browser)

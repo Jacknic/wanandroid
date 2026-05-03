@@ -1,116 +1,133 @@
 package com.jacknic.android.wanandroid.ui.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.AccountCircle
-import androidx.compose.material.icons.twotone.Info
-import androidx.compose.material.icons.twotone.MoreVert
-import androidx.compose.material.icons.twotone.ThumbUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import androidx.core.text.parseAsHtml
 import coil.compose.AsyncImage
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 
 /**
- * 文章列表项
+ * 文章列表项 - 掘金风格卡片
  */
 @Composable
-fun ArticleListItem(article: Article, onClick: () -> Unit = {}) {
-    Column(
-        modifier = Modifier
-            .clickable { onClick() }
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(8.dp)) {
-        val html = article.title.parseAsHtml()
-        Text(html.toString(), fontSize = 18.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        Spacer(Modifier.size(6.dp))
-        Row {
-            val imgUrl = article.envelopePic
-            Column(Modifier.weight(1f)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Image(Icons.TwoTone.AccountCircle, "")
-                    Text(article.author, fontSize = 12.sp)
-                }
-                Text(article.descMd)
-            }
-            if (imgUrl.isNotBlank()) {
-                AsyncImage(
-                    modifier = Modifier
-                        .width(108.dp)
-                        .height(72.dp),
-                    contentScale = ContentScale.Crop,
-                    model = imgUrl,
-                    contentDescription = null,
-                )
-            }
-
-        }
-        val colorFilter = LocalContentColor.current.copy(0.5f)
-        val bgColor = MaterialTheme.colorScheme.onBackground.copy(0.05f)
-        CompositionLocalProvider(LocalContentColor provides colorFilter) {
+fun ArticleListItem(
+    article: Article,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp, vertical = 2.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 1.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            // 封面图 + 标题 + 描述
             Row(
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                Column(
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Image(Icons.TwoTone.ThumbUp, "", colorFilter = ColorFilter.tint(colorFilter))
-                    Text(article.zan.toString())
+                    // 标题
+                    Text(
+                        text = article.title.parseAsHtml().toString(),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 22.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    // 描述
+                    if (article.desc.isNotBlank()) {
+                        Text(
+                            text = article.desc,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            lineHeight = 18.sp
+                        )
+                    }
                 }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Image(Icons.TwoTone.Info, "", colorFilter = ColorFilter.tint(colorFilter))
-                    Text(article.zan.toString())
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val uri = article.link.toUri()
-                    Text(
-                        "${uri.host}",
+                // 封面图
+                if (article.envelopePic.isNotBlank()) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    AsyncImage(
                         modifier = Modifier
-                            .background(bgColor, RoundedCornerShape(6.dp))
-                            .padding(3.dp),
-                        fontSize = 12.sp
+                            .size(100.dp, 80.dp)
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop,
+                        model = article.envelopePic,
+                        contentDescription = null,
                     )
-                    Icon(Icons.TwoTone.MoreVert, "")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 作者信息 + 操作按钮
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // 作者信息
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = article.author.ifBlank { article.shareUser },
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    if (article.niceDate.isNotBlank()) {
+                        Text(
+                            text = " · ${article.niceDate}",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
-
     }
 }
 
@@ -122,7 +139,8 @@ private fun Preview() {
             title = "Android 项目实战——手把手教你实现一款本地音乐播放器",
             author = "FaceBlack",
             desc = "简介这是一个怎么样的工具，简介这是一个怎么样的工具，简介这是一个怎么样的工具，简介这是一个怎么样的工具，",
-            zan = 666
+            zan = 666,
+            niceDate = "2小时前"
         )
         ArticleListItem(article)
     }
