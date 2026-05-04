@@ -16,10 +16,12 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Refresh
+import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,6 +42,7 @@ import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.openBrowser
 
 /**
@@ -63,6 +66,11 @@ fun PageSquare(
             TopAppBar(
                 title = { Text(stringResource(R.string.title_square)) },
                 scrollBehavior = scrollBehavior,
+                actions = {
+                    IconButton(onClick = { nav.navigate(Page.Search) }) {
+                        Icon(Icons.TwoTone.Search, "搜索")
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors()
                     .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
             )

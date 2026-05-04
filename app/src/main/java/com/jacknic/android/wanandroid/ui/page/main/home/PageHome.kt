@@ -22,8 +22,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.Refresh
+import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,7 +62,6 @@ import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Banner
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.HomeBanner
-import com.jacknic.android.wanandroid.ui.component.SearchBar
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.openBrowser
@@ -124,15 +123,10 @@ fun PageHome(
         containerColor = containerColor,
         topBar = {
             TopAppBar(
-                title = {
-                    SearchBar(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { nav.navigate(Page.Search) }
-                    )
-                },
+                title = { },
                 actions = {
                     IconButton(onClick = { nav.navigate(Page.Search) }) {
-                        Icon(Icons.TwoTone.AccountCircle, "我的")
+                        Icon(Icons.TwoTone.Search, "搜索")
                     }
                 },
                 scrollBehavior = scrollBehavior,

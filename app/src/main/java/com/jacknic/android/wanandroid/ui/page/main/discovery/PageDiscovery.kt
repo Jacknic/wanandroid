@@ -23,6 +23,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
@@ -81,6 +82,11 @@ fun PageDiscovery(
                         modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
+                },
+                actions = {
+                    IconButton(onClick = { nav.navigate(Page.Search) }) {
+                        Icon(Icons.TwoTone.Search, "搜索")
+                    }
                 }
             )
         }
