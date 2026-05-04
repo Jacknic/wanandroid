@@ -1,4 +1,4 @@
-package com.jacknic.android.wanandroid.ui.page.main.tree
+package com.jacknic.android.wanandroid.ui.page.main.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,10 +18,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * 体系页视图数据
+ * 分类页视图数据
  */
 @HiltViewModel
-class TreeViewModel @Inject constructor(
+class CategoryViewModel @Inject constructor(
     private val repo: WanRepository
 ) : ViewModel() {
 

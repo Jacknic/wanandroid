@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
 
-package com.jacknic.android.wanandroid.ui.page.main.tree
+package com.jacknic.android.wanandroid.ui.page.main.category
 
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
@@ -60,6 +60,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -68,6 +69,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.core.model.Article
@@ -93,9 +95,9 @@ data class TreeNavKey(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageTree(
+fun PageCategory(
     scaffoldNavigator: ThreePaneScaffoldNavigator<TreeNavKey> = rememberListDetailPaneScaffoldNavigator<TreeNavKey>(),
-    vm: TreeViewModel = hiltViewModel()
+    vm: CategoryViewModel = hiltViewModel()
 ) {
     val nav = LocalNavCtrl.current
     val scope = rememberCoroutineScope()
@@ -126,7 +128,7 @@ fun PageTree(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 TopAppBar(
-                    title = { Text("体系") },
+                    title = { Text(stringResource(R.string.title_category)) },
                     scrollBehavior = scrollBehavior,
                     colors = TopAppBarDefaults.topAppBarColors()
                         .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
@@ -298,7 +300,7 @@ private fun TreeList(
 @Composable
 private fun TreeDetailPane(
     navKey: TreeNavKey,
-    vm: TreeViewModel,
+    vm: CategoryViewModel,
     onBack: () -> Unit,
     onArticleClick: (Article) -> Unit
 ) {

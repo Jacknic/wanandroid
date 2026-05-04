@@ -33,11 +33,11 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jacknic.android.wanandroid.R
+import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
 import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
 import com.jacknic.android.wanandroid.ui.page.main.square.PageSquare
-import com.jacknic.android.wanandroid.ui.page.main.tree.PageTree
 import kotlinx.coroutines.launch
 import com.jacknic.android.wanandroid.core.ui.R as UR
 
@@ -133,7 +133,7 @@ fun PageMain() {
                 }
 
                 NavDestinations.CATEGORY.ordinal -> {
-                    PageTree()
+                    PageCategory()
                 }
 
                 NavDestinations.MINE.ordinal -> {
