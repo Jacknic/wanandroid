@@ -128,7 +128,7 @@ fun PageMain() {
                 }
 
                 NavDestinations.CATEGORY.ordinal -> {
-                    PageTree(scaffoldNavigator, state)
+                    PageCategory()
                 }
 
                 NavDestinations.DISCOVERY.ordinal -> {
@@ -136,7 +136,7 @@ fun PageMain() {
                 }
 
                 NavDestinations.SYSTEM.ordinal -> {
-                    PageCategory()
+                    PageTree(scaffoldNavigator, state)
                 }
 
                 NavDestinations.MINE.ordinal -> {
