@@ -204,34 +204,36 @@ fun PageSearch(
                 }
             }
 
-            val state = pagingItems.loadState
-            val modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-            when {
-                state.refresh is LoadState.Loading || state.prepend is LoadState.Loading -> {
-                    item {
-                        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-
-                state.refresh is LoadState.Error -> {
-                    item {
-                        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                            Button(onClick = { pagingItems.refresh() }) {
-                                Text("加载错误,重新加载")
+            if (searchKey.isNotEmpty()) {
+                val state = pagingItems.loadState
+                val modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                when {
+                    state.refresh is LoadState.Loading || state.prepend is LoadState.Loading -> {
+                        item {
+                            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
                             }
                         }
                     }
-                }
 
-                state.append is LoadState.Error -> {
-                    item {
-                        Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                            Button(onClick = { pagingItems.retry() }) {
-                                Text("加载错误,点击重试")
+                    state.refresh is LoadState.Error -> {
+                        item {
+                            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                                Button(onClick = { pagingItems.refresh() }) {
+                                    Text("加载错误,重新加载")
+                                }
+                            }
+                        }
+                    }
+
+                    state.append is LoadState.Error -> {
+                        item {
+                            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                                Button(onClick = { pagingItems.retry() }) {
+                                    Text("加载错误,点击重试")
+                                }
                             }
                         }
                     }
