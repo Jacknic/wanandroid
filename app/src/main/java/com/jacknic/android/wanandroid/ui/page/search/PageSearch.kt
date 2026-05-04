@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.ui.page.search
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,6 +78,12 @@ fun PageSearch(
     val searchHistory by vm.searchHistory.collectAsState()
     var inputText by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    // 监听返回事件：有搜索内容时先清空，否则返回上一页
+    BackHandler(enabled = inputText.isNotEmpty()) {
+        inputText = ""
+        vm.clearSearch()
+    }
 
     // 处理从其他页面传入的搜索关键词
     LaunchedEffect(Unit) {
