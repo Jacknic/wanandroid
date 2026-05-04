@@ -90,7 +90,7 @@ interface WanRepository {
      * @param password 密码
      * @param repassword 密码确认
      */
-    suspend fun register(username: String, password: String, repassword: String): Result<Any?>
+    suspend fun register(username: String, password: String, repassword: String): Result<UserInfo>
 
     /**
      * 用户登出

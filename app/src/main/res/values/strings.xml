@@ -18,6 +18,25 @@
     <string name="login_btn_login">登录</string>
     <string name="login_btn_login_loading">登录中</string>
     <string name="login_btn_skip_login">跳过</string>
+    <!-- 注册页面 -->
+    <string name="register_title">注册</string>
+    <string name="register_hit_label_username">用户名</string>
+    <string name="register_hit_label_password">密码</string>
+    <string name="register_hit_label_confirm_password">确认密码</string>
+    <string name="register_btn_register">注册</string>
+    <string name="register_btn_register_loading">注册中</string>
+    <string name="register_tips_success">注册成功</string>
+    <string name="register_tips_failed">注册失败</string>
+    <string name="register_link_to_login">已有账号？去登录</string>
+    <string name="login_link_to_register">没有账号？去注册</string>
+    <string name="register_agree_privacy">我已阅读并同意</string>
+    <string name="register_privacy_policy">《隐私协议》</string>
+    <string name="register_terms_of_service">《用户服务协议》</string>
+    <string name="register_error_agree_privacy">请先同意隐私协议</string>
+    <string name="password_strength_weak">弱</string>
+    <string name="password_strength_medium">中</string>
+    <string name="password_strength_strong">强</string>
+    <string name="password_strength_label">密码强度：</string>
     <string-array name="tab_titles">
         <item>@string/title_home</item>
         <item>@string/title_category</item>

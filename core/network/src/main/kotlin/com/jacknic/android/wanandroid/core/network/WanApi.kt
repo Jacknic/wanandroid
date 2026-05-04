@@ -125,7 +125,7 @@ interface WanApi {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("repassword") repassword: String
-    ): WanResult<Any?>
+    ): WanResult<UserInfo>
 
     /**
      * 退出
@@ -162,7 +162,7 @@ interface WanApi {
         @Field("title") title: String,
         @Field("author") author: String,
         @Field("link") link: String
-    ): WanResult<Any?>
+    ): WanResult<UserInfo>
 
     /**
      * 编辑收藏的文章
@@ -179,7 +179,7 @@ interface WanApi {
         @Field("title") title: String,
         @Field("author") author: String,
         @Field("link") link: String
-    ): WanResult<Any?>
+    ): WanResult<UserInfo>
 
     /**
      * 取消收藏-文章列表
@@ -214,7 +214,7 @@ interface WanApi {
     suspend fun postLgCollectAddtool(
         @Field("name") name: String,
         @Field("link") link: String
-    ): WanResult<Any?>
+    ): WanResult<UserInfo>
 
     /**
      * 编辑收藏网址
@@ -229,7 +229,7 @@ interface WanApi {
         @Field("id") id: Int,
         @Field("name") name: String,
         @Field("link") link: String
-    ): WanResult<Any?>
+    ): WanResult<UserInfo>
 
     /**
      * 删除收藏网址
@@ -323,7 +323,7 @@ interface WanApi {
     suspend fun postLgUserArticleAdd(
         @Field("title") title: String,
         @Field("link") link: String
-    ): WanResult<Any?>
+    ): WanResult<UserInfo>
 
     /**
      * 删除自己分享的文章
