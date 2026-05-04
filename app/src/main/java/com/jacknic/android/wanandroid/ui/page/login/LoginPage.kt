@@ -166,12 +166,6 @@ fun PageLogin(
                 .padding(horizontal = 32.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(Modifier.height(16.dp))
 
             // 用户名
             OutlinedTextField(
