@@ -57,7 +57,8 @@ import com.jacknic.android.wanandroid.ui.page.search.SEARCH_KEY
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PageDiscovery(
-    vm: DiscoveryViewModel = hiltViewModel()
+    vm: DiscoveryViewModel = hiltViewModel(),
+    onNavigateToHomeCategory: (Int) -> Unit = {},
 ) {
     val nav = LocalNavCtrl.current
     val hotkeyResult by vm.hotkeyResult.collectAsState()
@@ -124,7 +125,7 @@ fun PageDiscovery(
                         icon = Icons.TwoTone.Category
                     ) {
                         ProjectTreeFlow(trees = projectTrees) { tree ->
-                            // nav.navigate("${Page.ProjectList}?cid=${tree.id}")
+                            onNavigateToHomeCategory(tree.id)
                         }
                     }
                 }

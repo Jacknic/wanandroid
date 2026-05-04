@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -35,6 +36,7 @@ import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
+import com.jacknic.android.wanandroid.ui.page.main.home.HomeViewModel
 import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
 import com.jacknic.android.wanandroid.ui.page.main.square.PageSquare
@@ -62,6 +64,7 @@ fun PageMain() {
     val pagerState = rememberPagerState(currentDestination.ordinal) {
         NavDestinations.entries.size
     }
+    val homeViewModel: HomeViewModel = hiltViewModel()
     val surfaceColor = MaterialTheme.colorScheme.surface
     NavigationSuiteScaffold(
         navigationSuiteColors = NavigationSuiteDefaults.colors(
@@ -129,7 +132,15 @@ fun PageMain() {
                 }
 
                 NavDestinations.DISCOVERY.ordinal -> {
-                    PageDiscovery()
+                    PageDiscovery(
+                        onNavigateToHomeCategory = { cid ->
+                            homeViewModel.navigateToCategory(cid)
+                            currentDestination = NavDestinations.HOME
+                            scope.launch {
+                                pagerState.animateScrollToPage(NavDestinations.HOME.ordinal)
+                            }
+                        }
+                    )
                 }
 
                 NavDestinations.CATEGORY.ordinal -> {

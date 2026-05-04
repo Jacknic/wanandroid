@@ -39,6 +39,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -84,6 +85,7 @@ fun PageHome(
     val nav = LocalNavCtrl.current
     val bannerResult by vm.bannerList.collectAsState()
     val categoryResult by vm.categories.collectAsState()
+    val targetCid by vm.targetCid.collectAsState()
     val banners = bannerResult.getDataOrNull() ?: emptyList()
     val categories = categoryResult.getDataOrNull() ?: emptyList()
 
@@ -96,6 +98,19 @@ fun PageHome(
 
     val pagerState = rememberPagerState(pageCount = { categories.size.coerceAtLeast(1) })
     val scope = rememberCoroutineScope()
+
+    // 导航到目标分类
+    val categoriesLoaded = categoryResult.getDataOrNull()?.isNotEmpty() == true
+    LaunchedEffect(targetCid, categoriesLoaded) {
+        val cid = targetCid ?: return@LaunchedEffect
+        if (!categoriesLoaded) return@LaunchedEffect
+        val cats = categoryResult.getDataOrNull() ?: return@LaunchedEffect
+        val index = cats.indexOfFirst { it.id == cid }
+        if (index >= 0) {
+            pagerState.scrollToPage(index)
+        }
+        vm.consumeTargetCid()
+    }
 
     val containerColor = MaterialTheme.colorScheme.surfaceContainer
     val isLoading = bannerResult is StateResult.Loading || categoryResult is StateResult.Loading

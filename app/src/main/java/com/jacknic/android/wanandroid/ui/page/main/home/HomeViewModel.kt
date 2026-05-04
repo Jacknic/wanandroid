@@ -40,6 +40,23 @@ class HomeViewModel @Inject constructor(
     private val _categories = MutableStateFlow<StateResult<List<Chapter>>>(StateResult.Loading)
     val categories = _categories.asStateFlow()
 
+    private val _targetCid = MutableStateFlow<Int?>(null)
+    val targetCid = _targetCid.asStateFlow()
+
+    /**
+     * 导航到指定分类
+     */
+    fun navigateToCategory(cid: Int) {
+        _targetCid.value = cid
+    }
+
+    /**
+     * 消费目标分类ID
+     */
+    fun consumeTargetCid() {
+        _targetCid.value = null
+    }
+
     private val pagingFlows = mutableMapOf<Int, Flow<PagingData<Article>>>()
 
     init {
