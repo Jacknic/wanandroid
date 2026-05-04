@@ -123,7 +123,9 @@ fun PageMain() {
                 }
 
                 NavDestinations.SQUARE.ordinal -> {
-                    PageSquare()
+                    PageSquare(
+                        scrollBehavior = scrollBehavior
+                    )
                 }
 
                 NavDestinations.DISCOVERY.ordinal -> {
