@@ -4,7 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_category">Category</string>
     <string name="title_discovery">Discover</string>
-    <string name="title_system">System</string>
+    <string name="title_square">Square</string>
     <string name="title_mine">Me</string>
     <string name="title_hot_search">Hot Search</string>
     <string name="title_useful_sites">Useful Sites</string>
@@ -23,7 +23,7 @@
         <item>@string/title_home</item>
         <item>@string/title_category</item>
         <item>@string/title_discovery</item>
-        <item>@string/title_system</item>
+        <item>@string/title_square</item>
         <item>@string/title_mine</item>
     </string-array>
     <string-array name="theme_mode_names">

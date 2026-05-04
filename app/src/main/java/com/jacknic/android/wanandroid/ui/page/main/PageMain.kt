@@ -33,10 +33,10 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jacknic.android.wanandroid.R
-import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
 import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
+import com.jacknic.android.wanandroid.ui.page.main.square.PageSquare
 import com.jacknic.android.wanandroid.ui.page.main.tree.PageTree
 import kotlinx.coroutines.launch
 import com.jacknic.android.wanandroid.core.ui.R as UR
@@ -47,9 +47,9 @@ enum class NavDestinations(
     @field:StringRes val contentDescription: Int,
 ) {
     HOME(R.string.title_home, UR.raw.tabbar_animate_home, R.string.title_home),
-    CATEGORY(R.string.title_category, UR.raw.tabbar_animate_course, R.string.title_category),
+    SQUARE(R.string.title_square, UR.raw.tabbar_animate_dynamic, R.string.title_square),
     DISCOVERY(R.string.title_discovery, UR.raw.tabbar_animate_discover, R.string.title_discovery),
-    SYSTEM(R.string.title_system, UR.raw.tabbar_animate_dynamic, R.string.title_system),
+    CATEGORY(R.string.title_category, UR.raw.tabbar_animate_course, R.string.title_category),
     MINE(R.string.title_mine, UR.raw.tabbar_animate_mine, R.string.title_mine),
 }
 
@@ -122,15 +122,15 @@ fun PageMain() {
                     )
                 }
 
-                NavDestinations.CATEGORY.ordinal -> {
-                    PageCategory()
+                NavDestinations.SQUARE.ordinal -> {
+                    PageSquare()
                 }
 
                 NavDestinations.DISCOVERY.ordinal -> {
                     PageDiscovery()
                 }
 
-                NavDestinations.SYSTEM.ordinal -> {
+                NavDestinations.CATEGORY.ordinal -> {
                     PageTree()
                 }
 
