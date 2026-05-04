@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -34,7 +33,9 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
         /**
          * 搜索历史
          */
-        private val KEY_SEARCH_HISTORY = stringSetPreferencesKey("search_history")
+        private val KEY_SEARCH_HISTORY_LIST = stringPreferencesKey("search_history_list")
+
+        private const val HISTORY_SEPARATOR = "\n"
 
         /**
          * 主题模式（SYSTEM/LIGHT/DARK）
@@ -74,20 +75,21 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
     }
 
     /**
-     * 搜索历史
+     * 搜索历史（按最近搜索时间排序）
      */
     fun searchHistoryFlow() = settings.data.map { preferences ->
-        preferences[KEY_SEARCH_HISTORY] ?: emptySet()
+        preferences[KEY_SEARCH_HISTORY_LIST]?.split(HISTORY_SEPARATOR)?.filter { it.isNotEmpty() }
+            ?: emptyList()
     }
 
     /**
-     * 添加搜索历史
+     * 添加搜索历史（已存在则移至最前）
      */
     suspend fun addSearchHistory(keyword: String) {
         val current = searchHistoryFlow().first()
-        val next = (listOf(keyword) + current.filter { it != keyword }).take(20).toSet()
+        val next = (listOf(keyword) + current.filter { it != keyword }).take(20)
         settings.edit { preferences ->
-            preferences[KEY_SEARCH_HISTORY] = next
+            preferences[KEY_SEARCH_HISTORY_LIST] = next.joinToString(HISTORY_SEPARATOR)
         }
     }
 
@@ -98,7 +100,7 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
         val current = searchHistoryFlow().first()
         val next = current - keyword
         settings.edit { preferences ->
-            preferences[KEY_SEARCH_HISTORY] = next
+            preferences[KEY_SEARCH_HISTORY_LIST] = next.joinToString(HISTORY_SEPARATOR)
         }
     }
 
@@ -107,7 +109,7 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
      */
     suspend fun clearSearchHistory() {
         settings.edit { preferences ->
-            preferences.remove(KEY_SEARCH_HISTORY)
+            preferences.remove(KEY_SEARCH_HISTORY_LIST)
         }
     }
 

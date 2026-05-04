@@ -47,7 +47,7 @@ class SearchViewModel @Inject constructor(
     val hotkeyResult = _hotkeyResult.asStateFlow()
 
     val searchHistory = userDataRepository.searchHistoryFlow()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
         getHotkey()

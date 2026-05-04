@@ -17,7 +17,7 @@ interface UserDataRepository {
     /**
      * 搜索历史
      */
-    fun searchHistoryFlow(): Flow<Set<String>>
+    fun searchHistoryFlow(): Flow<List<String>>
 
     /**
      * 添加搜索历史
