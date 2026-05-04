@@ -5,7 +5,6 @@ import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
@@ -39,7 +37,6 @@ import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
 import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
-import com.jacknic.android.wanandroid.ui.page.main.tree.ContentItem
 import com.jacknic.android.wanandroid.ui.page.main.tree.PageTree
 import kotlinx.coroutines.launch
 import com.jacknic.android.wanandroid.core.ui.R as UR
@@ -114,8 +111,6 @@ fun PageMain() {
         },
     ) {
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-        val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<ContentItem>()
-        val state = rememberLazyListState()
         HorizontalPager(
             state = pagerState,
             userScrollEnabled = false,
@@ -136,7 +131,7 @@ fun PageMain() {
                 }
 
                 NavDestinations.SYSTEM.ordinal -> {
-                    PageTree(scaffoldNavigator, state)
+                    PageTree()
                 }
 
                 NavDestinations.MINE.ordinal -> {
