@@ -24,10 +24,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Refresh
@@ -53,13 +53,15 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -104,7 +106,6 @@ fun PageCategory(
     val treeResult by vm.treeResult.collectAsState()
     val searchQuery by vm.searchQuery.collectAsState()
     val expandedIndices by vm.expandedIndices.collectAsState()
-    val selectedChildId by vm.selectedChildId.collectAsState()
 
     val trees = treeResult.getDataOrNull() ?: emptyList()
     val filteredTrees = remember(trees, searchQuery) { vm.filterTrees(trees) }
@@ -123,22 +124,51 @@ fun PageCategory(
         value = scaffoldNavigator.scaffoldValue,
         listPane = {
             val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+            var isSearching by remember { mutableStateOf(false) }
 
             Column(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             ) {
                 TopAppBar(
-                    title = { Text(stringResource(R.string.title_category)) },
+                    title = {
+                        if (isSearching) {
+                            TextField(
+                                value = searchQuery,
+                                onValueChange = { vm.updateSearchQuery(it) },
+                                modifier = Modifier.fillMaxWidth(),
+                                placeholder = { Text("搜索分类") },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Search, contentDescription = null)
+                                },
+                                singleLine = true,
+                                colors = TextFieldDefaults.colors(
+                                    focusedContainerColor = Color.Transparent,
+                                    unfocusedContainerColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent,
+                                    unfocusedIndicatorColor = Color.Transparent
+                                )
+                            )
+                        } else {
+                            Text(stringResource(R.string.title_category))
+                        }
+                    },
+                    actions = {
+                        if (isSearching) {
+                            IconButton(onClick = {
+                                isSearching = false
+                                vm.updateSearchQuery("")
+                            }) {
+                                Icon(Icons.Default.Close, contentDescription = "关闭搜索")
+                            }
+                        } else {
+                            IconButton(onClick = { isSearching = true }) {
+                                Icon(Icons.Default.Search, contentDescription = "搜索")
+                            }
+                        }
+                    },
                     scrollBehavior = scrollBehavior,
                     colors = TopAppBarDefaults.topAppBarColors()
                         .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
-                )
-
-                // 搜索栏
-                SearchBar(
-                    query = searchQuery,
-                    onQueryChange = { vm.updateSearchQuery(it) },
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                 )
 
                 // 加载状态
@@ -153,7 +183,7 @@ fun PageCategory(
                         onRetry = { vm.refresh() }
                     )
                 }
-
+                val skc = LocalSoftwareKeyboardController.current
                 // 体系列表
                 if (!isLoading && !isError) {
                     TreeList(
@@ -163,14 +193,13 @@ fun PageCategory(
                         onSelectChild = { chapterId, name, parentName ->
                             vm.selectChild(chapterId)
                             scope.launch {
+                                skc?.hide()
                                 scaffoldNavigator.navigateTo(
                                     ListDetailPaneScaffoldRole.Detail,
                                     TreeNavKey(chapterId, name, parentName)
                                 )
                             }
-                        },
-                        contentPadding = WindowInsets.statusBars.asPaddingValues()
-                    )
+                        })
                 }
             }
         },
@@ -193,36 +222,6 @@ fun PageCategory(
 }
 
 /**
- * 搜索栏
- */
-@Composable
-private fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        value = query,
-        onValueChange = onQueryChange,
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp)),
-        placeholder = { Text("搜索分类") },
-        leadingIcon = {
-            Icon(Icons.Default.Search, contentDescription = null)
-        },
-        singleLine = true,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        ),
-        shape = RoundedCornerShape(24.dp)
-    )
-}
-
-/**
  * 体系树列表（可展开/折叠）
  */
 @Composable
@@ -231,16 +230,13 @@ private fun TreeList(
     expandedIndices: Set<Int>,
     onToggleExpand: (Int) -> Unit,
     onSelectChild: (chapterId: Int, name: String, parentName: String) -> Unit,
-    contentPadding: PaddingValues
 ) {
     if (trees.isEmpty()) {
         EmptyView(message = "暂无匹配的分类")
         return
     }
 
-    LazyColumn(
-        contentPadding = contentPadding
-    ) {
+    LazyColumn {
         trees.forEachIndexed { index, tree ->
             val isExpanded = expandedIndices.contains(index)
             val displayName = tree.name.parseAsHtml().toString()
