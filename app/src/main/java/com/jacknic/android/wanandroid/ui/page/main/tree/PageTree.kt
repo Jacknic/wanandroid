@@ -3,6 +3,7 @@
 package com.jacknic.android.wanandroid.ui.page.main.tree
 
 import android.os.Parcelable
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -109,6 +110,11 @@ fun PageTree(
     val isError = treeResult is StateResult.Error
 
     val currentNavKey = scaffoldNavigator.currentDestination?.contentKey
+
+    // 返回按钮拦截：详情面板可见时，按返回键回到列表而非退出页面
+    BackHandler(enabled = scaffoldNavigator.canNavigateBack()) {
+        scope.launch { scaffoldNavigator.navigateBack() }
+    }
 
     ListDetailPaneScaffold(
         directive = scaffoldNavigator.scaffoldDirective,
