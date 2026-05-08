@@ -105,6 +105,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                 coinCount = coinInfo?.coinCount ?: 0,
                 rank = coinInfo?.rank ?: "-",
                 collectCount = userInfo?.collectIds?.size ?: 0,
+                onCollectClick = { nav.navigate(Page.Collection) }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -137,6 +138,7 @@ private fun UserInfoSection(
     coinCount: Int,
     rank: String,
     collectCount: Int,
+    onCollectClick: () -> Unit = {},
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // 头像和用户名
@@ -225,15 +227,24 @@ private fun UserInfoSection(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             StatItem("点赞", "33")
-            StatItem("收藏", collectCount.toString())
+            StatItem(
+                label = "收藏",
+                value = collectCount.toString(),
+                onClick = onCollectClick
+            )
             StatItem("关注", "12")
         }
     }
 }
 
 @Composable
-private fun StatItem(label: String, value: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun StatItem(label: String, value: String, onClick: (() -> Unit)? = null) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .then(if (onClick != null) Modifier.clip(MaterialTheme.shapes.small).clickable { onClick() } else Modifier)
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+    ) {
         Text(
             value,
             fontSize = 18.sp,

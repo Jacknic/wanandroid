@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jacknic.android.wanandroid.ui.page.browser.PageBrowser
 import com.jacknic.android.wanandroid.ui.page.browser.openBrowser
+import com.jacknic.android.wanandroid.ui.page.collection.PageCollection
 import com.jacknic.android.wanandroid.ui.page.login.PageLogin
 import com.jacknic.android.wanandroid.ui.page.main.PageMain
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
@@ -33,6 +34,7 @@ object Page {
     const val Browser = "PageBrowser"
     const val Setting = "PageSetting"
     const val Login = "PageLogin"
+    const val Collection = "PageCollection"
 
 }
 
@@ -82,6 +84,7 @@ fun AppNavHost(
             composable(Page.Browser) { PageBrowser() }
             composable(Page.Setting) { PageSetting() }
             composable(Page.Login) { PageLogin(nav) }
+            composable(Page.Collection) { PageCollection() }
         }
     }
 }
