@@ -6,6 +6,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -66,6 +68,7 @@ import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.loading
 import com.jacknic.android.wanandroid.core.common.onError
 import com.jacknic.android.wanandroid.core.common.onSuccess
+import com.jacknic.android.wanandroid.ui.component.LoginAnimatedBackground
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.navTop
 import com.jacknic.android.wanandroid.ui.page.toMain
@@ -146,26 +149,42 @@ fun PageLogin(
     } else -1
 
     Scaffold(
+        containerColor = Color.Transparent,
         topBar = {
-            TopAppBar(title = { }, actions = {
-                TextButton(onClick = {
-                    vm.setSkipLogin(true)
-                    nav.navTop(Page.Main, Page.Login)
-                }) {
-                    Text(stringResource(R.string.login_btn_skip_login))
-                }
-            })
+            TopAppBar(
+                title = { },
+                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                ),
+                actions = {
+                    TextButton(onClick = {
+                        vm.setSkipLogin(true)
+                        nav.navTop(Page.Main, Page.Login)
+                    }) {
+                        Text(stringResource(R.string.login_btn_skip_login), color = Color.White)
+                    }
+                })
         },
     ) { paddingValues ->
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 32.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            // 动画背景层
+            LoginAnimatedBackground(
+                modifier = Modifier.fillMaxSize()
+            )
+
+            // 表单内容层 — 强制深色主题以保证在暗色背景上可读
+            MaterialTheme(
+                colorScheme = androidx.compose.material3.darkColorScheme()
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 32.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
 
             // 用户名
             OutlinedTextField(
@@ -392,8 +411,10 @@ fun PageLogin(
                     )
                 )
             }
-        }
-    }
+        } // close Column
+        } // close MaterialTheme
+    } // close Box
+} // close Scaffold lambda
 }
 
 @Composable
