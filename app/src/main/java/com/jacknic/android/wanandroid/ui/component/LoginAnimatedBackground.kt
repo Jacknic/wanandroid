@@ -9,18 +9,16 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import kotlin.math.cos
 import kotlin.math.min
-import kotlin.math.sin
+import kotlin.random.Random
 
 /**
  * JetBrains 风格动画背景 — 扇形展开的圆角矩形 + 渐变
@@ -81,97 +79,55 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
 
     // 扇形矩形参数
     val cardCount = 13
-    val angleStep = 15f  // 每张卡旋转 15°
+    val angleStep = 20f
     val baseScaleStep = 0.34f
 
-    Canvas(modifier = modifier.graphicsLayer {
-        scaleX = breathScale
-        scaleY = breathScale
-    }) {
+    // 每张卡的随机分散偏移（固定种子，避免重组时抖动）
+    val cardOffsets = remember {
+        val rng = Random(42)
+        List(cardCount) {
+            Offset(rng.nextFloat(), rng.nextFloat())
+        }
+    }
+
+    Canvas(
+        modifier = modifier
+            .blur(20.dp)
+            .graphicsLayer {
+                scaleX = breathScale
+                scaleY = breathScale
+            }) {
         val cx = size.width * 0.65f + driftX
         val cy = size.height * 0.35f + driftY
         val baseSize = min(size.width, size.height) * 0.08f
-        val cornerRadius = baseSize * 0.2f
 
-        // 绘制远景光晕
-        drawCircle(
-            brush = Brush.radialGradient(
-                colors = listOf(
-                    Color(0xFFAF1DF5).copy(alpha = 0.12f),
-                    Color.Transparent
-                ),
-                center = Offset(cx, cy),
-                radius = size.width * 1.6f
-            ),
-            radius = size.width * 1.6f,
-            center = Offset(cx, cy)
-        )
-
-        // 从后往前绘制扇形矩形（使用 DrawScope.rotate 变换）
         for (i in 0 until cardCount) {
             val fraction = i.toFloat() / (cardCount - 1)
             val cardRotation = rotation + i * angleStep
             val scale = 1f + i * baseScaleStep
             val alpha = 0.14f + fraction * 0.56f
 
-            val halfW = baseSize * scale
-            val halfH = baseSize * scale
-            val rectWidth = halfW * 2
-            val rectHeight = halfH * 2
-            val topLeft = Offset(cx - halfW, cy - halfH)
+            val offset = cardOffsets[i]
+            val cardCx = cx * offset.x
+            val cardCy = cy * offset.y
+            val radius = baseSize * scale
 
             val brush = Brush.linearGradient(
                 colors = gradientColors.map { it.copy(alpha = alpha) },
-                start = Offset(topLeft.x, topLeft.y + rectHeight),
-                end = Offset(topLeft.x, topLeft.y),
+                start = Offset(cardCx - radius, cardCy + radius),
+                end = Offset(cardCx + radius, cardCy - radius),
             )
 
             drawContext.canvas.save()
-            drawContext.canvas.translate(cx, cy)
+            drawContext.canvas.translate(cardCx, cardCy)
             drawContext.canvas.rotate(cardRotation)
-            drawContext.canvas.translate(-cx, -cy)
-            drawRoundRect(
+            drawContext.canvas.translate(-cardCx, -cardCy)
+            drawCircle(
                 brush = brush,
-                topLeft = topLeft,
-                size = Size(rectWidth, rectHeight),
-                cornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                radius = radius,
+                center = Offset(cardCx, cardCy),
             )
             drawContext.canvas.restore()
-        }
-
-        // 装饰性浮动粒子
-        for (i in 0 until 20) {
-            val seed = i * 137.508f
-            val px = sin(seed + rotation * 0.003f) * size.width * 0.45f + size.width * 0.5f
-            val py = cos(seed * 0.7f + rotation * 0.002f) * size.height * 0.45f + size.height * 0.5f
-            val particleAlpha = (0.08f + 0.12f * sin(seed + rotation * 0.005f)).coerceIn(0f, 1f)
-            val particleSize = 1.5f.dp.toPx() + sin(seed) * 2f
-
-            drawCircle(
-                color = gradientColors[i % 3].copy(alpha = particleAlpha),
-                radius = particleSize,
-                center = Offset(px, py)
-            )
-        }
-
-        // 装饰性几何线条
-        for (i in 0 until 6) {
-            val lineAngle = rotation * 0.5f + i * 60f
-            val lineAlpha = 0.04f + 0.03f * sin(rotation * 0.01f + i)
-            val radians = Math.toRadians(lineAngle.toDouble())
-            val lineLength = size.width * 0.7f
-            val startX = cx + cos(radians) * baseSize * 2
-            val startY = cy + sin(radians) * baseSize * 2
-            val endX = cx + cos(radians) * lineLength
-            val endY = cy + sin(radians) * lineLength
-
-            drawLine(
-                color = gradientColors[i % 3].copy(alpha = lineAlpha),
-                start = Offset(startX.toFloat(), startY.toFloat()),
-                end = Offset(endX.toFloat(), endY.toFloat()),
-                strokeWidth = 1.dp.toPx(),
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
-            )
         }
     }
 }
