@@ -93,9 +93,6 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
         val baseSize = min(size.width, size.height) * 0.08f
         val cornerRadius = baseSize * 0.2f
 
-        // 绘制暗色底色
-        drawRect(color = Color(0xFF0D0D1A))
-
         // 绘制远景光晕
         drawCircle(
             brush = Brush.radialGradient(
@@ -104,9 +101,9 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
                     Color.Transparent
                 ),
                 center = Offset(cx, cy),
-                radius = size.width * 0.6f
+                radius = size.width * 1.6f
             ),
-            radius = size.width * 0.6f,
+            radius = size.width * 1.6f,
             center = Offset(cx, cy)
         )
 
@@ -117,8 +114,8 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
             val scale = 1f + i * baseScaleStep
             val alpha = 0.14f + fraction * 0.56f
 
-            val halfW = baseSize * scale / 2f
-            val halfH = baseSize * scale / 2f
+            val halfW = baseSize * scale
+            val halfH = baseSize * scale
             val rectWidth = halfW * 2
             val rectHeight = halfH * 2
             val topLeft = Offset(cx - halfW, cy - halfH)
@@ -176,18 +173,5 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
             )
         }
-
-        // 底部渐变遮罩，保证表单区域可读
-        drawRect(
-            brush = Brush.verticalGradient(
-                colors = listOf(
-                    Color.Transparent,
-                    Color(0xFF0D0D1A).copy(alpha = 0.3f),
-                    Color(0xFF0D0D1A).copy(alpha = 0.7f),
-                ),
-                startY = size.height * 0.5f,
-                endY = size.height
-            )
-        )
     }
 }
