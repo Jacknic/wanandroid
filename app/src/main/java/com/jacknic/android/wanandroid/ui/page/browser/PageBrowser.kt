@@ -36,6 +36,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
+import okhttp3.HttpUrl.Companion.toHttpUrl
 
 private const val KEY_LINK = "link"
 
@@ -46,7 +47,13 @@ fun openBrowser(
     nav: NavHostController,
     url: String
 ) {
-    nav.currentBackStackEntry?.savedStateHandle?.set(KEY_LINK, url)
+    var targetUrl = url
+    // 如果url域名为 www.wanandroid.com 则替换为 wanandroid.com
+    val httpUrl = url.toHttpUrl()
+    if (httpUrl.host == "www.wanandroid.com") {
+        targetUrl = httpUrl.newBuilder().host("wanandroid.com").build().toString()
+    }
+    nav.currentBackStackEntry?.savedStateHandle?.set(KEY_LINK, targetUrl)
     nav.navigate(Page.Browser)
 }
 
