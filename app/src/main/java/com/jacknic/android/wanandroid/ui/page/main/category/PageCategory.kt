@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -51,12 +53,15 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -112,6 +117,22 @@ fun PageCategory(
     val isLoading = treeResult is StateResult.Loading
     val isError = treeResult is StateResult.Error
 
+    val savedTreeScroll = vm.getTreeScrollState()
+    val treeListState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState(
+            firstVisibleItemIndex = savedTreeScroll.first,
+            firstVisibleItemScrollOffset = savedTreeScroll.second
+        )
+    }
+
+    LaunchedEffect(treeListState) {
+        snapshotFlow {
+            treeListState.firstVisibleItemIndex to treeListState.firstVisibleItemScrollOffset
+        }.collect { (index, offset) ->
+            vm.saveTreeScrollState(index, offset)
+        }
+    }
+
     val currentNavKey = scaffoldNavigator.currentDestination?.contentKey
 
     // 返回按钮拦截：详情面板可见时，按返回键回到列表而非退出页面
@@ -124,7 +145,11 @@ fun PageCategory(
         value = scaffoldNavigator.scaffoldValue,
         listPane = {
             val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-            var isSearching by remember { mutableStateOf(false) }
+            var isSearching by rememberSaveable { mutableStateOf(vm.getIsSearching()) }
+
+            LaunchedEffect(isSearching) {
+                vm.saveIsSearching(isSearching)
+            }
 
             Column(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
@@ -189,6 +214,7 @@ fun PageCategory(
                     TreeList(
                         trees = filteredTrees,
                         expandedIndices = expandedIndices,
+                        listState = treeListState,
                         onToggleExpand = { vm.toggleExpand(it) },
                         onSelectChild = { chapterId, name, parentName ->
                             vm.selectChild(chapterId)
@@ -228,6 +254,7 @@ fun PageCategory(
 private fun TreeList(
     trees: List<Tree>,
     expandedIndices: Set<Int>,
+    listState: LazyListState,
     onToggleExpand: (Int) -> Unit,
     onSelectChild: (chapterId: Int, name: String, parentName: String) -> Unit,
 ) {
@@ -236,7 +263,7 @@ private fun TreeList(
         return
     }
 
-    LazyColumn {
+    LazyColumn(state = listState) {
         trees.forEachIndexed { index, tree ->
             val isExpanded = expandedIndices.contains(index)
             val displayName = tree.name.parseAsHtml().toString()
@@ -303,6 +330,22 @@ private fun TreeDetailPane(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val pagingItems = vm.getArticleListFlow(navKey.id).collectAsLazyPagingItems()
 
+    val savedDetailScroll = vm.getDetailScrollState(navKey.id)
+    val detailGridState = rememberSaveable(saver = LazyGridState.Saver) {
+        LazyGridState(
+            firstVisibleItemIndex = savedDetailScroll.first,
+            firstVisibleItemScrollOffset = savedDetailScroll.second
+        )
+    }
+
+    LaunchedEffect(detailGridState) {
+        snapshotFlow {
+            detailGridState.firstVisibleItemIndex to detailGridState.firstVisibleItemScrollOffset
+        }.collect { (index, offset) ->
+            vm.saveDetailScrollState(navKey.id, index, offset)
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -326,6 +369,7 @@ private fun TreeDetailPane(
         ArticlePagingList(
             pagingItems = pagingItems,
             onArticleClick = onArticleClick,
+            gridState = detailGridState,
             modifier = Modifier
                 .padding(paddingValues)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
@@ -340,6 +384,7 @@ private fun TreeDetailPane(
 private fun ArticlePagingList(
     pagingItems: LazyPagingItems<Article>,
     onArticleClick: (Article) -> Unit,
+    gridState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
     val loadState = pagingItems.loadState
@@ -347,6 +392,7 @@ private fun ArticlePagingList(
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         modifier = modifier.fillMaxSize(),
+        state = gridState,
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {

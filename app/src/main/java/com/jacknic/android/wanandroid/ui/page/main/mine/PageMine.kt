@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.ui.page.main.mine
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -39,7 +39,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,6 +69,18 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
     val data = (personalInfoState as? StateResult.Success)?.data
     val userInfo = data?.userInfo
     val coinInfo = data?.coinInfo
+
+    val savedScroll = vm.getScrollState()
+    val scrollState = rememberSaveable(saver = ScrollState.Saver) {
+        ScrollState(initial = savedScroll.second)
+    }
+
+    LaunchedEffect(scrollState) {
+        snapshotFlow { scrollState.value to scrollState.maxValue }
+            .collect { (value, _) ->
+                vm.saveScrollState(0, value)
+            }
+    }
 
     Scaffold(
         topBar = {
@@ -96,7 +111,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
         Column(
             modifier = Modifier
                 .padding(padding)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             // 用户信息区域
             UserInfoSection(

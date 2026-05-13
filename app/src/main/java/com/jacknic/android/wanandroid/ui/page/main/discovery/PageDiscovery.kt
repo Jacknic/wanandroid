@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Category
 import androidx.compose.material.icons.twotone.Explore
@@ -30,8 +31,10 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.text.parseAsHtml
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.core.model.Chapter
@@ -62,13 +66,29 @@ fun PageDiscovery(
     onNavigateToHomeCategory: (Int) -> Unit = {},
 ) {
     val nav = LocalNavCtrl.current
-    val hotkeyResult by vm.hotkeyResult.collectAsState()
-    val friendResult by vm.friendResult.collectAsState()
-    val projectTreeResult by vm.chapterResult.collectAsState()
+    val hotkeyResult by vm.hotkeyResult.collectAsStateWithLifecycle()
+    val friendResult by vm.friendResult.collectAsStateWithLifecycle()
+    val projectTreeResult by vm.chapterResult.collectAsStateWithLifecycle()
 
     val hotkeys = hotkeyResult.getDataOrNull() ?: emptyList()
     val friendLinks = friendResult.getDataOrNull() ?: emptyList()
     val projectTrees = projectTreeResult.getDataOrNull() ?: emptyList()
+
+    val savedScroll = vm.getScrollState()
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState(
+            firstVisibleItemIndex = savedScroll.first,
+            firstVisibleItemScrollOffset = savedScroll.second
+        )
+    }
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
+        }.collect { (index, offset) ->
+            vm.saveScrollState(index, offset)
+        }
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -95,6 +115,7 @@ fun PageDiscovery(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
+            state = listState,
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             if (hotkeys.isNotEmpty()) {

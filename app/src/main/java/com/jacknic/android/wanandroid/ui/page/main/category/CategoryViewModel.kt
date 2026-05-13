@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.ui.page.main.category
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -22,6 +23,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val repo: WanRepository
 ) : ViewModel() {
 
@@ -29,21 +31,27 @@ class CategoryViewModel @Inject constructor(
     val treeResult = _treeResult.asStateFlow()
 
     /** 当前搜索关键字 */
-    private val _searchQuery = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow(savedStateHandle[KEY_SEARCH_QUERY] ?: "")
     val searchQuery = _searchQuery.asStateFlow()
 
     /** 展开的一级分类索引集合 */
-    private val _expandedIndices = MutableStateFlow<Set<Int>>(emptySet())
+    private val _expandedIndices = MutableStateFlow<Set<Int>>(
+        savedStateHandle.get<String>(KEY_EXPANDED_INDICES)?.split(",")
+            ?.filter { it.isNotEmpty() }?.mapNotNull { it.toIntOrNull() }?.toSet()
+            ?: emptySet()
+    )
     val expandedIndices = _expandedIndices.asStateFlow()
 
     /** 当前选中的二级分类ID */
-    private val _selectedChildId = MutableStateFlow<Int?>(null)
+    private val _selectedChildId = MutableStateFlow<Int?>(savedStateHandle[KEY_SELECTED_CHILD_ID])
     val selectedChildId = _selectedChildId.asStateFlow()
 
     private val pagingFlows = mutableMapOf<Int, Flow<PagingData<Article>>>()
 
     init {
-        loadTree()
+        if (_treeResult.value is StateResult.Loading) {
+            loadTree()
+        }
     }
 
     private fun loadTree() {
@@ -59,6 +67,7 @@ class CategoryViewModel @Inject constructor(
         _expandedIndices.value = _expandedIndices.value.toMutableSet().apply {
             if (contains(index)) remove(index) else add(index)
         }
+        saveExpandedIndices()
     }
 
     /**
@@ -66,6 +75,7 @@ class CategoryViewModel @Inject constructor(
      */
     fun selectChild(chapterId: Int) {
         _selectedChildId.value = chapterId
+        savedStateHandle[KEY_SELECTED_CHILD_ID] = chapterId
     }
 
     /**
@@ -73,6 +83,7 @@ class CategoryViewModel @Inject constructor(
      */
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
+        savedStateHandle[KEY_SEARCH_QUERY] = query
     }
 
     /**
@@ -111,5 +122,49 @@ class CategoryViewModel @Inject constructor(
 
     fun refresh() {
         loadTree()
+    }
+
+    // ==================== 状态保存与恢复 ====================
+
+    fun saveTreeScrollState(firstVisibleItemIndex: Int, firstVisibleItemScrollOffset: Int) {
+        savedStateHandle[KEY_TREE_SCROLL_INDEX] = firstVisibleItemIndex
+        savedStateHandle[KEY_TREE_SCROLL_OFFSET] = firstVisibleItemScrollOffset
+    }
+
+    fun getTreeScrollState(): Pair<Int, Int> {
+        val index = savedStateHandle[KEY_TREE_SCROLL_INDEX] ?: 0
+        val offset = savedStateHandle[KEY_TREE_SCROLL_OFFSET] ?: 0
+        return index to offset
+    }
+
+    fun saveDetailScrollState(cid: Int, firstVisibleItemIndex: Int, firstVisibleItemScrollOffset: Int) {
+        savedStateHandle["${KEY_DETAIL_SCROLL_PREFIX}${cid}_index"] = firstVisibleItemIndex
+        savedStateHandle["${KEY_DETAIL_SCROLL_PREFIX}${cid}_offset"] = firstVisibleItemScrollOffset
+    }
+
+    fun getDetailScrollState(cid: Int): Pair<Int, Int> {
+        val index = savedStateHandle["${KEY_DETAIL_SCROLL_PREFIX}${cid}_index"] ?: 0
+        val offset = savedStateHandle["${KEY_DETAIL_SCROLL_PREFIX}${cid}_offset"] ?: 0
+        return index to offset
+    }
+
+    fun saveIsSearching(isSearching: Boolean) {
+        savedStateHandle[KEY_IS_SEARCHING] = isSearching
+    }
+
+    fun getIsSearching(): Boolean = savedStateHandle[KEY_IS_SEARCHING] ?: false
+
+    private fun saveExpandedIndices() {
+        savedStateHandle[KEY_EXPANDED_INDICES] = _expandedIndices.value.joinToString(",")
+    }
+
+    companion object {
+        private const val KEY_SEARCH_QUERY = "category_search_query"
+        private const val KEY_EXPANDED_INDICES = "category_expanded_indices"
+        private const val KEY_SELECTED_CHILD_ID = "category_selected_child_id"
+        private const val KEY_IS_SEARCHING = "category_is_searching"
+        private const val KEY_TREE_SCROLL_INDEX = "category_tree_scroll_index"
+        private const val KEY_TREE_SCROLL_OFFSET = "category_tree_scroll_offset"
+        private const val KEY_DETAIL_SCROLL_PREFIX = "category_detail_scroll_"
     }
 }
