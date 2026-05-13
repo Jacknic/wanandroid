@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -95,20 +96,38 @@ fun PageHome(
         }
     }
 
-    val pagerState = rememberPagerState(pageCount = { categories.size.coerceAtLeast(1) })
+    val savedPage = vm.getSavedCurrentPage()
+    val pagerState = rememberPagerState(initialPage = savedPage, pageCount = { categories.size.coerceAtLeast(1) })
     val scope = rememberCoroutineScope()
 
-    // 导航到目标分类
+    // 导航到目标分类 / 恢复已保存的页面
     val categoriesLoaded = categoryResult.getDataOrNull()?.isNotEmpty() == true
     LaunchedEffect(targetCid, categoriesLoaded) {
-        val cid = targetCid ?: return@LaunchedEffect
         if (!categoriesLoaded) return@LaunchedEffect
         val cats = categoryResult.getDataOrNull() ?: return@LaunchedEffect
-        val index = cats.indexOfFirst { it.id == cid }
-        if (index >= 0) {
-            pagerState.scrollToPage(index)
+
+        // 优先处理跨 Tab 的分类导航信号
+        val cid = targetCid
+        if (cid != null) {
+            val index = cats.indexOfFirst { it.id == cid }
+            if (index >= 0) {
+                pagerState.scrollToPage(index)
+            }
+            vm.consumeTargetCid()
+            return@LaunchedEffect
         }
-        vm.consumeTargetCid()
+
+        // 分类加载完成后，恢复已保存的页面位置
+        val target = savedPage.coerceIn(0, cats.size - 1)
+        if (pagerState.currentPage != target) {
+            pagerState.scrollToPage(target)
+        }
+    }
+
+    // 持续保存当前选中的分类页索引
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.settledPage }
+            .collect { page -> vm.saveCurrentPage(page) }
     }
 
     val containerColor = MaterialTheme.colorScheme.surfaceContainer
@@ -214,7 +233,24 @@ fun PageHome(
 
                 val category = categories[pageIndex]
                 val pagingItems = vm.getArticleListFlow(category.id).collectAsLazyPagingItems()
-                val gridState = rememberSaveable(saver = LazyGridState.Saver) { LazyGridState() }
+
+                // 从 ViewModel 恢复滚动位置作为初始值
+                val savedScroll = vm.getScrollState(category.id)
+                val gridState = rememberSaveable(saver = LazyGridState.Saver) {
+                    LazyGridState(
+                        firstVisibleItemIndex = savedScroll.first,
+                        firstVisibleItemScrollOffset = savedScroll.second
+                    )
+                }
+
+                // 持续保存滚动位置到 ViewModel
+                LaunchedEffect(gridState) {
+                    snapshotFlow {
+                        gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset
+                    }.collect { (index, offset) ->
+                        vm.saveScrollState(category.id, index, offset)
+                    }
+                }
 
                 ArticleList(
                     pagingItems = pagingItems,

@@ -29,8 +29,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private var savedStateHandle: SavedStateHandle,
-    private var repo: WanRepository
+    private val savedStateHandle: SavedStateHandle,
+    private val repo: WanRepository
 ) : ViewModel() {
     private val log = TLog.create("HomeViewModel", BuildConfig.DEBUG)
 
@@ -82,6 +82,37 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    // ==================== 状态保存与恢复 ====================
+
+    /**
+     * 保存当前选中的分类页索引
+     */
+    fun saveCurrentPage(page: Int) {
+        savedStateHandle[KEY_CURRENT_PAGE] = page
+    }
+
+    /**
+     * 获取已保存的分类页索引
+     */
+    fun getSavedCurrentPage(): Int = savedStateHandle[KEY_CURRENT_PAGE] ?: 0
+
+    /**
+     * 保存指定分类的滚动位置
+     */
+    fun saveScrollState(cid: Int, firstVisibleItemIndex: Int, firstVisibleItemScrollOffset: Int) {
+        savedStateHandle["${KEY_SCROLL_PREFIX}${cid}_index"] = firstVisibleItemIndex
+        savedStateHandle["${KEY_SCROLL_PREFIX}${cid}_offset"] = firstVisibleItemScrollOffset
+    }
+
+    /**
+     * 获取指定分类的滚动位置
+     */
+    fun getScrollState(cid: Int): Pair<Int, Int> {
+        val index = savedStateHandle["${KEY_SCROLL_PREFIX}${cid}_index"] ?: 0
+        val offset = savedStateHandle["${KEY_SCROLL_PREFIX}${cid}_offset"] ?: 0
+        return index to offset
+    }
+
     private fun getBannerList() {
         viewModelScope.launch {
             _bannerList.emit(repo.getHomeBannerList().toStateResult())
@@ -108,5 +139,10 @@ class HomeViewModel @Inject constructor(
 
     override fun onCleared() {
         log.tag().d("onCleared: HomeViewModel")
+    }
+
+    companion object {
+        private const val KEY_CURRENT_PAGE = "home_current_page"
+        private const val KEY_SCROLL_PREFIX = "home_scroll_"
     }
 }
