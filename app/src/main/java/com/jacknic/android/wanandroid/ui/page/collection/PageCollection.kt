@@ -44,8 +44,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.core.model.Article
+import com.jacknic.android.wanandroid.core.network.isUnauthorized
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.navTop
 import com.jacknic.android.wanandroid.ui.page.openBrowser
 
 /**
@@ -65,7 +68,8 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
     // 滚动到底部自动加载更多
     LaunchedEffect(lazyListState) {
         snapshotFlow {
-            val lastVisibleIndex = lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            val lastVisibleIndex =
+                lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
             val totalItems = lazyListState.layoutInfo.totalItemsCount
             lastVisibleIndex to totalItems
         }.collect { (lastVisible, total) ->
@@ -110,18 +114,25 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                 }
 
                 is StateResult.Error -> {
+                    val isUnauthorized = state.exception?.isUnauthorized() ?: false
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                "加载失败",
+                                if (isUnauthorized) "未登录" else "加载失败",
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            TextButton(onClick = { vm.refresh() }) {
-                                Text("重试")
+                            if (isUnauthorized) {
+                                TextButton(onClick = { nav.navTop(Page.Login, Page.Main) }) {
+                                    Text("去登录")
+                                }
+                            } else {
+                                TextButton(onClick = { vm.refresh() }) {
+                                    Text("重试")
+                                }
                             }
                         }
                     }
@@ -185,7 +196,8 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
             title = { Text("取消收藏") },
             text = {
                 Text(
-                    article.title.take(50).let { if (it.length < article.title.length) "$it…" else it },
+                    article.title.take(50)
+                        .let { if (it.length < article.title.length) "$it…" else it },
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
