@@ -18,6 +18,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.KeyboardArrowRight
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.Brightness4
+import androidx.compose.material.icons.twotone.Brightness7
+import androidx.compose.material.icons.twotone.BrightnessAuto
 import androidx.compose.material.icons.twotone.Create
 import androidx.compose.material.icons.twotone.Drafts
 import androidx.compose.material.icons.twotone.Face
@@ -25,7 +27,6 @@ import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Group
 import androidx.compose.material.icons.twotone.LocalActivity
 import androidx.compose.material.icons.twotone.Notifications
-import androidx.compose.material.icons.twotone.QrCodeScanner
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Card
@@ -47,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -54,9 +56,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.theme.ThemeMode
+import com.jacknic.android.wanandroid.ui.theme.themeMode
+import com.jacknic.android.wanandroid.ui.theme.useThemeMode
 
 /**
  * 我的页面
@@ -86,14 +92,24 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
         topBar = {
             TopAppBar(
                 title = { },
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.TwoTone.QrCodeScanner, "扫码")
-                    }
-                },
                 actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.TwoTone.Brightness4, "深色模式")
+                    IconButton(onClick = {
+                        val nextMode = when (themeMode) {
+                            ThemeMode.SYSTEM -> ThemeMode.LIGHT
+                            ThemeMode.LIGHT -> ThemeMode.DARK
+                            ThemeMode.DARK -> ThemeMode.SYSTEM
+                        }
+                        useThemeMode(nextMode)
+                    }) {
+                        val names = stringArrayResource(R.array.theme_mode_names)
+                        Icon(
+                            when (themeMode) {
+                                ThemeMode.SYSTEM -> Icons.TwoTone.BrightnessAuto
+                                ThemeMode.LIGHT -> Icons.TwoTone.Brightness7
+                                ThemeMode.DARK -> Icons.TwoTone.Brightness4
+                            },
+                            contentDescription = names[themeMode.ordinal]
+                        )
                     }
                     IconButton(onClick = { }) {
                         Icon(Icons.TwoTone.Notifications, "通知")
