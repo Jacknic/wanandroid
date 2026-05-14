@@ -12,6 +12,7 @@ import com.jacknic.android.wanandroid.core.model.Paging
 import com.jacknic.android.wanandroid.core.model.PersonalInfo
 import com.jacknic.android.wanandroid.core.model.Rank
 import com.jacknic.android.wanandroid.core.model.ShareArticles
+import com.jacknic.android.wanandroid.core.model.Todo
 import com.jacknic.android.wanandroid.core.model.Tree
 import com.jacknic.android.wanandroid.core.model.UserInfo
 import com.jacknic.android.wanandroid.core.model.WendaComment
@@ -300,4 +301,74 @@ interface WanRepository {
      * 获取教程列表
      */
     suspend fun getChapterSublist(): Result<List<CourseInfo>>
+
+    /**
+     * 新增TODO
+     *
+     * @param title TODO标题
+     * @param content TODO详情
+     * @param date 预定完成时间，格式为yyyy-MM-dd (optional)
+     * @param type 类型，大于0的整数 (optional)
+     * @param priority 优先级，大于0的整数 (optional)
+     */
+    suspend fun addTodo(
+        title: String,
+        content: String,
+        date: String? = null,
+        type: Int? = null,
+        priority: Int? = null
+    ): Result<Todo>
+
+    /**
+     * 更新TODO
+     *
+     * @param id TODO唯一标识ID
+     * @param title TODO标题
+     * @param content TODO详情
+     * @param date 预定完成时间，格式为yyyy-MM-dd
+     * @param status 状态：0为未完成，1为完成
+     * @param type 类型，大于0的整数 (optional)
+     * @param priority 优先级，大于0的整数 (optional)
+     */
+    suspend fun updateTodo(
+        id: Int,
+        title: String,
+        content: String,
+        date: String,
+        status: Int,
+        type: Int? = null,
+        priority: Int? = null
+    ): Result<Todo>
+
+    /**
+     * 删除TODO
+     *
+     * @param id TODO唯一标识ID
+     */
+    suspend fun deleteTodo(id: Int): Result<Any?>
+
+    /**
+     * 仅更新TODO完成状态
+     *
+     * @param id TODO唯一标识ID
+     * @param status 状态：1代表未完成→已完成，0代表已完成→未完成
+     */
+    suspend fun doneTodo(id: Int, status: Int): Result<Any?>
+
+    /**
+     * 获取TODO列表
+     *
+     * @param page 页码，从1开始
+     * @param status 状态筛选：0-未完成；1-完成 (optional)
+     * @param type 按类型筛选，大于0的整数 (optional)
+     * @param priority 按优先级筛选 (optional)
+     * @param orderBy 排序方式：1-完成日期顺序；2-完成日期逆序；3-创建日期顺序；4-创建日期逆序 (optional)
+     */
+    suspend fun getTodoList(
+        page: Int,
+        status: Int? = null,
+        type: Int? = null,
+        priority: Int? = null,
+        orderBy: Int? = null
+    ): Result<Paging<Todo>>
 }

@@ -12,6 +12,7 @@ import com.jacknic.android.wanandroid.core.model.Paging
 import com.jacknic.android.wanandroid.core.model.PersonalInfo
 import com.jacknic.android.wanandroid.core.model.Rank
 import com.jacknic.android.wanandroid.core.model.ShareArticles
+import com.jacknic.android.wanandroid.core.model.Todo
 import com.jacknic.android.wanandroid.core.model.Tree
 import com.jacknic.android.wanandroid.core.model.UserInfo
 import com.jacknic.android.wanandroid.core.model.WanResult
@@ -416,5 +417,86 @@ interface WanApi {
      */
     @GET("/chapter/547/sublist/json")
     suspend fun getChapterSublist(): WanResult<List<CourseInfo>>
+
+    /**
+     * 新增TODO
+     *
+     * @param title TODO标题
+     * @param content TODO详情
+     * @param date 预定完成时间，格式为yyyy-MM-dd
+     * @param type 类型，大于0的整数
+     * @param priority 优先级，大于0的整数
+     */
+    @FormUrlEncoded
+    @POST("/lg/todo/add/json")
+    suspend fun postLgTodoAdd(
+        @Field("title") title: String,
+        @Field("content") content: String,
+        @Field("date") date: String? = null,
+        @Field("type") type: Int? = null,
+        @Field("priority") priority: Int? = null
+    ): WanResult<Todo>
+
+    /**
+     * 更新TODO
+     *
+     * @param id TODO唯一标识ID
+     * @param title TODO标题
+     * @param content TODO详情
+     * @param date 预定完成时间，格式为yyyy-MM-dd
+     * @param status 状态：0为未完成，1为完成
+     * @param type 类型，大于0的整数
+     * @param priority 优先级，大于0的整数
+     */
+    @FormUrlEncoded
+    @POST("/lg/todo/update/{id}/json")
+    suspend fun postLgTodoUpdate(
+        @Path("id") id: Int,
+        @Field("title") title: String,
+        @Field("content") content: String,
+        @Field("date") date: String,
+        @Field("status") status: Int,
+        @Field("type") type: Int? = null,
+        @Field("priority") priority: Int? = null
+    ): WanResult<Todo>
+
+    /**
+     * 删除TODO
+     *
+     * @param id TODO唯一标识ID
+     */
+    @POST("/lg/todo/delete/{id}/json")
+    suspend fun postLgTodoDelete(@Path("id") id: Int): WanResult<Any?>
+
+    /**
+     * 仅更新TODO完成状态
+     *
+     * @param id TODO唯一标识ID
+     * @param status 状态：1代表未完成→已完成，0代表已完成→未完成
+     */
+    @FormUrlEncoded
+    @POST("/lg/todo/done/{id}/json")
+    suspend fun postLgTodoDone(
+        @Path("id") id: Int,
+        @Field("status") status: Int
+    ): WanResult<Any?>
+
+    /**
+     * TODO列表
+     *
+     * @param page 页码，从1开始
+     * @param status 状态筛选：0-未完成；1-完成
+     * @param type 按类型筛选，大于0的整数
+     * @param priority 按优先级筛选
+     * @param orderBy 排序方式：1-完成日期顺序；2-完成日期逆序；3-创建日期顺序；4-创建日期逆序
+     */
+    @GET("/lg/todo/v2/list/{page}/json")
+    suspend fun getLgTodoList(
+        @Path("page") page: Int,
+        @Query("status") status: Int? = null,
+        @Query("type") type: Int? = null,
+        @Query("priority") priority: Int? = null,
+        @Query("orderby") orderBy: Int? = null
+    ): WanResult<Paging<Todo>>
 
 }
