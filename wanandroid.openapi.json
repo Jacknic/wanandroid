@@ -19,6 +19,7 @@
     { "name": "积分" },
     { "name": "消息" },
     { "name": "教程" },
+    { "name": "TODO" },
     { "name": "其他" },
     { "name": "需登录" },
     { "name": "分页" }
@@ -1465,6 +1466,261 @@
         },
         "security": []
       }
+    },
+    "/lg/todo/add/json": {
+      "post": {
+        "summary": "新增TODO",
+        "description": "新增一个TODO，需要登录。\n\ntype 可以用于在app中预定义几个类别，例如工作(1)、生活(2)、娱乐(3)，新增时传入，查询时可按type筛选。如果不设置type则为0，未来无法做type=0的筛选（会显示全部），筛选type必须为大于0的整数。\n\npriority 主要用于定义优先级，例如重要(1)、一般(2)等，查询时可按priority筛选。",
+        "tags": ["TODO", "需登录"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "TODO标题",
+                    "type": "string",
+                    "example": "学习Kotlin"
+                  },
+                  "content": {
+                    "description": "TODO详情",
+                    "type": "string",
+                    "example": "完成Kotlin基础语法学习"
+                  },
+                  "date": {
+                    "description": "预定完成时间，格式为yyyy-MM-dd，不传默认当天",
+                    "type": "string",
+                    "example": "2024-01-15"
+                  },
+                  "type": {
+                    "description": "类型，大于0的整数，可用于分类筛选",
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "priority": {
+                    "description": "优先级，大于0的整数",
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["title", "content"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WanResultTodo" }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/todo/update/{id}/json": {
+      "post": {
+        "summary": "更新TODO",
+        "description": "更新一个TODO，需要登录。\n\n注意：如果有字段没有携带，会被默认值更新，比如当前todo status=1，更新时没有带上，会认为被重置。当更新status=1时，会自动设置服务器当前时间为完成时间。",
+        "tags": ["TODO", "需登录"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "TODO的唯一标识ID",
+            "required": true,
+            "example": 83,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "TODO标题",
+                    "type": "string",
+                    "example": "学习Kotlin"
+                  },
+                  "content": {
+                    "description": "TODO详情",
+                    "type": "string",
+                    "example": "完成Kotlin基础语法学习"
+                  },
+                  "date": {
+                    "description": "预定完成时间，格式为yyyy-MM-dd",
+                    "type": "string",
+                    "example": "2024-01-15"
+                  },
+                  "status": {
+                    "description": "状态：0为未完成，1为完成",
+                    "type": "integer",
+                    "enum": [0, 1]
+                  },
+                  "type": {
+                    "description": "类型，大于0的整数",
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "priority": {
+                    "description": "优先级，大于0的整数",
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["title", "content", "date", "status"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WanResultTodo" }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/todo/delete/{id}/json": {
+      "post": {
+        "summary": "删除TODO",
+        "description": "删除一个TODO，需要登录。",
+        "tags": ["TODO", "需登录"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "TODO的唯一标识ID",
+            "required": true,
+            "example": 83,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WanResult" }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/todo/done/{id}/json": {
+      "post": {
+        "summary": "仅更新TODO完成状态",
+        "description": "仅变更TODO的完成状态，需要登录。只会变更status，未完成→已完成 或 已完成→未完成。",
+        "tags": ["TODO", "需登录"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "TODO的唯一标识ID",
+            "required": true,
+            "example": 80,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "状态：1代表未完成→已完成，0代表已完成→未完成",
+                    "type": "integer",
+                    "enum": [0, 1]
+                  }
+                },
+                "required": ["status"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WanResult" }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/lg/todo/v2/list/{page}/json": {
+      "get": {
+        "summary": "TODO列表",
+        "description": "获取TODO列表，页码从1开始。支持按状态、类型、优先级筛选，支持按完成日期或创建日期排序。需要登录。",
+        "tags": ["TODO", "分页", "需登录"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "path",
+            "description": "页码，从1开始",
+            "required": true,
+            "example": 1,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态筛选：1-完成；0-未完成；不传则默认全部展示",
+            "required": false,
+            "schema": { "type": "integer", "enum": [0, 1] }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "按创建时传入的类型筛选，必须为大于0的整数；不传则默认全部展示",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "按创建时传入的优先级筛选；不传则默认全部展示",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "description": "排序方式：1-完成日期顺序；2-完成日期逆序；3-创建日期顺序；4-创建日期逆序(默认)",
+            "required": false,
+            "schema": { "type": "integer", "enum": [1, 2, 3, 4] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WanResultTodoPage" }
+              }
+            }
+          }
+        },
+        "security": []
+      }
     }
   },
   "components": {
@@ -2816,6 +3072,108 @@
         },
         "required": ["errorCode", "errorMsg"],
         "title": "鸿蒙专栏响应(WanResult<HarmonyIndex>)"
+      },
+      "Todo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "TODO唯一标识ID"
+          },
+          "date": {
+            "type": "string",
+            "title": "预定完成日期",
+            "description": "格式为yyyy-MM-dd"
+          },
+          "dateStr": {
+            "type": "string",
+            "title": "日期字符串"
+          },
+          "title": {
+            "type": "string",
+            "title": "TODO标题"
+          },
+          "content": {
+            "type": "string",
+            "title": "TODO详情"
+          },
+          "status": {
+            "type": "integer",
+            "title": "完成状态",
+            "description": "0为未完成，1为完成"
+          },
+          "type": {
+            "type": "integer",
+            "title": "类型",
+            "description": "大于0的整数，用于分类筛选。0为未设置类型"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "优先级",
+            "description": "大于0的整数"
+          },
+          "userId": {
+            "type": "integer",
+            "title": "用户ID"
+          },
+          "doneDate": {
+            "type": "string",
+            "title": "完成日期",
+            "description": "格式为yyyy-MM-dd，status=1时有值"
+          },
+          "completeDate": {
+            "type": "string",
+            "nullable": true,
+            "title": "完成时间",
+            "description": "可能为null"
+          },
+          "visible": {
+            "type": "integer",
+            "title": "可见性",
+            "description": "0为不可见，1为可见"
+          }
+        },
+        "required": ["id", "date", "title", "content", "status", "type", "priority", "userId"],
+        "title": "TODO信息"
+      },
+      "TodoPageData": {
+        "description": "TODO分页数据，继承PageData，datas为Todo数组",
+        "allOf": [
+          { "$ref": "#/components/schemas/PageData" },
+          {
+            "type": "object",
+            "properties": {
+              "datas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Todo" },
+                "title": "TODO数据列表"
+              }
+            }
+          }
+        ],
+        "title": "TODO分页数据(PageData<Todo>)"
+      },
+      "WanResultTodo": {
+        "type": "object",
+        "description": "TODO响应，data为TODO对象",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/Todo" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "TODO响应(WanResult<Todo>)"
+      },
+      "WanResultTodoPage": {
+        "type": "object",
+        "description": "TODO分页列表响应，data为TODO分页数据",
+        "properties": {
+          "data": { "$ref": "#/components/schemas/TodoPageData" },
+          "errorCode": { "$ref": "#/components/schemas/ErrorCode" },
+          "errorMsg": { "type": "string", "description": "错误信息，成功时为空字符串" }
+        },
+        "required": ["errorCode", "errorMsg"],
+        "title": "TODO分页响应(WanResult<TodoPageData>)"
       },
       "WanResultToolItemList": {
         "type": "object",
