@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.ui.component
 
+import com.jacknic.android.wanandroid.core.data.UserDataRepository
 import com.jacknic.android.wanandroid.core.domain.WanRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +32,12 @@ sealed class CollectResult {
  *
  * 负责维护收藏ID集合、提供收藏/取消收藏操作、云端同步。
  * 登录时从 UserInfo.collectIds 初始化，登出时清空。
+ * 初始化时通过 [UserDataRepository.hasCredentials] 恢复持久化登录状态。
  */
 @Singleton
 class CollectStateManager @Inject constructor(
-    private val repo: WanRepository
+    private val repo: WanRepository,
+    private val userDataRepo: UserDataRepository
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -46,6 +49,11 @@ class CollectStateManager @Inject constructor(
 
     /** 是否已登录 */
     val isLoggedIn: Boolean get() = _isInitialized.value
+
+    init {
+        // 从持久化凭据恢复登录状态
+        _isInitialized.value = userDataRepo.hasCredentials()
+    }
 
     /**
      * 从登录信息初始化收藏ID集合
