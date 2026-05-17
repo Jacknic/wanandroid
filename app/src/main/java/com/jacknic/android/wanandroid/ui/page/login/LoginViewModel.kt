@@ -29,8 +29,38 @@ class LoginViewModel @Inject constructor(
     private val _registerResult = MutableStateFlow<StateResult<UserInfo>?>(null)
     val registerResult = _registerResult.asStateFlow()
 
+    /** 已保存的用户名 */
+    private val _savedUsername = MutableStateFlow("")
+    val savedUsername = _savedUsername.asStateFlow()
+
+    /** 已保存的密码 */
+    private val _savedPassword = MutableStateFlow("")
+    val savedPassword = _savedPassword.asStateFlow()
+
+    /** 是否记住密码 */
+    private val _rememberPassword = MutableStateFlow(false)
+    val rememberPassword = _rememberPassword.asStateFlow()
+
+    /** 是否存在已保存的凭据 */
+    private val _hasCredentials = MutableStateFlow(false)
+    val hasCredentials = _hasCredentials.asStateFlow()
+
     private var loginJob: Job? = null
     private var registerJob: Job? = null
+
+    init {
+        loadSavedCredentials()
+    }
+
+    /**
+     * 从安全存储加载已保存的凭据
+     */
+    private fun loadSavedCredentials() {
+        _savedUsername.value = userDataRepo.getSavedUsername() ?: ""
+        _savedPassword.value = userDataRepo.getSavedPassword() ?: ""
+        _rememberPassword.value = userDataRepo.isRememberPassword()
+        _hasCredentials.value = userDataRepo.hasCredentials()
+    }
 
     fun login(username: String, password: String) {
         loginJob?.cancel()
@@ -39,6 +69,33 @@ class LoginViewModel @Inject constructor(
                 repo.login(username, password).toStateResult().also { result ->
                     if (result is StateResult.Success) {
                         collectStateManager.initFromUserInfo(result.data.collectIds)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 登录并保存凭据（如果记住密码被勾选）
+     */
+    fun loginWithCredentials(username: String, password: String, rememberPassword: Boolean) {
+        loginJob?.cancel()
+        loginJob = viewModelScope.launch {
+            _userInfo.withLoading {
+                repo.login(username, password).toStateResult().also { result ->
+                    if (result is StateResult.Success) {
+                        collectStateManager.initFromUserInfo(result.data.collectIds)
+                        // 登录成功后保存凭据
+                        if (rememberPassword) {
+                            userDataRepo.saveCredentials(username, password, rememberPassword)
+                            _rememberPassword.value = true
+                            _hasCredentials.value = true
+                        } else {
+                            // 未勾选记住密码则清除已保存的凭据
+                            userDataRepo.clearCredentials()
+                            _rememberPassword.value = false
+                            _hasCredentials.value = false
+                        }
                     }
                 }
             }
@@ -72,7 +129,31 @@ class LoginViewModel @Inject constructor(
             userDataRepo.setSkipLogin(false)
             repo.logout()
             collectStateManager.clear()
+            // 登出时清除凭据
+            if (userDataRepo.isRememberPassword()) {
+                userDataRepo.clearCredentials()
+            }
         }
+    }
+
+    /**
+     * 清除已保存的凭据
+     */
+    fun clearSavedCredentials() {
+        viewModelScope.launch {
+            userDataRepo.clearCredentials()
+            _savedUsername.value = ""
+            _savedPassword.value = ""
+            _rememberPassword.value = false
+            _hasCredentials.value = false
+        }
+    }
+
+    /**
+     * 更新记住密码选项
+     */
+    fun updateRememberPassword(remember: Boolean) {
+        _rememberPassword.value = remember
     }
 
     fun resetRegisterResult() {

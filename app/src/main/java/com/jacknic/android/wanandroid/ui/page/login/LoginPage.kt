@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,9 +83,13 @@ fun PageLogin(
 ) {
     val userInfo by vm.userInfo.collectAsStateWithLifecycle()
     val registerResult by vm.registerResult.collectAsStateWithLifecycle()
+    val savedUsername by vm.savedUsername.collectAsStateWithLifecycle()
+    val savedPassword by vm.savedPassword.collectAsStateWithLifecycle()
+    val rememberPassword by vm.rememberPassword.collectAsStateWithLifecycle()
+    val hasCredentials by vm.hasCredentials.collectAsStateWithLifecycle()
     var isRegisterMode by rememberSaveable { mutableStateOf(false) }
 
-    // 共享表单状态
+    // 共享表单状态 - 优先使用已保存的凭据初始化
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var confirmPassword by rememberSaveable { mutableStateOf("") }
@@ -94,6 +99,16 @@ fun PageLogin(
     var visibility by remember { mutableStateOf(false) }
     var confirmVisibility by remember { mutableStateOf(false) }
     var agreedPrivacy by rememberSaveable { mutableStateOf(false) }
+
+    // 首次加载时用已保存的凭据回填表单
+    LaunchedEffect(savedUsername, savedPassword) {
+        if (username.isBlank() && savedUsername.isNotBlank()) {
+            username = savedUsername
+        }
+        if (password.isBlank() && savedPassword.isNotBlank()) {
+            password = savedPassword
+        }
+    }
 
     val context = LocalContext.current
     val skc = LocalSoftwareKeyboardController.current
@@ -230,7 +245,7 @@ fun PageLogin(
                         onNext = { /* focus moves to confirm password */ },
                         onGo = {
                             if (!loggingIn && username.isNotBlank() && password.isNotBlank()) {
-                                vm.login(username, password)
+                                vm.loginWithCredentials(username, password, rememberPassword)
                             }
                             skc?.hide()
                         }
@@ -360,7 +375,42 @@ fun PageLogin(
                             }
                         }
                     } else {
-                        Spacer(Modifier.height(0.dp))
+                        // 登录模式：记住密码选项
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Checkbox(
+                                    checked = rememberPassword,
+                                    onCheckedChange = { vm.updateRememberPassword(it) },
+                                    enabled = !isLoading,
+                                )
+                                Text(
+                                    text = stringResource(R.string.login_remember_password),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                )
+                            }
+                            // 清除凭据按钮
+                            if (hasCredentials) {
+                                TextButton(
+                                    onClick = {
+                                        vm.clearSavedCredentials()
+                                        username = ""
+                                        password = ""
+                                    },
+                                    enabled = !isLoading,
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.login_clear_credentials),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.error,
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -386,7 +436,7 @@ fun PageLogin(
                                 vm.register(username, password, confirmPassword)
                             }
                         } else {
-                            vm.login(username, password)
+                            vm.loginWithCredentials(username, password, rememberPassword)
                         }
                     },
                     enabled = !isLoading && if (isRegisterMode) registerValid else loginValid,

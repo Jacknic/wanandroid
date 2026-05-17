@@ -19,6 +19,8 @@
     <string name="login_btn_login">Login</string>
     <string name="login_btn_login_loading">Loading</string>
     <string name="login_btn_skip_login">Skip</string>
+    <string name="login_remember_password">Remember Password</string>
+    <string name="login_clear_credentials">Clear saved credentials</string>
     <string-array name="tab_titles">
         <item>@string/title_home</item>
         <item>@string/title_category</item>
