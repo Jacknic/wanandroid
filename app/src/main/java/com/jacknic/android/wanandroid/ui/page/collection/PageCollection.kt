@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -155,13 +156,18 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                         }
                     } else {
                         LazyColumn(state = lazyListState) {
-                            item {
-                                Text(
-                                    "共 $total 篇收藏",
-                                    fontSize = 13.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                                )
+                            stickyHeader {
+                                Surface(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        "共 $total 篇收藏",
+                                        fontSize = 13.sp,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.padding(
+                                            horizontal = 16.dp,
+                                            vertical = 8.dp
+                                        )
+                                    )
+                                }
                             }
                             itemsIndexed(
                                 articles,
