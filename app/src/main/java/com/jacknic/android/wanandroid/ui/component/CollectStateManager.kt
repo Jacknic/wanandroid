@@ -37,7 +37,7 @@ sealed class CollectResult {
 @Singleton
 class CollectStateManager @Inject constructor(
     private val repo: WanRepository,
-    private val userDataRepo: UserDataRepository
+    userDataRepo: UserDataRepository
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -52,7 +52,11 @@ class CollectStateManager @Inject constructor(
 
     init {
         // 从持久化凭据恢复登录状态
-        _isInitialized.value = userDataRepo.hasCredentials()
+        val hasCredentials = userDataRepo.hasCredentials()
+        _isInitialized.value = hasCredentials
+        if (hasCredentials) {
+            syncCollectIds()
+        }
     }
 
     /**
@@ -85,7 +89,6 @@ class CollectStateManager @Inject constructor(
             val result = repo.uncollectOriginId(articleId)
             if (result.isSuccess) {
                 _collectIds.update { it - articleId }
-                syncCollectIds()
                 CollectResult.Success
             } else {
                 CollectResult.Error(result.exceptionOrNull()?.message ?: "取消收藏失败")
@@ -94,7 +97,6 @@ class CollectStateManager @Inject constructor(
             val result = repo.collectArticle(articleId)
             if (result.isSuccess) {
                 _collectIds.update { it + articleId }
-                syncCollectIds()
                 CollectResult.Success
             } else {
                 CollectResult.Error(result.exceptionOrNull()?.message ?: "收藏失败")
@@ -114,7 +116,6 @@ class CollectStateManager @Inject constructor(
         val result = repo.uncollectOriginId(articleId)
         return if (result.isSuccess) {
             _collectIds.update { it - articleId }
-            syncCollectIds()
             CollectResult.Success
         } else {
             CollectResult.Error(result.exceptionOrNull()?.message ?: "取消收藏失败")
