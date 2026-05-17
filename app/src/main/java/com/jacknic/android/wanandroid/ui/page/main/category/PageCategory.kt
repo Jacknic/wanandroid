@@ -3,6 +3,7 @@
 package com.jacknic.android.wanandroid.ui.page.main.category
 
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.twotone.Refresh
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +45,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -66,6 +69,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -82,8 +86,11 @@ import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Tree
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
+import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.Page
+import com.jacknic.android.wanandroid.ui.page.navTop
 import com.jacknic.android.wanandroid.ui.page.openBrowser
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -108,10 +115,12 @@ fun PageCategory(
     vm: CategoryViewModel = hiltViewModel()
 ) {
     val nav = LocalNavCtrl.current
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val collectStateManager = LocalCollectStateManager.current
     val collectIds by collectStateManager.collectIds.collectAsState()
     val collectInitialized by collectStateManager.isInitialized.collectAsState()
+    var showLoginDialog by remember { mutableStateOf(false) }
     val treeResult by vm.treeResult.collectAsState()
     val searchQuery by vm.searchQuery.collectAsState()
     val expandedIndices by vm.expandedIndices.collectAsState()
@@ -244,7 +253,11 @@ fun PageCategory(
                     onArticleClick = { article -> nav.openBrowser(article.link) },
                     onCollectClick = { article, isCollected ->
                         scope.launch {
-                            collectStateManager.toggleCollect(article.id, isCollected)
+                            when (val result = collectStateManager.toggleCollect(article.id, isCollected)) {
+                                is CollectResult.NotLoggedIn -> showLoginDialog = true
+                                is CollectResult.Error -> Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                                is CollectResult.Success -> {}
+                            }
                         }
                     },
                     collectIds = collectIds,
@@ -256,6 +269,28 @@ fun PageCategory(
             }
         }
     )
+
+    // 未登录提示对话框
+    if (showLoginDialog) {
+        AlertDialog(
+            onDismissRequest = { showLoginDialog = false },
+            title = { Text("提示") },
+            text = { Text("收藏功能需要登录，是否前往登录？") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showLoginDialog = false
+                    nav.navTop(Page.Login, Page.Main)
+                }) {
+                    Text("去登录")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLoginDialog = false }) {
+                    Text("取消")
+                }
+            }
+        )
+    }
 }
 
 /**

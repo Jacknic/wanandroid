@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.ui.page.collection
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,6 +36,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,6 +46,7 @@ import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.network.isUnauthorized
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
+import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.navTop
@@ -56,6 +59,7 @@ import com.jacknic.android.wanandroid.ui.page.openBrowser
 @Composable
 fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
+    val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val collectListState by vm.collectList.collectAsStateWithLifecycle()
     var isRefreshing by remember { mutableStateOf(false) }
@@ -202,7 +206,13 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
             },
             confirmButton = {
                 TextButton(onClick = {
-                    vm.uncollect(article)
+                    vm.uncollect(article) { result ->
+                        if (result is CollectResult.NotLoggedIn) {
+                            nav.navTop(Page.Login, Page.Main)
+                        } else if (result is CollectResult.Error) {
+                            Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     articleToRemove = null
                 }) {
                     Text("确定", color = MaterialTheme.colorScheme.error)

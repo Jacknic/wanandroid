@@ -1,12 +1,28 @@
 package com.jacknic.android.wanandroid.ui.component
 
 import com.jacknic.android.wanandroid.core.domain.WanRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
+
+/**
+ * 收藏操作结果
+ */
+sealed class CollectResult {
+    /** 操作成功 */
+    data object Success : CollectResult()
+    /** 未登录 */
+    data object NotLoggedIn : CollectResult()
+    /** 操作失败 */
+    data class Error(val message: String) : CollectResult()
+}
 
 /**
  * 收藏状态管理器 - 全局单例，管理文章收藏状态
@@ -18,11 +34,16 @@ import javax.inject.Singleton
 class CollectStateManager @Inject constructor(
     private val repo: WanRepository
 ) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     private val _collectIds = MutableStateFlow<Set<Int>>(emptySet())
     val collectIds: StateFlow<Set<Int>> = _collectIds.asStateFlow()
 
     private val _isInitialized = MutableStateFlow(false)
     val isInitialized: StateFlow<Boolean> = _isInitialized.asStateFlow()
+
+    /** 是否已登录 */
+    val isLoggedIn: Boolean get() = _isInitialized.value
 
     /**
      * 从登录信息初始化收藏ID集合
@@ -47,18 +68,26 @@ class CollectStateManager @Inject constructor(
      * @param isCurrentlyCollected 当前是否已收藏
      * @return 操作结果
      */
-    suspend fun toggleCollect(articleId: Int, isCurrentlyCollected: Boolean): Result<Any?> {
+    suspend fun toggleCollect(articleId: Int, isCurrentlyCollected: Boolean): CollectResult {
+        if (!isLoggedIn) return CollectResult.NotLoggedIn
+
         return if (isCurrentlyCollected) {
-            repo.uncollectOriginId(articleId).also { result ->
-                if (result.isSuccess) {
-                    _collectIds.update { it - articleId }
-                }
+            val result = repo.uncollectOriginId(articleId)
+            if (result.isSuccess) {
+                _collectIds.update { it - articleId }
+                syncCollectIds()
+                CollectResult.Success
+            } else {
+                CollectResult.Error(result.exceptionOrNull()?.message ?: "取消收藏失败")
             }
         } else {
-            repo.collectArticle(articleId).also { result ->
-                if (result.isSuccess) {
-                    _collectIds.update { it + articleId }
-                }
+            val result = repo.collectArticle(articleId)
+            if (result.isSuccess) {
+                _collectIds.update { it + articleId }
+                syncCollectIds()
+                CollectResult.Success
+            } else {
+                CollectResult.Error(result.exceptionOrNull()?.message ?: "收藏失败")
             }
         }
     }
@@ -70,11 +99,16 @@ class CollectStateManager @Inject constructor(
      * @param articleId 文章原始ID（用于更新本地状态）
      * @return 操作结果
      */
-    suspend fun uncollectFromCollection(collectId: Int, articleId: Int): Result<Any?> {
-        return repo.uncollect(collectId).also { result ->
-            if (result.isSuccess) {
-                _collectIds.update { it - articleId }
-            }
+    suspend fun uncollectFromCollection(collectId: Int, articleId: Int): CollectResult {
+        if (!isLoggedIn) return CollectResult.NotLoggedIn
+
+        val result = repo.uncollect(collectId)
+        return if (result.isSuccess) {
+            _collectIds.update { it - articleId }
+            syncCollectIds()
+            CollectResult.Success
+        } else {
+            CollectResult.Error(result.exceptionOrNull()?.message ?: "取消收藏失败")
         }
     }
 
@@ -82,4 +116,20 @@ class CollectStateManager @Inject constructor(
      * 判断文章是否已收藏
      */
     fun isCollected(articleId: Int): Boolean = _collectIds.value.contains(articleId)
+
+    /**
+     * 从服务器同步收藏ID集合（静默同步，失败不影响本地状态）
+     */
+    private fun syncCollectIds() {
+        scope.launch {
+            try {
+                val result = repo.getUserLgUserinfo()
+                result.onSuccess { personalInfo ->
+                    _collectIds.value = personalInfo.userInfo.collectIds.toSet()
+                }
+            } catch (_: Exception) {
+                // 静默失败，不影响本地状态
+            }
+        }
+    }
 }
