@@ -55,7 +55,7 @@ internal class DefaultWanRepository @Inject constructor(private val api: WanApi)
     }
 
     override suspend fun collectArticle(articleId: Int) = runResult {
-        api.getCollectArticle(articleId)
+        api.postCollectArticle(articleId)
     }
 
     override suspend fun addCollect(title: String, author: String, link: String) = runResult {

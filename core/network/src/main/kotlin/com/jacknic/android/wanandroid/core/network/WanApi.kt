@@ -147,8 +147,8 @@ interface WanApi {
      *
      * @param articleId 文章ID
      */
-    @GET("/collect/{article_id}/json")
-    suspend fun getCollectArticle(@Path("article_id") articleId: Int): WanResult<Any?>
+    @POST("/lg/collect/{article_id}/json")
+    suspend fun postCollectArticle(@Path("article_id") articleId: Int): WanResult<Any?>
 
     /**
      * 收藏站外文章
