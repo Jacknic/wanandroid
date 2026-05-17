@@ -85,6 +85,7 @@ class LoginViewModel @Inject constructor(
                 repo.login(username, password).toStateResult().also { result ->
                     if (result is StateResult.Success) {
                         collectStateManager.initFromUserInfo(result.data.collectIds)
+                        setSkipLogin(true)
                         // 登录成功后保存凭据
                         if (rememberPassword) {
                             userDataRepo.saveCredentials(username, password, rememberPassword)
