@@ -18,8 +18,10 @@ import javax.inject.Singleton
 sealed class CollectResult {
     /** 操作成功 */
     data object Success : CollectResult()
+
     /** 未登录 */
     data object NotLoggedIn : CollectResult()
+
     /** 操作失败 */
     data class Error(val message: String) : CollectResult()
 }
@@ -95,14 +97,13 @@ class CollectStateManager @Inject constructor(
     /**
      * 取消收藏（我的收藏页面使用，调用 uncollect 接口）
      *
-     * @param collectId 收藏记录ID
      * @param articleId 文章原始ID（用于更新本地状态）
      * @return 操作结果
      */
-    suspend fun uncollectFromCollection(collectId: Int, articleId: Int): CollectResult {
+    suspend fun uncollectFromCollection(articleId: Int): CollectResult {
         if (!isLoggedIn) return CollectResult.NotLoggedIn
 
-        val result = repo.uncollect(collectId)
+        val result = repo.uncollectOriginId(articleId)
         return if (result.isSuccess) {
             _collectIds.update { it - articleId }
             syncCollectIds()

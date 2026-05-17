@@ -82,7 +82,7 @@ class CollectionViewModel @Inject constructor(
      */
     fun uncollect(article: Article, onResult: (CollectResult) -> Unit = {}) {
         viewModelScope.launch {
-            val result = collectStateManager.uncollectFromCollection(article.id, article.id)
+            val result = collectStateManager.uncollectFromCollection(article.id)
             onResult(result)
             if (result is CollectResult.Success) {
                 _collectList.update { prevState ->
