@@ -54,9 +54,11 @@ class CollectionViewModel @Inject constructor(
                     _collectList.update { prevState ->
                         val prevPaging = (prevState as? StateResult.Success)?.data
                         if (prevPaging != null) {
+                            val existingIds = prevPaging.datas.map { it.id }.toSet()
+                            val newArticles = paging.datas.filter { it.id !in existingIds }
                             StateResult.Success(
                                 prevPaging.copy(
-                                    datas = prevPaging.datas + paging.datas,
+                                    datas = prevPaging.datas + newArticles,
                                     curPage = paging.curPage,
                                     over = paging.over
                                 )

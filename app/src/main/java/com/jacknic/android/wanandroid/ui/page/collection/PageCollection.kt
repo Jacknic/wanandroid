@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
@@ -163,7 +163,10 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                                 )
                             }
-                            items(articles, key = { it.id }) { article ->
+                            itemsIndexed(
+                                articles,
+                                key = { index, article -> "${article.id}_$index" }
+                            ) { _, article ->
                                 CollectArticleItem(
                                     article = article,
                                     onClick = { nav.openBrowser(article.link) },

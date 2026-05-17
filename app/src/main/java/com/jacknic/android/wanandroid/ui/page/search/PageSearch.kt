@@ -219,8 +219,14 @@ fun PageSearch(
                 }
             }
 
-            items(pagingItems.itemCount) {
-                val article = pagingItems[it] ?: return@items
+            items(
+                count = pagingItems.itemCount,
+                key = { index ->
+                    val article = pagingItems.peek(index)
+                    if (article != null) "${article.id}_$index" else "placeholder_$index"
+                }
+            ) { index ->
+                val article = pagingItems[index] ?: return@items
                 Spacer(modifier = Modifier.size(8.dp))
                 val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
                 ArticleListItem(
