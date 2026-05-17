@@ -82,6 +82,7 @@ import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Tree
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
+import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.openBrowser
 import kotlinx.coroutines.launch
@@ -108,6 +109,9 @@ fun PageCategory(
 ) {
     val nav = LocalNavCtrl.current
     val scope = rememberCoroutineScope()
+    val collectStateManager = LocalCollectStateManager.current
+    val collectIds by collectStateManager.collectIds.collectAsState()
+    val collectInitialized by collectStateManager.isInitialized.collectAsState()
     val treeResult by vm.treeResult.collectAsState()
     val searchQuery by vm.searchQuery.collectAsState()
     val expandedIndices by vm.expandedIndices.collectAsState()
@@ -237,7 +241,14 @@ fun PageCategory(
                     onBack = {
                         scope.launch { scaffoldNavigator.navigateBack() }
                     },
-                    onArticleClick = { article -> nav.openBrowser(article.link) }
+                    onArticleClick = { article -> nav.openBrowser(article.link) },
+                    onCollectClick = { article, isCollected ->
+                        scope.launch {
+                            collectStateManager.toggleCollect(article.id, isCollected)
+                        }
+                    },
+                    collectIds = collectIds,
+                    collectInitialized = collectInitialized
                 )
             } else {
                 // 未选中任何分类时的占位
@@ -325,7 +336,10 @@ private fun TreeDetailPane(
     navKey: TreeNavKey,
     vm: CategoryViewModel,
     onBack: () -> Unit,
-    onArticleClick: (Article) -> Unit
+    onArticleClick: (Article) -> Unit,
+    onCollectClick: (Article, Boolean) -> Unit = { _, _ -> },
+    collectIds: Set<Int> = emptySet(),
+    collectInitialized: Boolean = false,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val pagingItems = vm.getArticleListFlow(navKey.id).collectAsLazyPagingItems()
@@ -369,6 +383,9 @@ private fun TreeDetailPane(
         ArticlePagingList(
             pagingItems = pagingItems,
             onArticleClick = onArticleClick,
+            onCollectClick = onCollectClick,
+            collectIds = collectIds,
+            collectInitialized = collectInitialized,
             gridState = detailGridState,
             modifier = Modifier
                 .padding(paddingValues)
@@ -384,6 +401,9 @@ private fun TreeDetailPane(
 private fun ArticlePagingList(
     pagingItems: LazyPagingItems<Article>,
     onArticleClick: (Article) -> Unit,
+    onCollectClick: (Article, Boolean) -> Unit = { _, _ -> },
+    collectIds: Set<Int> = emptySet(),
+    collectInitialized: Boolean = false,
     gridState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
@@ -404,8 +424,11 @@ private fun ArticlePagingList(
             }
         ) { index ->
             val article = pagingItems[index] ?: return@items
+            val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
             ArticleListItem(
                 article = article,
+                isCollected = isCollected,
+                onCollectClick = { onCollectClick(article, isCollected) },
                 onClick = { onArticleClick(article) }
             )
         }

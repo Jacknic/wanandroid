@@ -8,6 +8,7 @@ import com.jacknic.android.wanandroid.core.common.withLoading
 import com.jacknic.android.wanandroid.core.domain.WanRepository
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Paging
+import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionViewModel @Inject constructor(
-    private val repo: WanRepository
+    private val repo: WanRepository,
+    private val collectStateManager: CollectStateManager
 ) : ViewModel() {
 
     private val _collectList = MutableStateFlow<StateResult<Paging<Article>>?>(null)
@@ -71,10 +73,14 @@ class CollectionViewModel @Inject constructor(
         }
     }
 
+    /**
+     * 取消收藏（我的收藏页面）
+     * 使用 uncollect 接口（传入收藏记录ID），同时更新全局收藏状态
+     */
     fun uncollect(article: Article) {
         viewModelScope.launch {
             try {
-                repo.uncollect(article.id)
+                collectStateManager.uncollectFromCollection(article.id, article.id)
                 _collectList.update { prevState ->
                     val prevPaging = (prevState as? StateResult.Success)?.data ?: return@update prevState
                     StateResult.Success(

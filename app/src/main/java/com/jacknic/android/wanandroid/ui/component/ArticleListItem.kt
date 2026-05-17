@@ -13,8 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material.icons.twotone.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,6 +78,8 @@ private fun getLinkType(link: String): LinkType? {
 fun ArticleListItem(
     article: Article,
     modifier: Modifier = Modifier,
+    isCollected: Boolean = article.collect,
+    onCollectClick: (() -> Unit)? = null,
     onClick: () -> Unit = {}
 ) {
     // 预解析 HTML 标题，避免在测量过程中进行重度计算
@@ -169,6 +176,22 @@ fun ArticleListItem(
                         text = type.label,
                         color = type.color
                     )
+                }
+
+                // 收藏按钮
+                if (onCollectClick != null) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    IconButton(
+                        onClick = onCollectClick,
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (isCollected) Icons.TwoTone.Favorite else Icons.TwoTone.FavoriteBorder,
+                            contentDescription = if (isCollected) "取消收藏" else "收藏",
+                            tint = if (isCollected) Color(0xFFE53935) else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
                 }
             }
         }

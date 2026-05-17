@@ -62,7 +62,9 @@ import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Banner
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
+import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import com.jacknic.android.wanandroid.ui.component.HomeBanner
+import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.openBrowser
@@ -83,6 +85,10 @@ fun PageHome(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
 ) {
     val nav = LocalNavCtrl.current
+    val collectStateManager = LocalCollectStateManager.current
+    val collectIds by collectStateManager.collectIds.collectAsState()
+    val collectInitialized by collectStateManager.isInitialized.collectAsState()
+    val scope = rememberCoroutineScope()
     val bannerResult by vm.bannerList.collectAsState()
     val categoryResult by vm.categories.collectAsState()
     val targetCid by vm.targetCid.collectAsState()
@@ -98,7 +104,6 @@ fun PageHome(
 
     val savedPage = vm.getSavedCurrentPage()
     val pagerState = rememberPagerState(initialPage = savedPage, pageCount = { categories.size.coerceAtLeast(1) })
-    val scope = rememberCoroutineScope()
 
     // 导航到目标分类 / 恢复已保存的页面
     val categoriesLoaded = categoryResult.getDataOrNull()?.isNotEmpty() == true
@@ -260,7 +265,14 @@ fun PageHome(
                     gridState = gridState,
                     onArticleClick = { article ->
                         nav.openBrowser(article.link)
-                    }
+                    },
+                    onCollectClick = { article, isCollected ->
+                        scope.launch {
+                            collectStateManager.toggleCollect(article.id, isCollected)
+                        }
+                    },
+                    collectIds = collectIds,
+                    collectInitialized = collectInitialized
                 )
             }
         }
@@ -275,6 +287,9 @@ private fun ArticleList(
     isWideScreen: Boolean,
     gridState: LazyGridState,
     onArticleClick: (Article) -> Unit,
+    onCollectClick: (Article, Boolean) -> Unit = { _, _ -> },
+    collectIds: Set<Int> = emptySet(),
+    collectInitialized: Boolean = false,
 ) {
     val loadState = pagingItems.loadState
 
@@ -302,8 +317,11 @@ private fun ArticleList(
             }
         ) { index ->
             val article = pagingItems[index] ?: return@items
+            val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
             ArticleListItem(
                 article = article,
+                isCollected = isCollected,
+                onCollectClick = { onCollectClick(article, isCollected) },
                 onClick = { onArticleClick(article) }
             )
         }

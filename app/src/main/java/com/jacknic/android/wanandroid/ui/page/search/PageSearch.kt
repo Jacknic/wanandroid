@@ -42,6 +42,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,10 +57,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
+import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.main.discovery.DiscoveryCardSection
 import com.jacknic.android.wanandroid.ui.page.main.discovery.HotkeyFlow
 import com.jacknic.android.wanandroid.ui.page.openBrowser
+import kotlinx.coroutines.launch
 
 /**
  * 搜索页
@@ -72,6 +75,10 @@ fun PageSearch(
     vm: SearchViewModel = hiltViewModel()
 ) {
     val nav = LocalNavCtrl.current
+    val collectStateManager = LocalCollectStateManager.current
+    val collectIds by collectStateManager.collectIds.collectAsState()
+    val collectInitialized by collectStateManager.isInitialized.collectAsState()
+    val scope = rememberCoroutineScope()
     val pagingItems = vm.searchResultFlow.collectAsLazyPagingItems()
     val searchKey by vm.searchKey.collectAsState()
     val hotkeyResult by vm.hotkeyResult.collectAsState()
@@ -206,7 +213,16 @@ fun PageSearch(
             items(pagingItems.itemCount) {
                 val article = pagingItems[it] ?: return@items
                 Spacer(modifier = Modifier.size(8.dp))
-                ArticleListItem(article) {
+                val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
+                ArticleListItem(
+                    article = article,
+                    isCollected = isCollected,
+                    onCollectClick = {
+                        scope.launch {
+                            collectStateManager.toggleCollect(article.id, isCollected)
+                        }
+                    }
+                ) {
                     nav.openBrowser(article.link)
                 }
             }

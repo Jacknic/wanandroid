@@ -32,6 +32,9 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -45,9 +48,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
+import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.openBrowser
+import kotlinx.coroutines.launch
 
 /**
  * 广场页
@@ -59,6 +64,10 @@ fun PageSquare(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
 ) {
     val nav = LocalNavCtrl.current
+    val collectStateManager = LocalCollectStateManager.current
+    val collectIds by collectStateManager.collectIds.collectAsState()
+    val collectInitialized by collectStateManager.isInitialized.collectAsState()
+    val scope = rememberCoroutineScope()
     val pagingItems = vm.getArticleListFlow().collectAsLazyPagingItems()
     val loadState = pagingItems.loadState
     val isWideScreen = currentWindowAdaptiveInfo()
@@ -116,8 +125,15 @@ fun PageSquare(
             ) { index ->
                 val article: Article? = pagingItems[index]
                 if (article != null) {
+                    val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
                     ArticleListItem(
                         article = article,
+                        isCollected = isCollected,
+                        onCollectClick = {
+                            scope.launch {
+                                collectStateManager.toggleCollect(article.id, isCollected)
+                            }
+                        },
                         onClick = { nav.openBrowser(article.link) }
                     )
                 }

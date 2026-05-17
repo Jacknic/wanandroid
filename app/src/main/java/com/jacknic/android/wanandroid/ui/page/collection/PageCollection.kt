@@ -2,7 +2,6 @@ package com.jacknic.android.wanandroid.ui.page.collection
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
-import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -225,26 +223,10 @@ private fun CollectArticleItem(
     onClick: () -> Unit,
     onRemove: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(modifier = Modifier.weight(1f)) {
-            ArticleListItem(
-                article = article,
-                onClick = onClick
-            )
-        }
-        IconButton(
-            onClick = onRemove,
-            modifier = Modifier.padding(end = 4.dp)
-        ) {
-            Icon(
-                Icons.TwoTone.Delete,
-                contentDescription = "取消收藏",
-                tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
-                modifier = Modifier.size(22.dp)
-            )
-        }
-    }
+    ArticleListItem(
+        article = article,
+        isCollected = true,
+        onCollectClick = onRemove,
+        onClick = onClick
+    )
 }

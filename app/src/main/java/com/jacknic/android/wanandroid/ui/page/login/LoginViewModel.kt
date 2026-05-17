@@ -8,6 +8,7 @@ import com.jacknic.android.wanandroid.core.common.withLoading
 import com.jacknic.android.wanandroid.core.data.UserDataRepository
 import com.jacknic.android.wanandroid.core.domain.WanRepository
 import com.jacknic.android.wanandroid.core.model.UserInfo
+import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repo: WanRepository,
-    private val userDataRepo: UserDataRepository
+    private val userDataRepo: UserDataRepository,
+    private val collectStateManager: CollectStateManager
 ) : ViewModel() {
 
     private val _userInfo = MutableStateFlow<StateResult<UserInfo>?>(null)
@@ -34,7 +36,11 @@ class LoginViewModel @Inject constructor(
         loginJob?.cancel()
         loginJob = viewModelScope.launch {
             _userInfo.withLoading {
-                repo.login(username, password).toStateResult()
+                repo.login(username, password).toStateResult().also { result ->
+                    if (result is StateResult.Success) {
+                        collectStateManager.initFromUserInfo(result.data.collectIds)
+                    }
+                }
             }
         }
     }
@@ -43,7 +49,11 @@ class LoginViewModel @Inject constructor(
         registerJob?.cancel()
         registerJob = viewModelScope.launch {
             _registerResult.withLoading {
-                repo.register(username, password, repassword).toStateResult()
+                repo.register(username, password, repassword).toStateResult().also { result ->
+                    if (result is StateResult.Success) {
+                        collectStateManager.initFromUserInfo(result.data.collectIds)
+                    }
+                }
             }
         }
     }
@@ -61,6 +71,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             userDataRepo.setSkipLogin(false)
             repo.logout()
+            collectStateManager.clear()
         }
     }
 

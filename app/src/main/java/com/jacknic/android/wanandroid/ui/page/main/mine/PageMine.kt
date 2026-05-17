@@ -41,6 +41,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
@@ -58,6 +59,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.StateResult
+import com.jacknic.android.wanandroid.ui.component.CollectStateManager
+import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.theme.ThemeMode
@@ -71,7 +74,9 @@ import com.jacknic.android.wanandroid.ui.theme.useThemeMode
 @Composable
 fun PageMine(vm: MineViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
+    val collectStateManager = LocalCollectStateManager.current
     val personalInfoState by vm.personalInfo.collectAsStateWithLifecycle()
+    val collectIds by collectStateManager.collectIds.collectAsState()
     val data = (personalInfoState as? StateResult.Success)?.data
     val userInfo = data?.userInfo
     val coinInfo = data?.coinInfo
@@ -135,7 +140,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                 level = coinInfo?.level ?: 0,
                 coinCount = coinInfo?.coinCount ?: 0,
                 rank = coinInfo?.rank ?: "-",
-                collectCount = userInfo?.collectIds?.size ?: 0,
+                collectCount = if (collectIds.isNotEmpty()) collectIds.size else (userInfo?.collectIds?.size ?: 0),
                 onCollectClick = { nav.navigate(Page.Collection) }
             )
 

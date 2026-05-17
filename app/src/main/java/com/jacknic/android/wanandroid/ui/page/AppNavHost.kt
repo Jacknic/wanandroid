@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import com.jacknic.android.wanandroid.ui.page.browser.PageBrowser
 import com.jacknic.android.wanandroid.ui.page.browser.openBrowser
 import com.jacknic.android.wanandroid.ui.page.collection.PageCollection
@@ -64,15 +65,26 @@ val LocalNavCtrl = compositionLocalOf<NavHostController>(structuralEqualityPolic
 }
 
 /**
+ * 收藏状态管理器 CompositionLocal
+ */
+val LocalCollectStateManager = compositionLocalOf<CollectStateManager> {
+    throw IllegalAccessException("未初始化收藏状态管理器")
+}
+
+/**
  * 页面导航图
  */
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     nav: NavHostController = rememberNavController(),
-    startDestination: String = Page.Splash
+    startDestination: String = Page.Splash,
+    collectStateManager: CollectStateManager
 ) {
-    CompositionLocalProvider(LocalNavCtrl provides nav) {
+    CompositionLocalProvider(
+        LocalNavCtrl provides nav,
+        LocalCollectStateManager provides collectStateManager
+    ) {
         NavHost(
             modifier = modifier,
             navController = nav,
