@@ -127,17 +127,15 @@ fun ArticleListItem(
                     Spacer(modifier = Modifier.height(6.dp))
 
                     // 描述
-                    if (article.desc.isNotBlank()) {
-                        Text(
-                            text = article.desc,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            lineHeight = 18.sp,
-                            modifier = Modifier.heightIn(min = 36.dp)
-                        )
-                    }
+                    Text(
+                        text = article.desc,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 18.sp,
+                        modifier = Modifier.heightIn(min = 36.dp)
+                    )
                 }
 
                 // 封面图
