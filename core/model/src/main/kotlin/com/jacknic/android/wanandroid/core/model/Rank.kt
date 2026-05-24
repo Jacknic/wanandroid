@@ -24,5 +24,5 @@ data class Rank(
     @SerializedName("userId")
     val userId: Int = 0,
     @SerializedName("username")
-    val username: String = ""
+    val username: String = "",
 )

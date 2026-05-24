@@ -43,10 +43,7 @@ private const val KEY_LINK = "link"
 /**
  * 打开浏览器页面
  */
-fun openBrowser(
-    nav: NavHostController,
-    url: String
-) {
+fun openBrowser(nav: NavHostController, url: String) {
     var targetUrl = url
     // 如果url域名为 www.wanandroid.com 则替换为 wanandroid.com
     val httpUrl = url.toHttpUrl()
@@ -61,7 +58,6 @@ fun openBrowser(
 @SuppressLint("SetJavaScriptEnabled", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PageBrowser() {
-
     val nav = LocalNavCtrl.current
     val backStackEntry = nav.previousBackStackEntry
     val savedStateHandle = backStackEntry?.savedStateHandle
@@ -87,15 +83,18 @@ fun PageBrowser() {
             },
             title = {
                 Text(
-                    titleState, maxLines = 1, overflow = TextOverflow.Ellipsis
+                    titleState,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
-            }
+            },
         )
     }) { padding ->
         Box(Modifier.padding(padding)) {
             val webView = rememberWebViewWithState(
                 onTitleChange = { titleState = it ?: "" },
-                onLoadChange = { progress = it })
+                onLoadChange = { progress = it },
+            )
             AndroidView(
                 factory = { webView },
                 modifier = Modifier.fillMaxSize(1f),
@@ -107,7 +106,7 @@ fun PageBrowser() {
                 onReset = {
                     it.stopLoading()
                     it.loadUrl("about:blank")
-                }
+                },
             )
             LaunchedEffect(Unit) {
                 if (saveBundle.isEmpty) {
@@ -129,19 +128,14 @@ fun PageBrowser() {
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun rememberWebViewWithState(
-    onTitleChange: (String?) -> Unit = {},
-    onLoadChange: (Float) -> Unit = {},
-): WebView {
+fun rememberWebViewWithState(onTitleChange: (String?) -> Unit = {}, onLoadChange: (Float) -> Unit = {}): WebView {
     val context = LocalContext.current
     val webView = remember {
         WebView(context).apply {
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(
-                    view: WebView, request: WebResourceRequest
-                ): Boolean {
+                override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                     val url = request.url.toString()
                     return !url.startsWith("http", true)
                 }

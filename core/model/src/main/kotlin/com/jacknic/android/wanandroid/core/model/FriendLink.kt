@@ -27,5 +27,5 @@ data class FriendLink(
     @SerializedName("order")
     val order: Int = 0,
     @SerializedName("visible")
-    val visible: Int = 0
+    val visible: Int = 0,
 )

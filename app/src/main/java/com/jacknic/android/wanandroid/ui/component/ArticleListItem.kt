@@ -82,7 +82,7 @@ fun ArticleListItem(
     modifier: Modifier = Modifier,
     isCollected: Boolean = article.collect,
     onCollectClick: (() -> Unit)? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     // 预解析 HTML 标题，避免在测量过程中进行重度计算
     val displayTitle = remember(article.title) {
@@ -99,21 +99,21 @@ fun ArticleListItem(
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp
-        )
+            defaultElevation = 1.dp,
+        ),
     ) {
         Column(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(12.dp),
         ) {
             // 封面图 + 标题 + 描述
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     // 标题
                     Text(
@@ -123,7 +123,7 @@ fun ArticleListItem(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         lineHeight = 22.sp,
-                        modifier = Modifier.heightIn(min = 44.dp)
+                        modifier = Modifier.heightIn(min = 44.dp),
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
@@ -136,7 +136,7 @@ fun ArticleListItem(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         lineHeight = 18.sp,
-                        modifier = Modifier.heightIn(min = 36.dp)
+                        modifier = Modifier.heightIn(min = 36.dp),
                     )
                 }
 
@@ -158,7 +158,7 @@ fun ArticleListItem(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 // 作者信息
                 Text(
@@ -167,14 +167,14 @@ fun ArticleListItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
 
                 // 链接类型徽章
                 linkType?.let { type ->
                     LinkTypeBadge(
                         text = type.label,
-                        color = type.color
+                        color = type.color,
                     )
                 }
 
@@ -183,13 +183,13 @@ fun ArticleListItem(
                     Spacer(modifier = Modifier.width(4.dp))
                     IconButton(
                         onClick = onCollectClick,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(28.dp),
                     ) {
                         Icon(
                             imageVector = if (isCollected) Icons.TwoTone.Favorite else Icons.TwoTone.FavoriteBorder,
                             contentDescription = if (isCollected) "取消收藏" else "收藏",
                             tint = if (isCollected) Color(0xFFE53935) else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
                         )
                     }
                 }
@@ -202,22 +202,18 @@ fun ArticleListItem(
  * 链接类型徽章
  */
 @Composable
-fun LinkTypeBadge(
-    text: String,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
+fun LinkTypeBadge(text: String, color: Color, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(50))
             .background(color.copy(alpha = 0.12f))
-            .padding(horizontal = 6.dp)
+            .padding(horizontal = 6.dp),
     ) {
         Text(
             text = text,
             fontSize = 10.sp,
             color = color,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
         )
     }
 }
@@ -232,7 +228,7 @@ private fun Preview() {
             desc = "简介这是一个怎么样的工具，简介这是一个怎么样的工具，简介这是一个怎么样的工具，简介这是一个怎么样的工具，",
             zan = 666,
             niceDate = "2小时前",
-            link = "https://juejin.cn/post/123456789"
+            link = "https://juejin.cn/post/123456789",
         )
         ArticleListItem(article)
     }

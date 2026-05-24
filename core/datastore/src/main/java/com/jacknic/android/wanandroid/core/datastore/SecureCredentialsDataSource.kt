@@ -15,9 +15,7 @@ import javax.inject.Singleton
  * 防止在设备被 root 或数据被提取时凭据泄露。
  */
 @Singleton
-class SecureCredentialsDataSource @Inject constructor(
-    @param:ApplicationContext private val context: Context
-) {
+class SecureCredentialsDataSource @Inject constructor(@param:ApplicationContext private val context: Context) {
     private val masterKey by lazy {
         MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -30,7 +28,7 @@ class SecureCredentialsDataSource @Inject constructor(
             FILE_NAME,
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
         )
     }
 

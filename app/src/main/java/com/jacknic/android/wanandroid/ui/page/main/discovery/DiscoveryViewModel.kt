@@ -10,10 +10,10 @@ import com.jacknic.android.wanandroid.core.model.Chapter
 import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * 发现页视图数据
@@ -21,10 +21,8 @@ import javax.inject.Inject
  * @author Jacknic
  */
 @HiltViewModel
-class DiscoveryViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val repo: WanRepository
-) : ViewModel() {
+class DiscoveryViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle, private val repo: WanRepository) :
+    ViewModel() {
 
     private val _hotkeyResult = MutableStateFlow<StateResult<List<HotKeyword>>>(StateResult.Loading)
     val hotkeyResult = _hotkeyResult.asStateFlow()

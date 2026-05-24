@@ -22,7 +22,5 @@ class AppCommonInitializer : Initializer<Unit> {
         log.tag().d("create: AppCommonInitializer")
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return emptyList()
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

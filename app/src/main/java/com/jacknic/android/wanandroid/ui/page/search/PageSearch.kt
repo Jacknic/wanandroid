@@ -78,9 +78,7 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageSearch(
-    vm: SearchViewModel = hiltViewModel()
-) {
+fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
     val context = LocalContext.current
     val collectStateManager = LocalCollectStateManager.current
@@ -163,7 +161,7 @@ fun PageSearch(
                             disabledContainerColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                        )
+                        ),
                     )
                 },
                 navigationIcon = {
@@ -177,16 +175,16 @@ fun PageSearch(
                     }) {
                         Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "返回")
                     }
-                }
+                },
             )
         },
-        containerColor = MaterialTheme.colorScheme.surfaceContainer
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 16.dp)
+            contentPadding = PaddingValues(bottom = 16.dp),
         ) {
             val hotkeys = hotkeyResult.getDataOrNull() ?: emptyList()
             if (searchKey.isEmpty()) {
@@ -199,7 +197,7 @@ fun PageSearch(
                                 keyboardController?.hide()
                             },
                             onDeleteClick = { vm.removeHistory(it) },
-                            onClearAllClick = { vm.clearHistory() }
+                            onClearAllClick = { vm.clearHistory() },
                         )
                     }
                 }
@@ -208,7 +206,7 @@ fun PageSearch(
                     item {
                         DiscoveryCardSection(
                             title = stringResource(R.string.title_hot_search),
-                            icon = Icons.TwoTone.Search
+                            icon = Icons.TwoTone.Search,
                         ) {
                             HotkeyFlow(hotkeys = hotkeys) { key ->
                                 vm.search(key)
@@ -224,7 +222,7 @@ fun PageSearch(
                 key = { index ->
                     val article = pagingItems.peek(index)
                     if (article != null) "${article.id}_$index" else "placeholder_$index"
-                }
+                },
             ) { index ->
                 val article = pagingItems[index] ?: return@items
                 Spacer(modifier = Modifier.size(8.dp))
@@ -240,7 +238,7 @@ fun PageSearch(
                                 is CollectResult.Success -> {}
                             }
                         }
-                    }
+                    },
                 ) {
                     nav.openBrowser(article.link)
                 }
@@ -302,7 +300,7 @@ fun PageSearch(
                 TextButton(onClick = { showLoginDialog = false }) {
                     Text("取消")
                 }
-            }
+            },
         )
     }
 }
@@ -316,17 +314,17 @@ fun SearchHistorySection(
     history: List<String>,
     onItemClick: (String) -> Unit,
     onDeleteClick: (String) -> Unit,
-    onClearAllClick: () -> Unit
+    onClearAllClick: () -> Unit,
 ) {
     DiscoveryCardSection(
         title = "搜索历史",
-        icon = Icons.TwoTone.History
+        icon = Icons.TwoTone.History,
     ) {
         Column {
             FlowRow(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 history.forEach { item ->
                     InputChip(
@@ -339,9 +337,9 @@ fun SearchHistorySection(
                                 contentDescription = "删除",
                                 modifier = Modifier
                                     .size(18.dp)
-                                    .clickable { onDeleteClick(item) }
+                                    .clickable { onDeleteClick(item) },
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -349,12 +347,12 @@ fun SearchHistorySection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Button(
                     onClick = onClearAllClick,
                     modifier = Modifier.height(36.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
                 ) {
                     Icon(Icons.TwoTone.Delete, null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(4.dp))

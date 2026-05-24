@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.spotless)
 }
 
 detekt {
@@ -43,6 +44,47 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
 
 tasks.register("detektAll") {
     dependsOn(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>())
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt")
+        targetExclude(
+            "**/build/**",
+            "**/.gradle/**",
+            "**/detekt-baseline.xml",
+        )
+        ktlint(libs.versions.ktlint.get())
+            .setEditorConfigPath("$rootDir/.editorconfig")
+            .editorConfigOverride(
+                mapOf(
+                    "ktlint_standard_function-naming" to "disabled",
+                    "ktlint_standard_filename" to "disabled",
+                    "ktlint_standard_annotation" to "disabled",
+                    "ktlint_standard_no-wildcard-imports" to "disabled",
+                    "ktlint_standard_property-naming" to "disabled",
+                ),
+            )
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlinGradle {
+        target("**/*.kts")
+        targetExclude("**/build/**", "**/.gradle/**")
+        ktlint(libs.versions.ktlint.get())
+            .setEditorConfigPath("$rootDir/.editorconfig")
+            .editorConfigOverride(
+                mapOf(
+                    "ktlint_standard_function-naming" to "disabled",
+                    "ktlint_standard_filename" to "disabled",
+                    "ktlint_standard_annotation" to "disabled",
+                    "ktlint_standard_no-wildcard-imports" to "disabled",
+                    "ktlint_standard_property-naming" to "disabled",
+                ),
+            )
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 /**
@@ -173,7 +215,8 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
             isMinifyEnabled = true
             signingConfig = signingConfigs["debug"]
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
         }
     }
@@ -273,7 +316,7 @@ subprojects {
                         val groupIdBuilder = StringBuilder(libs.catalog.get().group)
                         if (parent != null && parent != rootProject) {
                             val parentName = parent!!.name
-                            artifactId = "${parentName}-${project.name}"
+                            artifactId = "$parentName-${project.name}"
                         }
                         groupId = groupIdBuilder.toString()
                         var targetComponent: SoftwareComponent? = components.findByName("release")

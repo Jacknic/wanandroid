@@ -32,13 +32,13 @@ fun SearchBar(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
         modifier = modifier
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(0.7f),
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.small,
             )
             .clip(MaterialTheme.shapes.small)
             .clickable { onClick() }
             .padding(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(imageVector = Icons.Rounded.Search, tint = contentColor, contentDescription = "")
         Text("搜索玩安卓", style = MaterialTheme.typography.titleSmall, color = contentColor)

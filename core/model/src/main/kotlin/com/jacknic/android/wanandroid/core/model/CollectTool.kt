@@ -30,5 +30,5 @@ data class CollectTool(
     @SerializedName("userId")
     val userId: Int = 0,
     @SerializedName("visible")
-    val visible: Int = 0
+    val visible: Int = 0,
 )

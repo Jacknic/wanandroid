@@ -87,7 +87,7 @@ fun PageSquare(
     val gridState = rememberSaveable(saver = LazyGridState.Saver) {
         LazyGridState(
             firstVisibleItemIndex = savedScroll.first,
-            firstVisibleItemScrollOffset = savedScroll.second
+            firstVisibleItemScrollOffset = savedScroll.second,
         )
     }
 
@@ -111,9 +111,9 @@ fun PageSquare(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors()
-                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
+                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface),
             )
-        }
+        },
     ) { paddingValues ->
         LazyVerticalGrid(
             columns = if (isWideScreen) GridCells.Adaptive(minSize = 300.dp) else GridCells.Fixed(1),
@@ -124,7 +124,7 @@ fun PageSquare(
             state = gridState,
             contentPadding = PaddingValues(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             // 文章列表
             items(
@@ -132,7 +132,7 @@ fun PageSquare(
                 key = { index ->
                     val article = pagingItems.peek(index)
                     if (article != null) "${article.id}_$index" else "placeholder_$index"
-                }
+                },
             ) { index ->
                 val article: Article? = pagingItems[index]
                 if (article != null) {
@@ -149,7 +149,7 @@ fun PageSquare(
                                 }
                             }
                         },
-                        onClick = { nav.openBrowser(article.link) }
+                        onClick = { nav.openBrowser(article.link) },
                     )
                 }
             }
@@ -162,7 +162,7 @@ fun PageSquare(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator()
                         }
@@ -173,7 +173,7 @@ fun PageSquare(
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         ErrorView(
                             message = "加载失败",
-                            onRetry = { pagingItems.refresh() }
+                            onRetry = { pagingItems.refresh() },
                         )
                     }
                 }
@@ -184,7 +184,7 @@ fun PageSquare(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(24.dp))
                         }
@@ -195,7 +195,7 @@ fun PageSquare(
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         ErrorView(
                             message = "加载更多失败",
-                            onRetry = { pagingItems.retry() }
+                            onRetry = { pagingItems.retry() },
                         )
                     }
                 }
@@ -206,20 +206,20 @@ fun PageSquare(
                     }
                 }
 
-                loadState.append is LoadState.NotLoading
-                        && (loadState.append as LoadState.NotLoading).endOfPaginationReached
-                        && pagingItems.itemCount > 0 -> {
+                loadState.append is LoadState.NotLoading &&
+                    (loadState.append as LoadState.NotLoading).endOfPaginationReached &&
+                    pagingItems.itemCount > 0 -> {
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 16.dp),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = "已加载全部",
                                 style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
@@ -246,27 +246,24 @@ fun PageSquare(
                 TextButton(onClick = { showLoginDialog = false }) {
                     Text("取消")
                 }
-            }
+            },
         )
     }
 }
 
 @Composable
-private fun ErrorView(
-    message: String,
-    onRetry: () -> Unit
-) {
+private fun ErrorView(message: String, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Button(onClick = onRetry) {
             Icon(Icons.TwoTone.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -282,12 +279,12 @@ private fun EmptyView(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

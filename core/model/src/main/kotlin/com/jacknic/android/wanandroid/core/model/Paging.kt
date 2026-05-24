@@ -30,5 +30,5 @@ data class Paging<T>(
     @SerializedName("size")
     val size: Int = 0,
     @SerializedName("total")
-    val total: Int = 0
+    val total: Int = 0,
 )

@@ -15,5 +15,5 @@ data class HarmonyIndex(
     @SerializedName("open_sources")
     val openSources: List<Chapter> = emptyList(),
     @SerializedName("tools")
-    val tools: List<Chapter> = emptyList()
+    val tools: List<Chapter> = emptyList(),
 )

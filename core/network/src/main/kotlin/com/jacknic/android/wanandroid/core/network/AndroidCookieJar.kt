@@ -12,7 +12,6 @@ import okhttp3.HttpUrl
  * @author Jacknic
  */
 class AndroidCookieJar : CookieJar {
-
     private val cookieManager = CookieManager.getInstance()
 
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
@@ -32,7 +31,6 @@ class AndroidCookieJar : CookieJar {
     }
 
     companion object {
-
         @Volatile
         private var cookieJar: AndroidCookieJar? = null
         private val log = TLog.create("AndroidCookieJar")
@@ -40,11 +38,9 @@ class AndroidCookieJar : CookieJar {
         /**
          * 获取存储管理单例
          */
-        fun get(): AndroidCookieJar {
-            return cookieJar ?: synchronized(this) {
-                AndroidCookieJar().also {
-                    cookieJar = it
-                }
+        fun get(): AndroidCookieJar = cookieJar ?: synchronized(this) {
+            AndroidCookieJar().also {
+                cookieJar = it
             }
         }
 

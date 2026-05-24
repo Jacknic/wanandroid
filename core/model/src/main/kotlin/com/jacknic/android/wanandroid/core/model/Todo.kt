@@ -44,5 +44,5 @@ data class Todo(
     @SerializedName("completeDate")
     val completeDate: String? = null,
     @SerializedName("visible")
-    val visible: Int = 0
+    val visible: Int = 0,
 )

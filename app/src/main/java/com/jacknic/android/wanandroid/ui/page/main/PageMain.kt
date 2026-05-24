@@ -36,6 +36,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jacknic.android.wanandroid.R
+import com.jacknic.android.wanandroid.core.ui.R as UR
 import com.jacknic.android.wanandroid.ui.page.main.category.PageCategory
 import com.jacknic.android.wanandroid.ui.page.main.discovery.PageDiscovery
 import com.jacknic.android.wanandroid.ui.page.main.home.HomeViewModel
@@ -43,13 +44,8 @@ import com.jacknic.android.wanandroid.ui.page.main.home.PageHome
 import com.jacknic.android.wanandroid.ui.page.main.mine.PageMine
 import com.jacknic.android.wanandroid.ui.page.main.square.PageSquare
 import kotlinx.coroutines.launch
-import com.jacknic.android.wanandroid.core.ui.R as UR
 
-enum class NavDestinations(
-    @field:StringRes val label: Int,
-    @field:RawRes val icon: Int,
-    @field:StringRes val contentDescription: Int,
-) {
+enum class NavDestinations(@field:StringRes val label: Int, @field:RawRes val icon: Int, @field:StringRes val contentDescription: Int) {
     HOME(R.string.title_home, UR.raw.tabbar_animate_home, R.string.title_home),
     SQUARE(R.string.title_square, UR.raw.tabbar_animate_dynamic, R.string.title_square),
     DISCOVERY(R.string.title_discovery, UR.raw.tabbar_animate_discover, R.string.title_discovery),
@@ -93,9 +89,9 @@ fun PageMain() {
                                 rememberLottieDynamicProperty(
                                     property = LottieProperty.COLOR,
                                     value = MaterialTheme.colorScheme.primary.toArgb(),
-                                    keyPath = arrayOf("**", "填充 1")
-                                )
-                            )
+                                    keyPath = arrayOf("**", "填充 1"),
+                                ),
+                            ),
                         )
                     },
                     label = {
@@ -126,13 +122,13 @@ fun PageMain() {
             when (index) {
                 NavDestinations.HOME.ordinal -> {
                     PageHome(
-                        scrollBehavior = scrollBehavior
+                        scrollBehavior = scrollBehavior,
                     )
                 }
 
                 NavDestinations.SQUARE.ordinal -> {
                     PageSquare(
-                        scrollBehavior = scrollBehavior
+                        scrollBehavior = scrollBehavior,
                     )
                 }
 
@@ -144,7 +140,7 @@ fun PageMain() {
                             scope.launch {
                                 pagerState.animateScrollToPage(NavDestinations.HOME.ordinal)
                             }
-                        }
+                        },
                     )
                 }
 

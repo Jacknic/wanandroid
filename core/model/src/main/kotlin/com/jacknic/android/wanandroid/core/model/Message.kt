@@ -39,5 +39,5 @@ data class Message(
     @SerializedName("title")
     val title: String = "",
     @SerializedName("userId")
-    val userId: Int = 0
+    val userId: Int = 0,
 )

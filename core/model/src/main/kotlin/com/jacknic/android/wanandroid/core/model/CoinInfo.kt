@@ -24,5 +24,5 @@ data class CoinInfo(
     @SerializedName("username")
     val username: String = "",
     @SerializedName("nickname")
-    val nickname: String = ""
+    val nickname: String = "",
 )

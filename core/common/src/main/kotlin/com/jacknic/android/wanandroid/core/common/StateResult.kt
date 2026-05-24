@@ -25,7 +25,6 @@ sealed interface StateResult<out T> {
      * 加载失败
      */
     data class Error(val exception: Throwable? = null) : StateResult<Nothing>
-
 }
 
 /**
@@ -69,7 +68,7 @@ inline fun <T> StateResult<T>.onLoading(action: () -> Unit): StateResult<T> {
 inline fun <T> StateResult<T>.onState(
     loading: () -> Unit = {},
     error: (value: Throwable?) -> Unit = {},
-    success: (value: T) -> Unit = {}
+    success: (value: T) -> Unit = {},
 ) {
     when (this) {
         StateResult.Loading -> loading()
@@ -81,9 +80,7 @@ inline fun <T> StateResult<T>.onState(
 /**
  * 获取数据或返回null对象
  */
-fun <T> StateResult<T>.getDataOrNull(): T? {
-    return if (this is StateResult.Success) data else null
-}
+fun <T> StateResult<T>.getDataOrNull(): T? = if (this is StateResult.Success) data else null
 
 /**
  * 数据类型转换
@@ -92,20 +89,16 @@ fun <T> StateResult<T>.getDataOrNull(): T? {
  * @param T 源数据类型
  * @param transformer 转换函数
  */
-inline fun <R, T> StateResult<T>.toStateResult(transformer: (T) -> R): StateResult<R> {
-    return when (this) {
-        is StateResult.Error -> this
-        StateResult.Loading -> StateResult.Loading
-        is StateResult.Success -> StateResult.Success(transformer(data))
-    }
+inline fun <R, T> StateResult<T>.toStateResult(transformer: (T) -> R): StateResult<R> = when (this) {
+    is StateResult.Error -> this
+    StateResult.Loading -> StateResult.Loading
+    is StateResult.Success -> StateResult.Success(transformer(data))
 }
 
 /**
  * 转换为带状态结构
  */
-fun <T> Result<T>.toStateResult(): StateResult<T> {
-    return fold(onSuccess = { StateResult.Success(it) }, onFailure = { StateResult.Error(it) })
-}
+fun <T> Result<T>.toStateResult(): StateResult<T> = fold(onSuccess = { StateResult.Success(it) }, onFailure = { StateResult.Error(it) })
 
 /**
  * 转换为带状态结构
@@ -114,12 +107,10 @@ fun <T> Result<T>.toStateResult(): StateResult<T> {
  * @param T 源数据类型
  * @param transformer 数据类型转换
  */
-inline fun <R, T> Result<T>.toStateResult(transformer: (T) -> R): StateResult<R> {
-    return when (val result = toStateResult()) {
-        is StateResult.Error -> result
-        StateResult.Loading -> StateResult.Loading
-        is StateResult.Success -> StateResult.Success(transformer(result.data))
-    }
+inline fun <R, T> Result<T>.toStateResult(transformer: (T) -> R): StateResult<R> = when (val result = toStateResult()) {
+    is StateResult.Error -> result
+    StateResult.Loading -> StateResult.Loading
+    is StateResult.Success -> StateResult.Success(transformer(result.data))
 }
 
 /**
@@ -142,7 +133,7 @@ fun <T> StateResult<T>?.error() = this is StateResult.Error
  */
 suspend fun <T> MutableStateFlow<StateResult<T>?>.withLoading(
     loading: Boolean = true,
-    action: suspend (StateResult<T>?) -> StateResult<T>
+    action: suspend (StateResult<T>?) -> StateResult<T>,
 ) {
     if (loading) {
         update { Loading }

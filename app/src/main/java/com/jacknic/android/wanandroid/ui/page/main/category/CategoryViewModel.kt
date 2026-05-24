@@ -12,20 +12,17 @@ import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Tree
 import com.jacknic.android.wanandroid.util.PagingListDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * 分类页视图数据
  */
 @HiltViewModel
-class CategoryViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val repo: WanRepository
-) : ViewModel() {
+class CategoryViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle, private val repo: WanRepository) : ViewModel() {
 
     private val _treeResult = MutableStateFlow<StateResult<List<Tree>>>(StateResult.Loading)
     val treeResult = _treeResult.asStateFlow()
@@ -38,7 +35,7 @@ class CategoryViewModel @Inject constructor(
     private val _expandedIndices = MutableStateFlow<Set<Int>>(
         savedStateHandle.get<String>(KEY_EXPANDED_INDICES)?.split(",")
             ?.filter { it.isNotEmpty() }?.mapNotNull { it.toIntOrNull() }?.toSet()
-            ?: emptySet()
+            ?: emptySet(),
     )
     val expandedIndices = _expandedIndices.asStateFlow()
 
@@ -110,14 +107,12 @@ class CategoryViewModel @Inject constructor(
     /**
      * 获取指定分类的文章列表流
      */
-    fun getArticleListFlow(cid: Int): Flow<PagingData<Article>> {
-        return pagingFlows.getOrPut(cid) {
-            PagingListDataSource.pager(
-                loadAction = { page, pageSize ->
-                    repo.getHomeArticleList(page, pageSize, cid.toString())
-                }
-            ).flow.cachedIn(viewModelScope)
-        }
+    fun getArticleListFlow(cid: Int): Flow<PagingData<Article>> = pagingFlows.getOrPut(cid) {
+        PagingListDataSource.pager(
+            loadAction = { page, pageSize ->
+                repo.getHomeArticleList(page, pageSize, cid.toString())
+            },
+        ).flow.cachedIn(viewModelScope)
     }
 
     fun refresh() {

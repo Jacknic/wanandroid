@@ -23,7 +23,6 @@ import com.jacknic.android.wanandroid.core.model.WendaComment
  * @author Jacknic
  */
 interface WanRepository {
-
     /**
      * 获取首页文章列表
      *
@@ -311,13 +310,7 @@ interface WanRepository {
      * @param type 类型，大于0的整数 (optional)
      * @param priority 优先级，大于0的整数 (optional)
      */
-    suspend fun addTodo(
-        title: String,
-        content: String,
-        date: String? = null,
-        type: Int? = null,
-        priority: Int? = null
-    ): Result<Todo>
+    suspend fun addTodo(title: String, content: String, date: String? = null, type: Int? = null, priority: Int? = null): Result<Todo>
 
     /**
      * 更新TODO
@@ -337,7 +330,7 @@ interface WanRepository {
         date: String,
         status: Int,
         type: Int? = null,
-        priority: Int? = null
+        priority: Int? = null,
     ): Result<Todo>
 
     /**
@@ -369,6 +362,6 @@ interface WanRepository {
         status: Int? = null,
         type: Int? = null,
         priority: Int? = null,
-        orderBy: Int? = null
+        orderBy: Int? = null,
     ): Result<Paging<Todo>>
 }

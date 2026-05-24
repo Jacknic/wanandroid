@@ -114,7 +114,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
             contentPadding = padding,
             modifier = Modifier
                 .fillMaxSize(1f)
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         ) {
             // === 账号管理 ===
             item {
@@ -132,7 +132,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         // TODO: 跳转编辑资料页
-                    }
+                    },
                 )
             }
 
@@ -158,7 +158,8 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         showModePanel.value = true
-                    })
+                    },
+                )
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 item {
@@ -173,12 +174,13 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                             Switch(
                                 dynamicThemeColor,
                                 onCheckedChange = { useDynamicThemeColor(it) },
-                                interactionSource = interactionSource
+                                interactionSource = interactionSource,
                             )
                         },
                         modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                             useDynamicThemeColor(!dynamicThemeColor)
-                        })
+                        },
+                    )
                 }
             }
             if (!dynamicThemeColor) {
@@ -214,7 +216,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         showLanguagePanel.value = true
-                    }
+                    },
                 )
             }
             item {
@@ -229,7 +231,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         // TODO: 跳转推送通知设置
-                    }
+                    },
                 )
             }
 
@@ -250,7 +252,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         // TODO: 检查更新
-                    }
+                    },
                 )
             }
             item {
@@ -265,7 +267,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     },
                     modifier = Modifier.clickable(interactionSource = interactionSource, null) {
                         // TODO: 跳转关于页
-                    }
+                    },
                 )
             }
 
@@ -275,7 +277,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 24.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Button(
                         onClick = {
@@ -284,12 +286,12 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                         modifier = Modifier
                             .height(50.dp)
-                            .widthIn(max = 360.dp)
+                            .widthIn(max = 360.dp),
                     ) {
                         Text(
                             text = "退出登录",
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
@@ -301,12 +303,12 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     Modifier
                         .fillMaxWidth()
                         .padding(bottom = 24.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "当前版本: v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -339,7 +341,7 @@ private fun SectionHeader(title: String) {
         title,
         color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.titleSmall,
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp),
     )
 }
 
@@ -359,13 +361,13 @@ private fun ThemeColorSelector() {
                 Text(
                     "动态颜色已开启",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp),
             ) {
                 ThemeColorScheme.entries.forEach { scheme ->
                     val selected = themeColorScheme == scheme && !isDynamicActive
@@ -384,11 +386,11 @@ private fun ThemeColorSelector() {
                                     Modifier.border(
                                         3.dp,
                                         MaterialTheme.colorScheme.primary,
-                                        CircleShape
+                                        CircleShape,
                                     )
                                 } else {
                                     Modifier
-                                }
+                                },
                             )
                             .then(
                                 if (isDynamicActive && scheme != ThemeColorScheme.CUSTOM) {
@@ -401,29 +403,29 @@ private fun ThemeColorSelector() {
                                             useThemeColorScheme(scheme)
                                         }
                                     }
-                                }
+                                },
                             ),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         if (scheme == ThemeColorScheme.CUSTOM && !selected) {
                             Icon(
                                 Icons.TwoTone.Add,
                                 contentDescription = "自定义颜色",
                                 tint = Color.White,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(20.dp),
                             )
                         } else if (selected) {
                             Icon(
                                 Icons.TwoTone.Check,
                                 contentDescription = scheme.label,
                                 tint = Color.White,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(20.dp),
                             )
                         }
                     }
                 }
             }
-        }
+        },
     )
     if (showColorPicker) {
         ColorPickerDialog(
@@ -432,17 +434,13 @@ private fun ThemeColorSelector() {
             onConfirm = { color ->
                 useCustomThemeColor(color)
                 showColorPicker = false
-            }
+            },
         )
     }
 }
 
 @Composable
-private fun ColorPickerDialog(
-    initialColor: Color,
-    onDismiss: () -> Unit,
-    onConfirm: (Color) -> Unit
-) {
+private fun ColorPickerDialog(initialColor: Color, onDismiss: () -> Unit, onConfirm: (Color) -> Unit) {
     var hue by remember { mutableFloatStateOf(0f) }
     var saturation by remember { mutableFloatStateOf(1f) }
     var lightness by remember { mutableFloatStateOf(0.5f) }
@@ -481,7 +479,7 @@ private fun ColorPickerDialog(
         title = { Text("选择自定义颜色") },
         text = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 // 预览色块
                 Box(
@@ -490,7 +488,7 @@ private fun ColorPickerDialog(
                         .height(60.dp)
                         .clip(MaterialTheme.shapes.medium)
                         .background(selectedColor),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         "预览",
@@ -499,7 +497,7 @@ private fun ColorPickerDialog(
                         } else {
                             Color.White
                         },
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
                 // 十六进制 RGB 输入
@@ -508,16 +506,19 @@ private fun ColorPickerDialog(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         OutlinedTextField(
                             value = hexText,
-                            onValueChange = { hexText = it; onHexChange() },
+                            onValueChange = {
+                                hexText = it
+                                onHexChange()
+                            },
                             label = { Text("RRGGBB") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                             modifier = Modifier.weight(1f),
                             singleLine = true,
-                            prefix = { Text("#") }
+                            prefix = { Text("#") },
                         )
                     }
                 }
@@ -527,7 +528,7 @@ private fun ColorPickerDialog(
                     Slider(
                         value = hue,
                         onValueChange = { hue = it },
-                        valueRange = 0f..360f
+                        valueRange = 0f..360f,
                     )
                 }
                 // 饱和度
@@ -536,7 +537,7 @@ private fun ColorPickerDialog(
                     Slider(
                         value = saturation,
                         onValueChange = { saturation = it },
-                        valueRange = 0f..1f
+                        valueRange = 0f..1f,
                     )
                 }
                 // 亮度
@@ -545,7 +546,7 @@ private fun ColorPickerDialog(
                     Slider(
                         value = lightness,
                         onValueChange = { lightness = it },
-                        valueRange = 0f..1f
+                        valueRange = 0f..1f,
                     )
                 }
             }
@@ -555,7 +556,7 @@ private fun ColorPickerDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) { Text("取消") }
-        }
+        },
     )
 }
 
@@ -564,7 +565,7 @@ private fun ColorPickerDialog(
 private fun ThemeModePanel(showModePanel: MutableState<Boolean>, themeModeNames: Array<String>) {
     DropdownMenu(
         expanded = showModePanel.value,
-        onDismissRequest = { showModePanel.value = false }
+        onDismissRequest = { showModePanel.value = false },
     ) {
         val colorPrimary = MaterialTheme.colorScheme.primary
         ThemeMode.entries.forEachIndexed { index, mode ->
@@ -583,7 +584,7 @@ private fun ThemeModePanel(showModePanel: MutableState<Boolean>, themeModeNames:
                     themeMode = mode
                     useThemeMode(mode)
                     showModePanel.value = false
-                }
+                },
             )
         }
     }
@@ -611,14 +612,10 @@ private fun hexToArgb(hex: String): Int? {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun LanguagePanel(
-    showLanguagePanel: MutableState<Boolean>,
-    languageNames: Array<String>,
-    languageCodes: Array<String>
-) {
+private fun LanguagePanel(showLanguagePanel: MutableState<Boolean>, languageNames: Array<String>, languageCodes: Array<String>) {
     DropdownMenu(
         expanded = showLanguagePanel.value,
-        onDismissRequest = { showLanguagePanel.value = false }
+        onDismissRequest = { showLanguagePanel.value = false },
     ) {
         val colorPrimary = MaterialTheme.colorScheme.primary
         val currentLocale = AppCompatDelegate.getApplicationLocales()
@@ -644,12 +641,12 @@ private fun LanguagePanel(
                     } else {
                         AppCompatDelegate.setApplicationLocales(
                             LocaleListCompat.forLanguageTags(
-                                code
-                            )
+                                code,
+                            ),
                         )
                     }
                     showLanguagePanel.value = false
-                }
+                },
             )
         }
     }

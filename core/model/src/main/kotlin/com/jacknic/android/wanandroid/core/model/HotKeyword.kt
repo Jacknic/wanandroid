@@ -21,5 +21,5 @@ data class HotKeyword(
     @SerializedName("visible")
     val visible: Int = 0,
     @SerializedName("link")
-    val link: String? = null
+    val link: String? = null,
 )

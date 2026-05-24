@@ -78,9 +78,7 @@ import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageLogin(
-    nav: NavHostController, vm: LoginViewModel = hiltViewModel<LoginViewModel>()
-) {
+fun PageLogin(nav: NavHostController, vm: LoginViewModel = hiltViewModel<LoginViewModel>()) {
     val userInfo by vm.userInfo.collectAsStateWithLifecycle()
     val registerResult by vm.registerResult.collectAsStateWithLifecycle()
     val savedUsername by vm.savedUsername.collectAsStateWithLifecycle()
@@ -120,14 +118,16 @@ fun PageLogin(
     // 登录结果处理
     userInfo?.onSuccess {
         Toast.makeText(
-            context, stringResource(R.string.login_tips_login_success), Toast.LENGTH_SHORT
+            context,
+            stringResource(R.string.login_tips_login_success),
+            Toast.LENGTH_SHORT,
         ).show()
         nav.toMain()
     }?.onError {
         Toast.makeText(
             context,
             it?.message ?: stringResource(R.string.login_tips_login_failed),
-            Toast.LENGTH_SHORT
+            Toast.LENGTH_SHORT,
         ).show()
         vm.resetLoginResult()
     }
@@ -135,14 +135,16 @@ fun PageLogin(
     // 注册结果处理
     registerResult?.onSuccess {
         Toast.makeText(
-            context, stringResource(R.string.register_tips_success), Toast.LENGTH_SHORT
+            context,
+            stringResource(R.string.register_tips_success),
+            Toast.LENGTH_SHORT,
         ).show()
         nav.toMain()
     }?.onError {
         Toast.makeText(
             context,
             it?.message ?: stringResource(R.string.register_tips_failed),
-            Toast.LENGTH_SHORT
+            Toast.LENGTH_SHORT,
         ).show()
         vm.resetRegisterResult()
     }
@@ -150,20 +152,28 @@ fun PageLogin(
     // 注册模式下的表单校验
     val usernameError = if (isRegisterMode && (usernameFocus || username.isNotBlank())) {
         LoginViewModel.validateUsername(username)
-    } else null
+    } else {
+        null
+    }
 
     val passwordError = if (isRegisterMode && (passwordFocus || password.isNotBlank())) {
         LoginViewModel.validatePassword(password)
-    } else null
+    } else {
+        null
+    }
 
     val confirmPasswordError =
         if (isRegisterMode && (confirmPasswordFocus || confirmPassword.isNotBlank())) {
             LoginViewModel.validateConfirmPassword(password, confirmPassword)
-        } else null
+        } else {
+            null
+        }
 
     val passwordStrength = if (isRegisterMode && password.isNotBlank()) {
         LoginViewModel.evaluatePasswordStrength(password)
-    } else -1
+    } else {
+        -1
+    }
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -171,22 +181,25 @@ fun PageLogin(
             TopAppBar(
                 title = { },
                 colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
+                    containerColor = Color.Transparent,
                 ),
                 actions = {
-                    TextButton(onClick = {
-                        vm.setSkipLogin(true)
-                        nav.navTop(Page.Main, Page.Login)
-                    }) {
+                    TextButton(
+                        onClick = {
+                            vm.setSkipLogin(true)
+                            nav.navTop(Page.Main, Page.Login)
+                        },
+                    ) {
                         Text(stringResource(R.string.login_btn_skip_login))
                     }
-                })
+                },
+            )
         },
     ) { paddingValues ->
         Box(modifier = Modifier.fillMaxSize()) {
             // 动画背景层
             LoginAnimatedBackground(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
 
             Column(
@@ -196,9 +209,8 @@ fun PageLogin(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(horizontal = 32.dp)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState()),
             ) {
-
                 // 用户名
                 OutlinedTextField(
                     modifier = Modifier
@@ -209,7 +221,8 @@ fun PageLogin(
                     label = { Text(stringResource(R.string.login_hit_label_username)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next, keyboardType = KeyboardType.Text
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Text,
                     ),
                     shape = CircleShape,
                     enabled = !isLoading,
@@ -239,7 +252,7 @@ fun PageLogin(
                     visualTransformation = if (visibility) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
                         imeAction = if (isRegisterMode) ImeAction.Next else ImeAction.Go,
-                        keyboardType = KeyboardType.Password
+                        keyboardType = KeyboardType.Password,
                     ),
                     keyboardActions = KeyboardActions(
                         onNext = { /* focus moves to confirm password */ },
@@ -248,7 +261,7 @@ fun PageLogin(
                                 vm.login(username, password)
                             }
                             skc?.hide()
-                        }
+                        },
                     ),
                     shape = CircleShape,
                     enabled = !isLoading,
@@ -282,7 +295,7 @@ fun PageLogin(
                             slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
                         }
                     },
-                    label = "register_fields"
+                    label = "register_fields",
                 ) { registerMode ->
                     if (registerMode) {
                         Column(
@@ -305,17 +318,22 @@ fun PageLogin(
                                 singleLine = true,
                                 visualTransformation = if (confirmVisibility) VisualTransformation.None else PasswordVisualTransformation(),
                                 keyboardOptions = KeyboardOptions(
-                                    imeAction = ImeAction.Go, keyboardType = KeyboardType.Password
+                                    imeAction = ImeAction.Go,
+                                    keyboardType = KeyboardType.Password,
                                 ),
-                                keyboardActions = KeyboardActions(onGo = {
-                                    skc?.hide()
-                                }),
+                                keyboardActions = KeyboardActions(
+                                    onGo = {
+                                        skc?.hide()
+                                    },
+                                ),
                                 shape = CircleShape,
                                 enabled = !isLoading,
                                 leadingIcon = {
-                                    IconButton(onClick = {
-                                        confirmVisibility = !confirmVisibility
-                                    }) {
+                                    IconButton(
+                                        onClick = {
+                                            confirmVisibility = !confirmVisibility
+                                        },
+                                    ) {
                                         val icon =
                                             if (confirmVisibility) Icons.TwoTone.Visibility else Icons.TwoTone.VisibilityOff
                                         Icon(icon, null)
@@ -326,7 +344,7 @@ fun PageLogin(
                                         IconButton(onClick = { confirmPassword = "" }) {
                                             Icon(
                                                 imageVector = Icons.TwoTone.Clear,
-                                                contentDescription = null
+                                                contentDescription = null,
                                             )
                                         }
                                     }
@@ -340,7 +358,7 @@ fun PageLogin(
                             // 隐私协议
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
                             ) {
                                 Checkbox(
                                     checked = agreedPrivacy,
@@ -355,8 +373,8 @@ fun PageLogin(
                                         SpanStyle(
                                             color = MaterialTheme.colorScheme.primary,
                                             fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                                            textDecoration = TextDecoration.Underline
-                                        )
+                                            textDecoration = TextDecoration.Underline,
+                                        ),
                                     ) {
                                         append(stringResource(R.string.register_privacy_policy))
                                     }
@@ -365,8 +383,8 @@ fun PageLogin(
                                         SpanStyle(
                                             color = MaterialTheme.colorScheme.primary,
                                             fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                                            textDecoration = TextDecoration.Underline
-                                        )
+                                            textDecoration = TextDecoration.Underline,
+                                        ),
                                     ) {
                                         append(stringResource(R.string.register_terms_of_service))
                                     }
@@ -381,7 +399,7 @@ fun PageLogin(
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
                             ) {
                                 Checkbox(
                                     checked = rememberPassword,
@@ -418,10 +436,10 @@ fun PageLogin(
 
                 // 登录/注册按钮
                 val loginValid = username.isNotBlank() && password.isNotBlank()
-                val registerValid = usernameError == null
-                        && passwordError == null
-                        && confirmPasswordError == null
-                        && agreedPrivacy
+                val registerValid = usernameError == null &&
+                    passwordError == null &&
+                    confirmPasswordError == null &&
+                    agreedPrivacy
 
                 Button(
                     modifier = Modifier
@@ -448,74 +466,79 @@ fun PageLogin(
                                 isRegisterMode -> R.string.register_btn_register
                                 registering -> R.string.login_btn_login_loading
                                 else -> R.string.login_btn_login
-                            }
-                        )
+                            },
+                        ),
                     )
                 }
 
                 // 切换登录/注册模式
-                TextButton(onClick = {
-                    isRegisterMode = !isRegisterMode
-                    confirmPassword = ""
-                    agreedPrivacy = false
-                    confirmPasswordFocus = false
-                }) {
+                TextButton(
+                    onClick = {
+                        isRegisterMode = !isRegisterMode
+                        confirmPassword = ""
+                        agreedPrivacy = false
+                        confirmPasswordFocus = false
+                    },
+                ) {
                     Text(
                         stringResource(
-                            if (isRegisterMode) R.string.register_link_to_login
-                            else R.string.login_link_to_register
-                        )
+                            if (isRegisterMode) {
+                                R.string.register_link_to_login
+                            } else {
+                                R.string.login_link_to_register
+                            },
+                        ),
                     )
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun PasswordStrengthIndicator(strength: Int) {
-        val colorScheme = MaterialTheme.colorScheme
-        val (color, label) = when (strength) {
-            LoginViewModel.PASSWORD_STRENGTH_WEAK ->
-                colorScheme.error to stringResource(R.string.password_strength_weak)
+@Composable
+fun PasswordStrengthIndicator(strength: Int) {
+    val colorScheme = MaterialTheme.colorScheme
+    val (color, label) = when (strength) {
+        LoginViewModel.PASSWORD_STRENGTH_WEAK ->
+            colorScheme.error to stringResource(R.string.password_strength_weak)
 
-            LoginViewModel.PASSWORD_STRENGTH_MEDIUM ->
-                colorScheme.tertiary to stringResource(R.string.password_strength_medium)
+        LoginViewModel.PASSWORD_STRENGTH_MEDIUM ->
+            colorScheme.tertiary to stringResource(R.string.password_strength_medium)
 
-            LoginViewModel.PASSWORD_STRENGTH_STRONG ->
-                colorScheme.primary to stringResource(R.string.password_strength_strong)
+        LoginViewModel.PASSWORD_STRENGTH_STRONG ->
+            colorScheme.primary to stringResource(R.string.password_strength_strong)
 
-            else -> colorScheme.outline to ""
-        }
-        val progress = when (strength) {
-            LoginViewModel.PASSWORD_STRENGTH_WEAK -> 0.33f
-            LoginViewModel.PASSWORD_STRENGTH_MEDIUM -> 0.66f
-            LoginViewModel.PASSWORD_STRENGTH_STRONG -> 1f
-            else -> 0f
-        }
+        else -> colorScheme.outline to ""
+    }
+    val progress = when (strength) {
+        LoginViewModel.PASSWORD_STRENGTH_WEAK -> 0.33f
+        LoginViewModel.PASSWORD_STRENGTH_MEDIUM -> 0.66f
+        LoginViewModel.PASSWORD_STRENGTH_STRONG -> 1f
+        else -> 0f
+    }
 
-        Column(modifier = Modifier.fillMaxWidth()) {
-            LinearProgressIndicator(
-                progress = { progress },
-                color = color,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp),
+    Column(modifier = Modifier.fillMaxWidth()) {
+        LinearProgressIndicator(
+            progress = { progress },
+            color = color,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(4.dp),
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = stringResource(R.string.password_strength_label),
+                style = MaterialTheme.typography.labelSmall,
+                color = colorScheme.onSurfaceVariant,
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.password_strength_label),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = colorScheme.onSurfaceVariant,
-                )
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = color,
-                )
-            }
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = color,
+            )
         }
     }
 }

@@ -10,16 +10,16 @@ import com.jacknic.android.wanandroid.core.domain.WanRepository
 import com.jacknic.android.wanandroid.core.model.PersonalInfo
 import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class MineViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repo: WanRepository,
-    private val collectStateManager: CollectStateManager
+    private val collectStateManager: CollectStateManager,
 ) : ViewModel() {
 
     private val _personalInfo = MutableStateFlow<StateResult<PersonalInfo>?>(null)

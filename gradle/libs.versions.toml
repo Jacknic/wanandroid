@@ -9,6 +9,8 @@ okhttp = "4.12.0"
 coil = "2.7.0"
 gson = "2.13.2"
 detekt = "1.23.8"
+spotless = "8.5.1"
+ktlint = "1.6.0"
 
 [libraries]
 catalog = { group = "com.jacknic.android.wanandroid", name = "catalog", version = "0.0.1" }
@@ -39,3 +41,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

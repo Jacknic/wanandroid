@@ -25,25 +25,25 @@ import kotlinx.coroutines.launch
 private fun darkColorSchemeFor(scheme: ThemeColorScheme) = darkColorScheme(
     primary = scheme.darkPrimary,
     secondary = scheme.darkSecondary,
-    tertiary = scheme.darkTertiary
+    tertiary = scheme.darkTertiary,
 )
 
 private fun lightColorSchemeFor(scheme: ThemeColorScheme) = lightColorScheme(
     primary = scheme.lightPrimary,
     secondary = scheme.lightSecondary,
-    tertiary = scheme.lightTertiary
+    tertiary = scheme.lightTertiary,
 )
 
 private fun darkColorSchemeForCustom(data: CustomColorData) = darkColorScheme(
     primary = data.primary,
     secondary = data.secondary,
-    tertiary = data.tertiary
+    tertiary = data.tertiary,
 )
 
 private fun lightColorSchemeForCustom(data: CustomColorData) = lightColorScheme(
     primary = data.primary,
     secondary = data.secondary,
-    tertiary = data.tertiary
+    tertiary = data.tertiary,
 )
 
 /**
@@ -52,7 +52,7 @@ private fun lightColorSchemeForCustom(data: CustomColorData) = lightColorScheme(
 enum class ThemeMode {
     SYSTEM,
     LIGHT,
-    DARK
+    DARK,
 }
 
 var themeMode by mutableStateOf(ThemeMode.SYSTEM)
@@ -137,7 +137,7 @@ fun WanandroidTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = dynamicThemeColor,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -168,6 +168,6 @@ fun WanandroidTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

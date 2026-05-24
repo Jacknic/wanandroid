@@ -13,12 +13,9 @@ import com.jacknic.android.wanandroid.core.model.Paging
  */
 class PagingListDataSource<T : Any>(
     private val loadAction: suspend (page: Int, pageSize: Int) -> Result<Paging<T>>,
-    private val initPage: Int = 0
+    private val initPage: Int = 0,
 ) : PagingSource<Int, T>() {
-
-    override fun getRefreshKey(state: PagingState<Int, T>): Int? {
-        return state.anchorPosition
-    }
+    override fun getRefreshKey(state: PagingState<Int, T>): Int? = state.anchorPosition
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val page = params.key ?: initPage
@@ -46,7 +43,7 @@ class PagingListDataSource<T : Any>(
         fun <T : Any> pager(
             loadAction: suspend (page: Int, pageSize: Int) -> Result<Paging<T>>,
             pageSize: Int = 30,
-            initPage: Int = 0
+            initPage: Int = 0,
         ): Pager<Int, T> {
             val pagingConfig = PagingConfig(pageSize, initialLoadSize = pageSize)
             return Pager(pagingConfig) {

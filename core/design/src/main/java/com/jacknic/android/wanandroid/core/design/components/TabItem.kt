@@ -34,7 +34,7 @@ fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
             MaterialTheme.colorScheme.onSurface.copy(0.5f)
         }
     CompositionLocalProvider(
-        LocalContentColor provides styleColor
+        LocalContentColor provides styleColor,
     ) {
         val cornerShape = RoundedCornerShape(50)
         Text(
@@ -46,7 +46,7 @@ fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
                 .clip(cornerShape)
                 .clickable { onClick() }
                 .background(styleColor.copy(0.1f), cornerShape)
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 8.dp),
         )
     }
 }
@@ -58,7 +58,7 @@ fun PreviewTabItem() {
     MaterialTheme {
         var selectedTabIndex by remember { mutableIntStateOf(0) }
         LazyRow(
-            contentPadding = PaddingValues(8.dp)
+            contentPadding = PaddingValues(8.dp),
         ) {
             for (i in 0 until 15) {
                 item {

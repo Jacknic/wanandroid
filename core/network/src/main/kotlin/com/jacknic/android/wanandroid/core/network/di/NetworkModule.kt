@@ -24,7 +24,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
     private const val URL_WAN_ANDROID = "https://wanandroid.com/"
 
     @Provides
@@ -43,7 +42,8 @@ object NetworkModule {
     fun okHttpCallFactory(): Call.Factory {
         val trustManager = AppTrustManager()
         val sslSocketFactory = Platform.get().newSslSocketFactory(trustManager)
-        return OkHttpClient.Builder()
+        return OkHttpClient
+            .Builder()
             .sslSocketFactory(sslSocketFactory, trustManager)
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
@@ -51,17 +51,14 @@ object NetworkModule {
                         setLevel(HttpLoggingInterceptor.Level.BODY)
                     }
                 },
-            )
-            .cookieJar(AndroidCookieJar.get())
+            ).cookieJar(AndroidCookieJar.get())
             .build()
     }
 
     @Provides
     @Singleton
-    fun imageLoader(
-        okHttpCallFactory: Call.Factory,
-        @ApplicationContext application: Context,
-    ): ImageLoader = ImageLoader.Builder(application)
+    fun imageLoader(okHttpCallFactory: Call.Factory, @ApplicationContext application: Context): ImageLoader = ImageLoader
+        .Builder(application)
         .callFactory(okHttpCallFactory)
         .components { add(SvgDecoder.Factory()) }
         .respectCacheHeaders(false)
@@ -69,6 +66,5 @@ object NetworkModule {
             if (BuildConfig.DEBUG) {
                 logger(DebugLogger())
             }
-        }
-        .build()
+        }.build()
 }

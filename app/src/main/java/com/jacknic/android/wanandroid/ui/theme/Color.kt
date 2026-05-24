@@ -55,9 +55,7 @@ private fun Color.toHsv(): FloatArray {
 /**
  * 从 HSV 创建 Compose Color
  */
-private fun hsvToColor(hsv: FloatArray): Color {
-    return Color(android.graphics.Color.HSVToColor(hsv))
-}
+private fun hsvToColor(hsv: FloatArray): Color = Color(android.graphics.Color.HSVToColor(hsv))
 
 /**
  * 根据主色生成辅助色（降低饱和度、微调亮度）
@@ -85,7 +83,7 @@ private fun Color.deriveTertiary(): Color {
 data class CustomColorData(
     val primary: Color,
     val secondary: Color = primary.deriveSecondary(),
-    val tertiary: Color = primary.deriveTertiary()
+    val tertiary: Color = primary.deriveTertiary(),
 )
 
 /**
@@ -100,7 +98,7 @@ enum class ThemeColorScheme(
     val darkSecondary: Color,
     val darkTertiary: Color,
     val swatchColor: Color = lightPrimary,
-    val isCustom: Boolean = false
+    val isCustom: Boolean = false,
 ) {
     DEFAULT(
         label = "默认蓝",
@@ -109,7 +107,7 @@ enum class ThemeColorScheme(
         lightTertiary = DefaultBlueLightTertiary,
         darkPrimary = DefaultBlueDarkPrimary,
         darkSecondary = DefaultBlueDarkSecondary,
-        darkTertiary = DefaultBlueDarkTertiary
+        darkTertiary = DefaultBlueDarkTertiary,
     ),
     GREEN(
         label = "翠绿",
@@ -118,7 +116,7 @@ enum class ThemeColorScheme(
         lightTertiary = GreenLightTertiary,
         darkPrimary = GreenDarkPrimary,
         darkSecondary = GreenDarkSecondary,
-        darkTertiary = GreenDarkTertiary
+        darkTertiary = GreenDarkTertiary,
     ),
     PURPLE(
         label = "紫色",
@@ -127,7 +125,7 @@ enum class ThemeColorScheme(
         lightTertiary = PurpleLightTertiary,
         darkPrimary = PurpleDarkPrimary,
         darkSecondary = PurpleDarkSecondary,
-        darkTertiary = PurpleDarkTertiary
+        darkTertiary = PurpleDarkTertiary,
     ),
     ORANGE(
         label = "橙色",
@@ -136,7 +134,7 @@ enum class ThemeColorScheme(
         lightTertiary = OrangeLightTertiary,
         darkPrimary = OrangeDarkPrimary,
         darkSecondary = OrangeDarkSecondary,
-        darkTertiary = OrangeDarkTertiary
+        darkTertiary = OrangeDarkTertiary,
     ),
     RED(
         label = "红色",
@@ -145,7 +143,7 @@ enum class ThemeColorScheme(
         lightTertiary = RedLightTertiary,
         darkPrimary = RedDarkPrimary,
         darkSecondary = RedDarkSecondary,
-        darkTertiary = RedDarkTertiary
+        darkTertiary = RedDarkTertiary,
     ),
     CUSTOM(
         label = "自定义",
@@ -155,6 +153,6 @@ enum class ThemeColorScheme(
         darkPrimary = Color.Magenta,
         darkSecondary = Color.Magenta,
         darkTertiary = Color.Magenta,
-        isCustom = true
-    )
+        isCustom = true,
+    ),
 }

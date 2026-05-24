@@ -11,17 +11,15 @@ import com.jacknic.android.wanandroid.core.model.Paging
 import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
-class CollectionViewModel @Inject constructor(
-    private val repo: WanRepository,
-    private val collectStateManager: CollectStateManager
-) : ViewModel() {
+class CollectionViewModel @Inject constructor(private val repo: WanRepository, private val collectStateManager: CollectStateManager) :
+    ViewModel() {
 
     private val _collectList = MutableStateFlow<StateResult<Paging<Article>>?>(null)
     val collectList = _collectList.asStateFlow()
@@ -60,8 +58,8 @@ class CollectionViewModel @Inject constructor(
                                 prevPaging.copy(
                                     datas = prevPaging.datas + newArticles,
                                     curPage = paging.curPage,
-                                    over = paging.over
-                                )
+                                    over = paging.over,
+                                ),
                             )
                         } else {
                             StateResult.Success(paging)
@@ -92,8 +90,8 @@ class CollectionViewModel @Inject constructor(
                     StateResult.Success(
                         prevPaging.copy(
                             datas = prevPaging.datas.filter { it.id != article.id },
-                            total = (prevPaging.total - 1).coerceAtLeast(0)
-                        )
+                            total = (prevPaging.total - 1).coerceAtLeast(0),
+                        ),
                     )
                 }
             }

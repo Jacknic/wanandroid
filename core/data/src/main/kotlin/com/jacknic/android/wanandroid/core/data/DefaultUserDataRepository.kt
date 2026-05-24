@@ -2,12 +2,12 @@ package com.jacknic.android.wanandroid.core.data
 
 import com.jacknic.android.wanandroid.core.datastore.SecureCredentialsDataSource
 import com.jacknic.android.wanandroid.core.datastore.UserPreferencesDataSource
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 internal class DefaultUserDataRepository @Inject constructor(
     private val dataSource: UserPreferencesDataSource,
-    private val secureCredentialsDataSource: SecureCredentialsDataSource
+    private val secureCredentialsDataSource: SecureCredentialsDataSource,
 ) : UserDataRepository {
     override fun skipLoginFlow(): Flow<Boolean> = dataSource.skipLoginFlow()
     override suspend fun setSkipLogin(skip: Boolean) = dataSource.setSkipLogin(skip)
@@ -26,11 +26,8 @@ internal class DefaultUserDataRepository @Inject constructor(
 
     // === 安全凭据管理 ===
 
-    override suspend fun saveCredentials(
-        username: String,
-        password: String,
-        rememberPassword: Boolean
-    ) = secureCredentialsDataSource.saveCredentials(username, password, rememberPassword)
+    override suspend fun saveCredentials(username: String, password: String, rememberPassword: Boolean) =
+        secureCredentialsDataSource.saveCredentials(username, password, rememberPassword)
 
     override fun getSavedUsername(): String? = secureCredentialsDataSource.getSavedUsername()
     override fun getSavedPassword(): String? = secureCredentialsDataSource.getSavedPassword()

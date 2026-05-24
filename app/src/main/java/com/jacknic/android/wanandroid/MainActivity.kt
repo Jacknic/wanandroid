@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             WanandroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.Unspecified
+                    color = Color.Unspecified,
                 ) {
                     AppNavHost(collectStateManager = collectStateManager)
                 }

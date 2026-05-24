@@ -47,5 +47,5 @@ data class CourseInfo(
     @SerializedName("userControlSetTop")
     val userControlSetTop: Boolean = false,
     @SerializedName("visible")
-    val visible: Int = 0
+    val visible: Int = 0,
 )

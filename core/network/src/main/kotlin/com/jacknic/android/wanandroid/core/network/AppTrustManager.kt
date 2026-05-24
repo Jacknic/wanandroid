@@ -24,7 +24,9 @@ class AppTrustManager : X509TrustManager {
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
         try {
             trustManager.checkServerTrusted(chain, authType)
-        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+        } catch (
+            @Suppress("TooGenericExceptionCaught") e: Exception,
+        ) {
             val cause = e.cause
             // 忽略有效期验证异常
             if (cause is CertificateNotYetValidException) {
@@ -35,7 +37,5 @@ class AppTrustManager : X509TrustManager {
         }
     }
 
-    override fun getAcceptedIssuers(): Array<X509Certificate> {
-        return trustManager.acceptedIssuers
-    }
+    override fun getAcceptedIssuers(): Array<X509Certificate> = trustManager.acceptedIssuers
 }

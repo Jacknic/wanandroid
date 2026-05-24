@@ -38,7 +38,6 @@ object Page {
     const val Setting = "PageSetting"
     const val Login = "PageLogin"
     const val Collection = "PageCollection"
-
 }
 
 /**
@@ -81,16 +80,16 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     nav: NavHostController = rememberNavController(),
     startDestination: String = Page.Splash,
-    collectStateManager: CollectStateManager
+    collectStateManager: CollectStateManager,
 ) {
     CompositionLocalProvider(
         LocalNavCtrl provides nav,
-        LocalCollectStateManager provides collectStateManager
+        LocalCollectStateManager provides collectStateManager,
     ) {
         NavHost(
             modifier = modifier,
             navController = nav,
-            startDestination = startDestination
+            startDestination = startDestination,
         ) {
             composable(Page.Splash) { PageSplash(nav) }
             composable(Page.Main) { PageMain() }

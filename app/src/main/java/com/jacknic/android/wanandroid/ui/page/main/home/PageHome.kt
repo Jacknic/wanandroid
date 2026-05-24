@@ -164,15 +164,15 @@ fun PageHome(
                 },
                 scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.topAppBarColors()
-                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
+                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface),
             )
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             // 加载状态
             AnimatedVisibility(visible = isLoading) {
@@ -180,7 +180,7 @@ fun PageHome(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
                 }
@@ -190,7 +190,7 @@ fun PageHome(
             AnimatedVisibility(visible = isError) {
                 ErrorView(
                     message = "加载失败",
-                    onRetry = { vm.refresh() }
+                    onRetry = { vm.refresh() },
                 )
             }
 
@@ -209,10 +209,10 @@ fun PageHome(
                                 .height(3.dp)
                                 .background(
                                     color = MaterialTheme.colorScheme.primary,
-                                    shape = RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp)
-                                )
+                                    shape = RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp),
+                                ),
                         )
-                    }
+                    },
                 ) {
                     categories.forEachIndexed { index, category ->
                         Tab(
@@ -232,11 +232,11 @@ fun PageHome(
                                         FontWeight.Normal
                                     },
                                     maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                                    overflow = TextOverflow.Ellipsis,
                                 )
                             },
                             selectedContentColor = MaterialTheme.colorScheme.primary,
-                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -245,7 +245,7 @@ fun PageHome(
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.weight(1f),
-                key = { pageIndex -> pageIndex }
+                key = { pageIndex -> pageIndex },
             ) { pageIndex ->
                 if (categories.isEmpty()) return@HorizontalPager
 
@@ -257,7 +257,7 @@ fun PageHome(
                 val gridState = rememberSaveable(saver = LazyGridState.Saver) {
                     LazyGridState(
                         firstVisibleItemIndex = savedScroll.first,
-                        firstVisibleItemScrollOffset = savedScroll.second
+                        firstVisibleItemScrollOffset = savedScroll.second,
                     )
                 }
 
@@ -289,7 +289,7 @@ fun PageHome(
                         }
                     },
                     collectIds = collectIds,
-                    collectInitialized = collectInitialized
+                    collectInitialized = collectInitialized,
                 )
             }
         }
@@ -313,7 +313,7 @@ fun PageHome(
                 TextButton(onClick = { showLoginDialog = false }) {
                     Text("取消")
                 }
-            }
+            },
         )
     }
 }
@@ -338,7 +338,7 @@ private fun ArticleList(
         state = gridState,
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         // Banner - 占满
         if (showBanner) {
@@ -353,7 +353,7 @@ private fun ArticleList(
             key = { index ->
                 val article = pagingItems.peek(index)
                 if (article != null) "${article.id}_$index" else "placeholder_$index"
-            }
+            },
         ) { index ->
             val article = pagingItems[index] ?: return@items
             val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
@@ -361,7 +361,7 @@ private fun ArticleList(
                 article = article,
                 isCollected = isCollected,
                 onCollectClick = { onCollectClick(article, isCollected) },
-                onClick = { onArticleClick(article) }
+                onClick = { onArticleClick(article) },
             )
         }
 
@@ -373,7 +373,7 @@ private fun ArticleList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(100.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(32.dp))
                     }
@@ -384,7 +384,7 @@ private fun ArticleList(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     ErrorView(
                         message = "加载失败",
-                        onRetry = { pagingItems.refresh() }
+                        onRetry = { pagingItems.refresh() },
                     )
                 }
             }
@@ -395,7 +395,7 @@ private fun ArticleList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
                     }
@@ -406,7 +406,7 @@ private fun ArticleList(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     ErrorView(
                         message = "加载更多失败",
-                        onRetry = { pagingItems.retry() }
+                        onRetry = { pagingItems.retry() },
                     )
                 }
             }
@@ -417,20 +417,20 @@ private fun ArticleList(
                 }
             }
 
-            loadState.append is LoadState.NotLoading
-                && (loadState.append as LoadState.NotLoading).endOfPaginationReached
-                && pagingItems.itemCount > 0 -> {
+            loadState.append is LoadState.NotLoading &&
+                (loadState.append as LoadState.NotLoading).endOfPaginationReached &&
+                pagingItems.itemCount > 0 -> {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "已加载全部",
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -440,21 +440,18 @@ private fun ArticleList(
 }
 
 @Composable
-private fun ErrorView(
-    message: String,
-    onRetry: () -> Unit
-) {
+private fun ErrorView(message: String, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Button(onClick = onRetry) {
             Icon(Icons.TwoTone.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -470,12 +467,12 @@ private fun EmptyView(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

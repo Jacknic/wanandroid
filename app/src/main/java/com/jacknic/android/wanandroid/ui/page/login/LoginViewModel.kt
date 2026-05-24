@@ -10,17 +10,17 @@ import com.jacknic.android.wanandroid.core.domain.WanRepository
 import com.jacknic.android.wanandroid.core.model.UserInfo
 import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repo: WanRepository,
     private val userDataRepo: UserDataRepository,
-    private val collectStateManager: CollectStateManager
+    private val collectStateManager: CollectStateManager,
 ) : ViewModel() {
 
     private val _userInfo = MutableStateFlow<StateResult<UserInfo>?>(null)
@@ -168,8 +168,10 @@ class LoginViewModel @Inject constructor(
     companion object {
         /** 密码强度：弱 */
         const val PASSWORD_STRENGTH_WEAK = 0
+
         /** 密码强度：中 */
         const val PASSWORD_STRENGTH_MEDIUM = 1
+
         /** 密码强度：强 */
         const val PASSWORD_STRENGTH_STRONG = 2
 
@@ -230,18 +232,18 @@ enum class UsernameError(val message: String) {
     EMPTY("用户名不能为空"),
     TOO_SHORT("用户名至少3个字符"),
     TOO_LONG("用户名最多20个字符"),
-    INVALID_CHARS("用户名仅支持字母、数字和下划线")
+    INVALID_CHARS("用户名仅支持字母、数字和下划线"),
 }
 
 /** 密码校验错误 */
 enum class PasswordError(val message: String) {
     EMPTY("密码不能为空"),
     TOO_SHORT("密码至少6个字符"),
-    TOO_LONG("密码最多20个字符")
+    TOO_LONG("密码最多20个字符"),
 }
 
 /** 确认密码校验错误 */
 enum class ConfirmPasswordError(val message: String) {
     EMPTY("请再次输入密码"),
-    MISMATCH("两次输入的密码不一致")
+    MISMATCH("两次输入的密码不一致"),
 }

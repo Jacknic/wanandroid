@@ -31,10 +31,12 @@ include(":app")
  * 引用子模块
  */
 fun installSubmodule(dir: String) {
-    val itemList = File(rootDir, dir).listFiles(FileFilter {
-        File(it, "build.gradle.kts").exists() or
+    val itemList = File(rootDir, dir).listFiles(
+        FileFilter {
+            File(it, "build.gradle.kts").exists() or
                 File(it, "build.gradle").exists()
-    })
+        },
+    )
     itemList?.forEach {
         include(":$dir:${it.name}")
     }

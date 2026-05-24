@@ -23,7 +23,7 @@ data class WanResult<T>(
     @SerializedName("errorCode")
     val errorCode: Int = 0,
     @SerializedName("errorMsg")
-    val errorMsg: String = ""
+    val errorMsg: String = "",
 ) {
     /**
      * 请求是否成功
@@ -33,7 +33,6 @@ data class WanResult<T>(
     fun success() = ERROR_CODE_OK == errorCode
 
     companion object {
-
         /** 请求成功 */
         const val ERROR_CODE_OK = 0
 
@@ -47,8 +46,6 @@ data class WanResult<T>(
          * 构建请求成功数据
          */
         @JvmStatic
-        fun <T> success(data: T): WanResult<T> {
-            return WanResult(data, ERROR_CODE_OK)
-        }
+        fun <T> success(data: T): WanResult<T> = WanResult(data, ERROR_CODE_OK)
     }
 }

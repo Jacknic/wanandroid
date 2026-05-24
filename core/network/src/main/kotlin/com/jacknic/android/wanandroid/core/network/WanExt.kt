@@ -15,18 +15,19 @@ import retrofit2.HttpException
  * @param action 挂起函数，执行API调用返回 [WanResult]
  * @return [Result] 包含业务数据或异常
  */
-suspend fun <T> runResult(
-    action: suspend () -> WanResult<T>
-): Result<T> = runCatching {
-    val result = try {
-        action()
-    } catch (@Suppress("TooGenericExceptionCaught", "SwallowedException") e: Exception) {
-        if (e is HttpException) {
-            throw WanServerException(e.code(), e.message())
-        } else {
-            throw e
+suspend fun <T> runResult(action: suspend () -> WanResult<T>): Result<T> = runCatching {
+    val result =
+        try {
+            action()
+        } catch (
+            @Suppress("TooGenericExceptionCaught", "SwallowedException") e: Exception,
+        ) {
+            if (e is HttpException) {
+                throw WanServerException(e.code(), e.message())
+            } else {
+                throw e
+            }
         }
-    }
 
     return if (result.success()) {
         @Suppress("UNCHECKED_CAST")

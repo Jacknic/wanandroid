@@ -14,31 +14,26 @@ import timber.log.Timber
  * @param tagPrefix tag便签前缀，便于筛选日志
  * @author Jacknic
  */
-class LoggerTree(
-    private val tagPrefix: String,
-) : Timber.DebugTree() {
+class LoggerTree(private val tagPrefix: String) : Timber.DebugTree() {
     private var hasFormatStrategy = false
 
     @Synchronized
     private fun ensureFormatStrategy() {
         if (!hasFormatStrategy) {
-            val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
-                .methodCount(1)
-                .showThreadInfo(true)
-                .tag(tagPrefix)
-                .methodOffset(4)
-                .build()
+            val formatStrategy: FormatStrategy =
+                PrettyFormatStrategy
+                    .newBuilder()
+                    .methodCount(1)
+                    .showThreadInfo(true)
+                    .tag(tagPrefix)
+                    .methodOffset(4)
+                    .build()
             Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
             hasFormatStrategy = true
         }
     }
 
-    override fun log(
-        priority: Int,
-        tag: String?,
-        message: String,
-        t: Throwable?
-    ) {
+    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (usePretty) {
             if (!hasFormatStrategy) {
                 ensureFormatStrategy()

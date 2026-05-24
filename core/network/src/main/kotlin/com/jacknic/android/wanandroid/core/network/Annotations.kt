@@ -10,8 +10,4 @@ package com.jacknic.android.wanandroid.core.network
  * @property pageSizeMax 最大分页大小，默认40
  */
 @Retention(AnnotationRetention.SOURCE)
-annotation class PageNotice(
-    val pageStart: Int = 0,
-    val pageSizeMin: Int = 1,
-    val pageSizeMax: Int = 40
-)
+annotation class PageNotice(val pageStart: Int = 0, val pageSizeMin: Int = 1, val pageSizeMax: Int = 40)

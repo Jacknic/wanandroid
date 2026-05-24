@@ -18,16 +18,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
+    @Singleton
+    @Binds
+    internal abstract fun wanRepository(repo: DefaultWanRepository): WanRepository
 
     @Singleton
     @Binds
-    internal abstract fun wanRepository(
-        repo: DefaultWanRepository
-    ): WanRepository
-
-    @Singleton
-    @Binds
-    internal abstract fun userDataRepository(
-        repo: DefaultUserDataRepository
-    ): UserDataRepository
+    internal abstract fun userDataRepository(repo: DefaultUserDataRepository): UserDataRepository
 }

@@ -33,7 +33,7 @@ import com.jacknic.android.wanandroid.core.ui.R
 fun UserLevelCard(bgRes: Int, frontRes: Int, subLabel: String, state: String) {
     Box(
         modifier = Modifier
-            .aspectRatio(329 / 166f, true)
+            .aspectRatio(329 / 166f, true),
     ) {
         Image(
             painterResource(bgRes),
@@ -43,7 +43,7 @@ fun UserLevelCard(bgRes: Int, frontRes: Int, subLabel: String, state: String) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             Image(
@@ -58,7 +58,6 @@ fun UserLevelCard(bgRes: Int, frontRes: Int, subLabel: String, state: String) {
         }
     }
 }
-
 
 @PreviewLightDark
 @PreviewScreenSizes
@@ -77,7 +76,7 @@ fun PreviewUserLevelCard() {
     LazyVerticalGrid(
         GridCells.Adaptive(200.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         resMap.forEach { res ->
             item {
@@ -85,13 +84,12 @@ fun PreviewUserLevelCard() {
                     res.key,
                     res.value,
                     "达成日期 2025-03-06",
-                    "已达成该等级"
+                    "已达成该等级",
                 )
             }
         }
     }
 }
-
 
 @PreviewScreenSizes
 @Composable
@@ -112,7 +110,7 @@ fun PreviewUserLevelCardPager() {
         pageSize = PageSize.Fixed(329.dp),
         contentPadding = PaddingValues(16.dp),
         pageSpacing = 16.dp,
-        snapPosition = SnapPosition.Center
+        snapPosition = SnapPosition.Center,
     ) {
         Card(modifier = Modifier.size(329.dp, 166.dp)) {
             val res = resMap[it]
@@ -120,9 +118,8 @@ fun PreviewUserLevelCardPager() {
                 res.first,
                 res.second,
                 "达成日期 2025-03-06",
-                "已达成该等级"
+                "已达成该等级",
             )
         }
     }
 }
-

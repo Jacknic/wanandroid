@@ -12,5 +12,5 @@ data class ShareArticles(
     @SerializedName("coinInfo")
     val coinInfo: CoinInfo,
     @SerializedName("shareArticles")
-    val shareArticles: Paging<Article>
+    val shareArticles: Paging<Article>,
 )

@@ -100,11 +100,7 @@ import kotlinx.parcelize.Parcelize
  * 体系页导航键
  */
 @Parcelize
-data class TreeNavKey(
-    val id: Int,
-    val name: String,
-    val parentName: String
-) : Parcelable
+data class TreeNavKey(val id: Int, val name: String, val parentName: String) : Parcelable
 
 /**
  * 体系页
@@ -113,7 +109,7 @@ data class TreeNavKey(
 @Composable
 fun PageCategory(
     scaffoldNavigator: ThreePaneScaffoldNavigator<TreeNavKey> = rememberListDetailPaneScaffoldNavigator<TreeNavKey>(),
-    vm: CategoryViewModel = hiltViewModel()
+    vm: CategoryViewModel = hiltViewModel(),
 ) {
     val nav = LocalNavCtrl.current
     val context = LocalContext.current
@@ -135,7 +131,7 @@ fun PageCategory(
     val treeListState = rememberSaveable(saver = LazyListState.Saver) {
         LazyListState(
             firstVisibleItemIndex = savedTreeScroll.first,
-            firstVisibleItemScrollOffset = savedTreeScroll.second
+            firstVisibleItemScrollOffset = savedTreeScroll.second,
         )
     }
 
@@ -166,7 +162,7 @@ fun PageCategory(
             }
 
             Column(
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             ) {
                 TopAppBar(
                     title = {
@@ -184,8 +180,8 @@ fun PageCategory(
                                     focusedContainerColor = Color.Transparent,
                                     unfocusedContainerColor = Color.Transparent,
                                     focusedIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent
-                                )
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                ),
                             )
                         } else {
                             Text(stringResource(R.string.title_category))
@@ -207,7 +203,7 @@ fun PageCategory(
                     },
                     scrollBehavior = scrollBehavior,
                     colors = TopAppBarDefaults.topAppBarColors()
-                        .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface)
+                        .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface),
                 )
 
                 // 加载状态
@@ -219,7 +215,7 @@ fun PageCategory(
                 AnimatedVisibility(visible = isError) {
                     ErrorView(
                         message = "加载体系数据失败",
-                        onRetry = { vm.refresh() }
+                        onRetry = { vm.refresh() },
                     )
                 }
                 val skc = LocalSoftwareKeyboardController.current
@@ -236,10 +232,11 @@ fun PageCategory(
                                 skc?.hide()
                                 scaffoldNavigator.navigateTo(
                                     ListDetailPaneScaffoldRole.Detail,
-                                    TreeNavKey(chapterId, name, parentName)
+                                    TreeNavKey(chapterId, name, parentName),
                                 )
                             }
-                        })
+                        },
+                    )
                 }
             }
         },
@@ -262,13 +259,13 @@ fun PageCategory(
                         }
                     },
                     collectIds = collectIds,
-                    collectInitialized = collectInitialized
+                    collectInitialized = collectInitialized,
                 )
             } else {
                 // 未选中任何分类时的占位
                 EmptyDetailView()
             }
-        }
+        },
     )
 
     // 未登录提示对话框
@@ -289,7 +286,7 @@ fun PageCategory(
                 TextButton(onClick = { showLoginDialog = false }) {
                     Text("取消")
                 }
-            }
+            },
         )
     }
 }
@@ -322,7 +319,7 @@ private fun TreeList(
                         Text(
                             text = displayName,
                             style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
                         )
                     },
                     trailingContent = {
@@ -336,10 +333,10 @@ private fun TreeList(
                                 "折叠"
                             } else {
                                 "展开"
-                            }
+                            },
                         )
                     },
-                    modifier = Modifier.clickable { onToggleExpand(index) }
+                    modifier = Modifier.clickable { onToggleExpand(index) },
                 )
             }
 
@@ -347,7 +344,7 @@ private fun TreeList(
             if (isExpanded) {
                 items(
                     count = tree.children.size,
-                    key = { childIndex -> "child_${tree.children[childIndex].id}" }
+                    key = { childIndex -> "child_${tree.children[childIndex].id}" },
                 ) { childIndex ->
                     val child = tree.children[childIndex]
                     val childName = child.name.parseAsHtml().toString()
@@ -357,12 +354,12 @@ private fun TreeList(
                             Text(
                                 text = childName,
                                 style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(start = 16.dp)
+                                modifier = Modifier.padding(start = 16.dp),
                             )
                         },
                         modifier = Modifier.clickable {
                             onSelectChild(child.id, childName, displayName)
-                        }
+                        },
                     )
                 }
             }
@@ -391,7 +388,7 @@ private fun TreeDetailPane(
     val detailGridState = rememberSaveable(saver = LazyGridState.Saver) {
         LazyGridState(
             firstVisibleItemIndex = savedDetailScroll.first,
-            firstVisibleItemScrollOffset = savedDetailScroll.second
+            firstVisibleItemScrollOffset = savedDetailScroll.second,
         )
     }
 
@@ -410,7 +407,7 @@ private fun TreeDetailPane(
                     Text(
                         text = navKey.parentName + " / " + navKey.name,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 navigationIcon = {
@@ -418,7 +415,7 @@ private fun TreeDetailPane(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -432,7 +429,7 @@ private fun TreeDetailPane(
             gridState = detailGridState,
             modifier = Modifier
                 .padding(paddingValues)
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         )
     }
 }
@@ -448,7 +445,7 @@ private fun ArticlePagingList(
     collectIds: Set<Int> = emptySet(),
     collectInitialized: Boolean = false,
     gridState: LazyGridState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val loadState = pagingItems.loadState
 
@@ -457,14 +454,14 @@ private fun ArticlePagingList(
         modifier = modifier.fillMaxSize(),
         state = gridState,
         contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         items(
             count = pagingItems.itemCount,
             key = { index ->
                 val article = pagingItems.peek(index)
                 if (article != null) "${article.id}_$index" else "placeholder_$index"
-            }
+            },
         ) { index ->
             val article = pagingItems[index] ?: return@items
             val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
@@ -472,7 +469,7 @@ private fun ArticlePagingList(
                 article = article,
                 isCollected = isCollected,
                 onCollectClick = { onCollectClick(article, isCollected) },
-                onClick = { onArticleClick(article) }
+                onClick = { onArticleClick(article) },
             )
         }
 
@@ -484,7 +481,7 @@ private fun ArticlePagingList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(100.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(32.dp))
                     }
@@ -495,7 +492,7 @@ private fun ArticlePagingList(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     ErrorView(
                         message = "加载文章失败",
-                        onRetry = { pagingItems.refresh() }
+                        onRetry = { pagingItems.refresh() },
                     )
                 }
             }
@@ -506,7 +503,7 @@ private fun ArticlePagingList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
                     }
@@ -517,7 +514,7 @@ private fun ArticlePagingList(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     ErrorView(
                         message = "加载更多失败",
-                        onRetry = { pagingItems.retry() }
+                        onRetry = { pagingItems.retry() },
                     )
                 }
             }
@@ -528,20 +525,20 @@ private fun ArticlePagingList(
                 }
             }
 
-            loadState.append is LoadState.NotLoading
-                    && (loadState.append as LoadState.NotLoading).endOfPaginationReached
-                    && pagingItems.itemCount > 0 -> {
+            loadState.append is LoadState.NotLoading &&
+                (loadState.append as LoadState.NotLoading).endOfPaginationReached &&
+                pagingItems.itemCount > 0 -> {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "已加载全部",
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -559,19 +556,19 @@ private fun EmptyDetailView() {
         modifier = Modifier
             .fillMaxSize()
             .padding(WindowInsets.statusBars.asPaddingValues()),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "请选择一个分类",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "从左侧列表选择分类查看文章",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
             )
         }
     }
@@ -581,21 +578,18 @@ private fun EmptyDetailView() {
  * 错误视图
  */
 @Composable
-private fun ErrorView(
-    message: String,
-    onRetry: () -> Unit
-) {
+private fun ErrorView(message: String, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Button(onClick = onRetry) {
             Icon(Icons.TwoTone.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -614,12 +608,12 @@ private fun EmptyView(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

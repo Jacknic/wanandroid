@@ -11,22 +11,18 @@ import timber.log.Timber
  *
  * @author Jacknic
  */
-class TLog @JvmOverloads constructor(
-    private val tag: String,
-    private val isLoggable: Boolean = false
-) {
-
+class TLog
+@JvmOverloads
+constructor(private val tag: String, private val isLoggable: Boolean = false) {
     /**
      * Log 拓展方法
      *
      * 判断是否输出及添加 tag
      */
-    fun tag(): Timber.Tree {
-        return if (isLoggable) {
-            Timber.tag(tag)
-        } else {
-            LOG_TREE.tag(tag)
-        }
+    fun tag(): Timber.Tree = if (isLoggable) {
+        Timber.tag(tag)
+    } else {
+        LOG_TREE.tag(tag)
     }
 
     /**
@@ -39,38 +35,35 @@ class TLog @JvmOverloads constructor(
         INFO(Log.INFO),
         WARN(Log.WARN),
         ERROR(Log.ERROR),
-        ASSERT(Log.ASSERT)
+        ASSERT(Log.ASSERT),
     }
 
     companion object {
-
         /**
          * 默认Log输出实现
          */
         @JvmStatic
-        private val LOG_TREE = object : Timber.Tree() {
+        private val LOG_TREE =
+            object : Timber.Tree() {
+                /**
+                 * 默认输出，需调用端设置 [Timber.plant] 输出的具体实现
+                 */
+                private val tree = Timber.asTree()
 
-            /**
-             * 默认输出，需调用端设置 [Timber.plant] 输出的具体实现
-             */
-            private val tree = Timber.asTree()
+                /**
+                 * 注入 tag 标签
+                 */
+                fun tag(tag: String): Timber.Tree {
+                    Timber.tag(tag)
+                    return this
+                }
 
-            /**
-             * 注入 tag 标签
-             */
-            fun tag(tag: String): Timber.Tree {
-                Timber.tag(tag)
-                return this
+                override fun isLoggable(tag: String?, priority: Int): Boolean = priority >= logLevel.value
+
+                override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+                    tree.log(priority, t, message)
+                }
             }
-
-            override fun isLoggable(tag: String?, priority: Int): Boolean {
-                return priority >= logLevel.value
-            }
-
-            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-                tree.log(priority, t, message)
-            }
-        }
 
         /**
          * 全局日志输出等级

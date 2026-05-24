@@ -34,9 +34,9 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 40_000, easing = EaseInOutCubic),
-            repeatMode = RepeatMode.Restart
+            repeatMode = RepeatMode.Restart,
         ),
-        label = "bg_rotation"
+        label = "bg_rotation",
     )
 
     // 呼吸缩放
@@ -45,9 +45,9 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
         targetValue = 1.08f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 6_000, easing = EaseInOutCubic),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "bg_breath"
+        label = "bg_breath",
     )
 
     // 粒子漂移偏移
@@ -56,25 +56,25 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
         targetValue = 30f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 12_000, easing = EaseInOutCubic),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "bg_drift_x"
+        label = "bg_drift_x",
     )
     val driftY by infiniteTransition.animateFloat(
         initialValue = -20f,
         targetValue = 20f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 9_000, easing = EaseInOutCubic),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "bg_drift_y"
+        label = "bg_drift_y",
     )
 
     // JetBrains 品牌渐变色
     val gradientColors = listOf(
-        Color(0xFFAF1DF5),  // 紫
-        Color(0xFFFE2857),  // 粉红
-        Color(0xFFFC801D),  // 橙
+        Color(0xFFAF1DF5), // 紫
+        Color(0xFFFE2857), // 粉红
+        Color(0xFFFC801D), // 橙
     )
 
     // 扇形矩形参数
@@ -96,7 +96,8 @@ fun LoginAnimatedBackground(modifier: Modifier = Modifier) {
             .graphicsLayer {
                 scaleX = breathScale
                 scaleY = breathScale
-            }) {
+            },
+    ) {
         val cx = size.width * 0.65f + driftX
         val cy = size.height * 0.35f + driftY
         val baseSize = min(size.width, size.height) * 0.08f

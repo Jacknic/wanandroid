@@ -15,5 +15,5 @@ data class NavInfo(
     @SerializedName("cid")
     val cid: Int = 0,
     @SerializedName("name")
-    val name: String = ""
+    val name: String = "",
 )

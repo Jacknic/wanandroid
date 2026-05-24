@@ -91,9 +91,9 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                         Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "返回")
                     }
                 },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
             )
-        }
+        },
     ) { padding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
@@ -104,13 +104,13 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
             },
             modifier = Modifier
                 .padding(padding)
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         ) {
             when (val state = collectListState) {
                 is StateResult.Loading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator()
                     }
@@ -120,12 +120,12 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                     val isUnauthorized = state.exception?.isUnauthorized() ?: false
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 if (isUnauthorized) "未登录" else "加载失败",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             if (isUnauthorized) {
@@ -147,11 +147,11 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                     if (articles.isEmpty()) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 "暂无收藏文章",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     } else {
@@ -164,19 +164,19 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(
                                             horizontal = 16.dp,
-                                            vertical = 8.dp
-                                        )
+                                            vertical = 8.dp,
+                                        ),
                                     )
                                 }
                             }
                             itemsIndexed(
                                 articles,
-                                key = { index, article -> "${article.id}_$index" }
+                                key = { index, article -> "${article.id}_$index" },
                             ) { _, article ->
                                 CollectArticleItem(
                                     article = article,
                                     onClick = { nav.openBrowser(article.link) },
-                                    onRemove = { articleToRemove = article }
+                                    onRemove = { articleToRemove = article },
                                 )
                             }
                             if (!state.data.over) {
@@ -185,7 +185,7 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(16.dp),
-                                        contentAlignment = Alignment.Center
+                                        contentAlignment = Alignment.Center,
                                     ) {
                                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
                                     }
@@ -210,7 +210,7 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                     article.title.take(50)
                         .let { if (it.length < article.title.length) "$it…" else it },
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             confirmButton = {
@@ -231,21 +231,17 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                 TextButton(onClick = { articleToRemove = null }) {
                     Text("取消")
                 }
-            }
+            },
         )
     }
 }
 
 @Composable
-private fun CollectArticleItem(
-    article: Article,
-    onClick: () -> Unit,
-    onRemove: () -> Unit,
-) {
+private fun CollectArticleItem(article: Article, onClick: () -> Unit, onRemove: () -> Unit) {
     ArticleListItem(
         article = article,
         isCollected = true,
         onCollectClick = onRemove,
-        onClick = onClick
+        onClick = onClick,
     )
 }

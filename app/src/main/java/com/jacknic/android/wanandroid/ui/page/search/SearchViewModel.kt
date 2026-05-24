@@ -15,12 +15,12 @@ import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.HotKeyword
 import com.jacknic.android.wanandroid.util.PagingListDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 const val SEARCH_KEY = "search_key"
 
@@ -33,9 +33,8 @@ const val SEARCH_KEY = "search_key"
 class SearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repo: WanRepository,
-    private val userDataRepository: UserDataRepository
+    private val userDataRepository: UserDataRepository,
 ) : ViewModel() {
-
     private val log = TLog.create("SearchViewModel", BuildConfig.DEBUG)
     private val _searchResultFlow = MutableStateFlow(PagingData.empty<Article>())
     val searchResultFlow = _searchResultFlow.cachedIn(viewModelScope)
@@ -46,8 +45,10 @@ class SearchViewModel @Inject constructor(
     private val _hotkeyResult = MutableStateFlow<StateResult<List<HotKeyword>>>(StateResult.Loading)
     val hotkeyResult = _hotkeyResult.asStateFlow()
 
-    val searchHistory = userDataRepository.searchHistoryFlow()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val searchHistory =
+        userDataRepository
+            .searchHistoryFlow()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
         getHotkey()
@@ -91,13 +92,15 @@ class SearchViewModel @Inject constructor(
             userDataRepository.addSearchHistory(key)
         }
         viewModelScope.launch {
-            PagingListDataSource.pager(
-                loadAction = { page, pageSize ->
-                    repo.searchArticles(page, key, pageSize)
+            PagingListDataSource
+                .pager(
+                    loadAction = { page, pageSize ->
+                        repo.searchArticles(page, key, pageSize)
+                    },
+                ).flow
+                .collect {
+                    _searchResultFlow.value = it
                 }
-            ).flow.collect {
-                _searchResultFlow.value = it
-            }
         }
     }
 

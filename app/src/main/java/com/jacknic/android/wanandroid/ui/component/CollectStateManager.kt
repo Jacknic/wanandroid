@@ -2,6 +2,8 @@ package com.jacknic.android.wanandroid.ui.component
 
 import com.jacknic.android.wanandroid.core.data.UserDataRepository
 import com.jacknic.android.wanandroid.core.domain.WanRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -10,8 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * 收藏操作结果
@@ -35,10 +35,7 @@ sealed class CollectResult {
  * 初始化时通过 [UserDataRepository.hasCredentials] 恢复持久化登录状态。
  */
 @Singleton
-class CollectStateManager @Inject constructor(
-    private val repo: WanRepository,
-    userDataRepo: UserDataRepository
-) {
+class CollectStateManager @Inject constructor(private val repo: WanRepository, userDataRepo: UserDataRepository) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private val _collectIds = MutableStateFlow<Set<Int>>(emptySet())

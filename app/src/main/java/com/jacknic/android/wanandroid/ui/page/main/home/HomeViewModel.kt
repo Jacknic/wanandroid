@@ -15,11 +15,11 @@ import com.jacknic.android.wanandroid.core.model.Banner
 import com.jacknic.android.wanandroid.core.model.Chapter
 import com.jacknic.android.wanandroid.util.PagingListDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * 首页视图数据
@@ -27,10 +27,7 @@ import javax.inject.Inject
  * @author Jacknic
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val repo: WanRepository
-) : ViewModel() {
+class HomeViewModel @Inject constructor(private val savedStateHandle: SavedStateHandle, private val repo: WanRepository) : ViewModel() {
     private val log = TLog.create("HomeViewModel", BuildConfig.DEBUG)
 
     private val _bannerList = MutableStateFlow<StateResult<List<Banner>>>(StateResult.Loading)
@@ -66,19 +63,17 @@ class HomeViewModel @Inject constructor(
     /**
      * 获取指定分类的文章列表流
      */
-    fun getArticleListFlow(cid: Int): Flow<PagingData<Article>> {
-        return pagingFlows.getOrPut(cid) {
-            log.tag().d("getArticleListFlow: 创建分页流 cid=$cid")
-            PagingListDataSource.pager(
-                loadAction = { page, pageSize ->
-                    if (cid == -1) {
-                        repo.getHomeArticleList(page, pageSize, null)
-                    } else {
-                        repo.getProjectList(page, cid)
-                    }
+    fun getArticleListFlow(cid: Int): Flow<PagingData<Article>> = pagingFlows.getOrPut(cid) {
+        log.tag().d("getArticleListFlow: 创建分页流 cid=$cid")
+        PagingListDataSource.pager(
+            loadAction = { page, pageSize ->
+                if (cid == -1) {
+                    repo.getHomeArticleList(page, pageSize, null)
+                } else {
+                    repo.getProjectList(page, cid)
                 }
-            ).flow.cachedIn(viewModelScope)
-        }
+            },
+        ).flow.cachedIn(viewModelScope)
     }
 
     // ==================== 状态保存与恢复 ====================

@@ -59,7 +59,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.StateResult
-import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
@@ -113,7 +112,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                                 ThemeMode.LIGHT -> Icons.TwoTone.Brightness7
                                 ThemeMode.DARK -> Icons.TwoTone.Brightness4
                             },
-                            contentDescription = names[themeMode.ordinal]
+                            contentDescription = names[themeMode.ordinal],
                         )
                     }
                     IconButton(onClick = { }) {
@@ -132,7 +131,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
         Column(
             modifier = Modifier
                 .padding(padding)
-                .verticalScroll(scrollState)
+                .verticalScroll(scrollState),
         ) {
             // 用户信息区域
             UserInfoSection(
@@ -141,7 +140,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                 coinCount = coinInfo?.coinCount ?: 0,
                 rank = coinInfo?.rank ?: "-",
                 collectCount = if (collectIds.isNotEmpty()) collectIds.size else (userInfo?.collectIds?.size ?: 0),
-                onCollectClick = { nav.navigate(Page.Collection) }
+                onCollectClick = { nav.navigate(Page.Collection) },
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -180,13 +179,13 @@ private fun UserInfoSection(
         // 头像和用户名
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Icon(
                 Icons.TwoTone.AccountCircle,
                 contentDescription = "头像",
                 modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
@@ -195,18 +194,18 @@ private fun UserInfoSection(
                         nickname,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     Text(
                         "个人主页",
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Icon(
                         Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
                         contentDescription = "",
                         modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
@@ -216,13 +215,13 @@ private fun UserInfoSection(
                     Surface(
                         shape = RoundedCornerShape(4.dp),
                         color = MaterialTheme.colorScheme.primaryContainer,
-                        modifier = Modifier
+                        modifier = Modifier,
                     ) {
                         Text(
                             "Lv.$level",
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         )
                     }
                     Spacer(modifier = Modifier.width(6.dp))
@@ -235,7 +234,7 @@ private fun UserInfoSection(
                             "JY.$coinCount",
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.tertiary,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         )
                     }
                     Spacer(modifier = Modifier.width(6.dp))
@@ -248,7 +247,7 @@ private fun UserInfoSection(
                             "排名 $rank",
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         )
                     }
                 }
@@ -260,13 +259,13 @@ private fun UserInfoSection(
         // 统计数据
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             StatItem("点赞", "33")
             StatItem(
                 label = "收藏",
                 value = collectCount.toString(),
-                onClick = onCollectClick
+                onClick = onCollectClick,
             )
             StatItem("关注", "12")
         }
@@ -279,17 +278,17 @@ private fun StatItem(label: String, value: String, onClick: (() -> Unit)? = null
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .then(if (onClick != null) Modifier.clip(MaterialTheme.shapes.small).clickable { onClick() } else Modifier)
-            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .padding(horizontal = 12.dp, vertical = 4.dp),
     ) {
         Text(
             value,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         Text(
             label,
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -305,8 +304,8 @@ private fun FeatureCard() {
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         val tabs = listOf(
             "每日签到" to Icons.TwoTone.Star,
@@ -318,7 +317,7 @@ private fun FeatureCard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             tabs.forEach { (label, icon) ->
                 Column(
@@ -327,12 +326,12 @@ private fun FeatureCard() {
                         .weight(1f)
                         .clickable { }
                         .padding(vertical = 8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Surface(
                         shape = CircleShape,
                         color = MaterialTheme.colorScheme.primaryContainer,
-                        modifier = Modifier.size(44.dp)
+                        modifier = Modifier.size(44.dp),
                     ) {
                         Icon(
                             icon,
@@ -340,7 +339,7 @@ private fun FeatureCard() {
                             modifier = Modifier
                                 .size(44.dp)
                                 .padding(10.dp),
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                     }
                     Spacer(modifier = Modifier.height(6.dp))
@@ -362,8 +361,8 @@ private fun CreatorCenter() {
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         Column {
             // 标题行
@@ -371,28 +370,28 @@ private fun CreatorCenter() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     "创作者中心",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable { }
+                    modifier = Modifier.clickable { },
                 ) {
                     Text(
                         "进入首页",
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Icon(
                         Icons.AutoMirrored.TwoTone.KeyboardArrowRight,
                         contentDescription = "",
                         modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
@@ -408,7 +407,7 @@ private fun CreatorCenter() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 creatorItems.forEach { (label, icon) ->
                     Column(
@@ -417,13 +416,13 @@ private fun CreatorCenter() {
                             .weight(1f)
                             .clickable { }
                             .padding(vertical = 8.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Icon(
                             icon,
                             contentDescription = label,
                             modifier = Modifier.size(28.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(label, fontSize = 12.sp)
@@ -445,15 +444,15 @@ private fun MoreFeatures() {
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     "更多功能",
@@ -478,7 +477,7 @@ private fun MoreFeatures() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 moreItems.take(4).forEach { item ->
                     FeatureGridItem(item, Modifier.weight(1f))
@@ -489,7 +488,7 @@ private fun MoreFeatures() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 moreItems.drop(4).forEach { item ->
                     FeatureGridItem(item, Modifier.weight(1f))
@@ -499,10 +498,7 @@ private fun MoreFeatures() {
     }
 }
 
-private data class MoreFeatureItem(
-    val label: String,
-    val icon: ImageVector,
-)
+private data class MoreFeatureItem(val label: String, val icon: ImageVector)
 
 @Composable
 private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier) {
@@ -511,13 +507,13 @@ private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier
             .clip(MaterialTheme.shapes.small)
             .clickable { }
             .padding(4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             item.icon,
             contentDescription = item.label,
             modifier = Modifier.size(28.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -525,7 +521,7 @@ private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier
             fontSize = 12.sp,
             textAlign = TextAlign.Center,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

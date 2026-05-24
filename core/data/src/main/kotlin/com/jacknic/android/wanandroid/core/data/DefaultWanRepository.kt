@@ -14,7 +14,6 @@ import javax.inject.Singleton
  */
 @Singleton
 internal class DefaultWanRepository @Inject constructor(private val api: WanApi) : WanRepository {
-
     override suspend fun getHomeArticleList(page: Int, pageSize: Int, cid: String?) = runResult {
         api.getArticleList(page, cid, pageSize)
     }
@@ -150,27 +149,14 @@ internal class DefaultWanRepository @Inject constructor(private val api: WanApi)
 
     override suspend fun getChapterSublist() = runResult(api::getChapterSublist)
 
-    override suspend fun addTodo(
-        title: String,
-        content: String,
-        date: String?,
-        type: Int?,
-        priority: Int?
-    ) = runResult {
+    override suspend fun addTodo(title: String, content: String, date: String?, type: Int?, priority: Int?) = runResult {
         api.postLgTodoAdd(title, content, date, type, priority)
     }
 
-    override suspend fun updateTodo(
-        id: Int,
-        title: String,
-        content: String,
-        date: String,
-        status: Int,
-        type: Int?,
-        priority: Int?
-    ) = runResult {
-        api.postLgTodoUpdate(id, title, content, date, status, type, priority)
-    }
+    override suspend fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, type: Int?, priority: Int?) =
+        runResult {
+            api.postLgTodoUpdate(id, title, content, date, status, type, priority)
+        }
 
     override suspend fun deleteTodo(id: Int) = runResult {
         api.postLgTodoDelete(id)
@@ -180,13 +166,7 @@ internal class DefaultWanRepository @Inject constructor(private val api: WanApi)
         api.postLgTodoDone(id, status)
     }
 
-    override suspend fun getTodoList(
-        page: Int,
-        status: Int?,
-        type: Int?,
-        priority: Int?,
-        orderBy: Int?
-    ) = runResult {
+    override suspend fun getTodoList(page: Int, status: Int?, type: Int?, priority: Int?, orderBy: Int?) = runResult {
         api.getLgTodoList(page, status, type, priority, orderBy)
     }
 }

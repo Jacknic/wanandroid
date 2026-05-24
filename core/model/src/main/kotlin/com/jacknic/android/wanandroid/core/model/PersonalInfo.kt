@@ -12,5 +12,5 @@ data class PersonalInfo(
     @SerializedName("coinInfo")
     val coinInfo: CoinInfo = CoinInfo(),
     @SerializedName("userInfo")
-    val userInfo: UserInfo = UserInfo()
+    val userInfo: UserInfo = UserInfo(),
 )

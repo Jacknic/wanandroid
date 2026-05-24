@@ -45,5 +45,5 @@ data class UserInfo(
     @SerializedName("type")
     val type: Int = 0,
     @SerializedName("username")
-    val username: String = ""
+    val username: String = "",
 )

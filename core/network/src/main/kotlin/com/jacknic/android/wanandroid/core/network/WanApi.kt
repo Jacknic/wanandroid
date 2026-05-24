@@ -43,7 +43,7 @@ interface WanApi {
     suspend fun getArticleList(
         @Path("page") page: Int,
         @Query("cid") cid: String? = null,
-        @Query("page_size") pageSize: Int
+        @Query("page_size") pageSize: Int,
     ): WanResult<Paging<Article>>
 
     /**
@@ -95,10 +95,7 @@ interface WanApi {
      * @param cid 分类ID (optional)
      */
     @GET("/project/list/{page}/json")
-    suspend fun getProjectList(
-        @Path("page") page: Int,
-        @Query("cid") cid: Int? = null
-    ): WanResult<Paging<Article>>
+    suspend fun getProjectList(@Path("page") page: Int, @Query("cid") cid: Int? = null): WanResult<Paging<Article>>
 
     /**
      * 登录
@@ -108,10 +105,7 @@ interface WanApi {
      */
     @FormUrlEncoded
     @POST("/user/login")
-    suspend fun postUserLogin(
-        @Field("username") username: String,
-        @Field("password") password: String
-    ): WanResult<UserInfo>
+    suspend fun postUserLogin(@Field("username") username: String, @Field("password") password: String): WanResult<UserInfo>
 
     /**
      * 注册
@@ -125,7 +119,7 @@ interface WanApi {
     suspend fun postUserRegister(
         @Field("username") username: String,
         @Field("password") password: String,
-        @Field("repassword") repassword: String
+        @Field("repassword") repassword: String,
     ): WanResult<UserInfo>
 
     /**
@@ -162,7 +156,7 @@ interface WanApi {
     suspend fun postLgCollectAdd(
         @Field("title") title: String,
         @Field("author") author: String,
-        @Field("link") link: String
+        @Field("link") link: String,
     ): WanResult<UserInfo>
 
     /**
@@ -179,7 +173,7 @@ interface WanApi {
         @Path("article_id") articleId: Int,
         @Field("title") title: String,
         @Field("author") author: String,
-        @Field("link") link: String
+        @Field("link") link: String,
     ): WanResult<UserInfo>
 
     /**
@@ -212,10 +206,7 @@ interface WanApi {
      */
     @FormUrlEncoded
     @POST("/lg/collect/addtool/json")
-    suspend fun postLgCollectAddtool(
-        @Field("name") name: String,
-        @Field("link") link: String
-    ): WanResult<UserInfo>
+    suspend fun postLgCollectAddtool(@Field("name") name: String, @Field("link") link: String): WanResult<UserInfo>
 
     /**
      * 编辑收藏网址
@@ -226,11 +217,7 @@ interface WanApi {
      */
     @FormUrlEncoded
     @POST("/lg/collect/updatetool/json")
-    suspend fun postLgCollectUpdatetool(
-        @Field("id") id: Int,
-        @Field("name") name: String,
-        @Field("link") link: String
-    ): WanResult<UserInfo>
+    suspend fun postLgCollectUpdatetool(@Field("id") id: Int, @Field("name") name: String, @Field("link") link: String): WanResult<UserInfo>
 
     /**
      * 删除收藏网址
@@ -252,7 +239,7 @@ interface WanApi {
     suspend fun postArticleQuery(
         @Path("page") page: Int,
         @Query("k") k: String,
-        @Query("page_size") pageSize: Int? = null
+        @Query("page_size") pageSize: Int? = null,
     ): WanResult<Paging<Article>>
 
     /**
@@ -284,10 +271,7 @@ interface WanApi {
      * @param pageSize 分页大小1-40 (optional)
      */
     @GET("/user_article/list/{page}/json")
-    suspend fun getUserArticleList(
-        @Path("page") page: Int,
-        @Query("page_size") pageSize: Int? = null
-    ): WanResult<Paging<Article>>
+    suspend fun getUserArticleList(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Article>>
 
     /**
      * 分享人对应列表数据
@@ -296,10 +280,7 @@ interface WanApi {
      * @param page 页码
      */
     @GET("/user/{user_id}/share_articles/{page}/json")
-    suspend fun getUserShareArticles(
-        @Path("user_id") userId: Int,
-        @Path("page") page: Int
-    ): WanResult<ShareArticles>
+    suspend fun getUserShareArticles(@Path("user_id") userId: Int, @Path("page") page: Int): WanResult<ShareArticles>
 
     /**
      * 自己的分享的文章列表
@@ -308,10 +289,7 @@ interface WanApi {
      * @param pageSize 分页大小 1-40 (optional)
      */
     @GET("/user/lg/private_articles/{page}/json")
-    suspend fun getUserLgPrivateArticles(
-        @Path("page") page: Int,
-        @Query("page_size") pageSize: Int? = null
-    ): WanResult<Paging<Article>>
+    suspend fun getUserLgPrivateArticles(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Article>>
 
     /**
      * 分享文章
@@ -321,10 +299,7 @@ interface WanApi {
      */
     @FormUrlEncoded
     @POST("/lg/user_article/add/json")
-    suspend fun postLgUserArticleAdd(
-        @Field("title") title: String,
-        @Field("link") link: String
-    ): WanResult<UserInfo>
+    suspend fun postLgUserArticleAdd(@Field("title") title: String, @Field("link") link: String): WanResult<UserInfo>
 
     /**
      * 删除自己分享的文章
@@ -353,10 +328,7 @@ interface WanApi {
      * @param pageSize 分页大小 1-40 (optional)
      */
     @GET("/message/lg/readed_list/{page}/json")
-    suspend fun getMessageLgReadedList(
-        @Path("page") page: Int,
-        @Query("page_size") pageSize: Int? = null
-    ): WanResult<Paging<Any?>>
+    suspend fun getMessageLgReadedList(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Any?>>
 
     /**
      * 未读消息列表
@@ -373,10 +345,7 @@ interface WanApi {
      * @param pageSize 分页大小 (optional)
      */
     @GET("/wenda/list/{page}/json")
-    suspend fun getWendaList(
-        @Path("page") page: Int,
-        @Query("page_size") pageSize: Int? = null
-    ): WanResult<Paging<Any?>>
+    suspend fun getWendaList(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Any?>>
 
     /**
      * 问答评论列表
@@ -389,7 +358,7 @@ interface WanApi {
     suspend fun getWendaComments(
         @Path("wenda_id") wendaId: Int,
         @Path("page") page: Int? = null,
-        @Query("page_size") pageSize: Int? = null
+        @Query("page_size") pageSize: Int? = null,
     ): WanResult<Paging<WendaComment>>
 
     /**
@@ -409,7 +378,7 @@ interface WanApi {
     suspend fun getWxArticleList(
         @Path("wx_id") wxId: Int,
         @Path("page") page: Int,
-        @Query("k") k: String? = null
+        @Query("k") k: String? = null,
     ): WanResult<Paging<Article>>
 
     /**
@@ -434,7 +403,7 @@ interface WanApi {
         @Field("content") content: String,
         @Field("date") date: String? = null,
         @Field("type") type: Int? = null,
-        @Field("priority") priority: Int? = null
+        @Field("priority") priority: Int? = null,
     ): WanResult<Todo>
 
     /**
@@ -457,7 +426,7 @@ interface WanApi {
         @Field("date") date: String,
         @Field("status") status: Int,
         @Field("type") type: Int? = null,
-        @Field("priority") priority: Int? = null
+        @Field("priority") priority: Int? = null,
     ): WanResult<Todo>
 
     /**
@@ -476,10 +445,7 @@ interface WanApi {
      */
     @FormUrlEncoded
     @POST("/lg/todo/done/{id}/json")
-    suspend fun postLgTodoDone(
-        @Path("id") id: Int,
-        @Field("status") status: Int
-    ): WanResult<Any?>
+    suspend fun postLgTodoDone(@Path("id") id: Int, @Field("status") status: Int): WanResult<Any?>
 
     /**
      * TODO列表
@@ -496,7 +462,6 @@ interface WanApi {
         @Query("status") status: Int? = null,
         @Query("type") type: Int? = null,
         @Query("priority") priority: Int? = null,
-        @Query("orderby") orderBy: Int? = null
+        @Query("orderby") orderBy: Int? = null,
     ): WanResult<Paging<Todo>>
-
 }

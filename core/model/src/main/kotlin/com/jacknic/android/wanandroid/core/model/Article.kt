@@ -113,5 +113,5 @@ data class Article(
     @SerializedName("visible")
     val visible: Int = 0,
     @SerializedName("zan")
-    val zan: Int = 0
+    val zan: Int = 0,
 )

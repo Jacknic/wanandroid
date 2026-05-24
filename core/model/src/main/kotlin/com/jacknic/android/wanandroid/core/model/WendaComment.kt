@@ -60,5 +60,5 @@ data class WendaComment(
     @SerializedName("userName")
     val userName: String = "",
     @SerializedName("zan")
-    val zan: Int = 0
+    val zan: Int = 0,
 )
