@@ -74,6 +74,7 @@ fun PageSquare(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
 ) {
     val nav = LocalNavCtrl.current
+    val readingHistoryManager = LocalReadingHistoryManager.current
     val context = LocalContext.current
     val collectStateManager = LocalCollectStateManager.current
     val collectIds by collectStateManager.collectIds.collectAsState()
@@ -151,7 +152,7 @@ fun PageSquare(
                             }
                         },
                         onClick = {
-                            LocalReadingHistoryManager.current.addReadingHistory(article)
+                            readingHistoryManager.addReadingHistory(article)
                             nav.openBrowser(article.link)
                         },
                     )

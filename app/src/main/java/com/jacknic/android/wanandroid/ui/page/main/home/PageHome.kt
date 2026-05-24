@@ -94,6 +94,7 @@ fun PageHome(
 ) {
     val nav = LocalNavCtrl.current
     val context = LocalContext.current
+    val readingHistoryManager = LocalReadingHistoryManager.current
     val collectStateManager = LocalCollectStateManager.current
     val collectIds by collectStateManager.collectIds.collectAsState()
     val collectInitialized by collectStateManager.isInitialized.collectAsState()
@@ -278,7 +279,7 @@ fun PageHome(
                     isWideScreen = isWideScreen,
                     gridState = gridState,
                     onArticleClick = { article ->
-                        LocalReadingHistoryManager.current.addReadingHistory(article)
+                        readingHistoryManager.addReadingHistory(article)
                         nav.openBrowser(article.link)
                     },
                     onCollectClick = { article, isCollected ->

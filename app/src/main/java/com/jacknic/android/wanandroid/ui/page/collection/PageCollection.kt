@@ -61,6 +61,7 @@ import com.jacknic.android.wanandroid.ui.page.openBrowser
 @Composable
 fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
+    val readingHistoryManager = LocalReadingHistoryManager.current
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val collectListState by vm.collectList.collectAsStateWithLifecycle()
@@ -177,7 +178,7 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                                 CollectArticleItem(
                                     article = article,
                                     onClick = {
-                                        LocalReadingHistoryManager.current.addReadingHistory(article)
+                                        readingHistoryManager.addReadingHistory(article)
                                         nav.openBrowser(article.link)
                                     },
                                     onRemove = { articleToRemove = article },

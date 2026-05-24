@@ -116,6 +116,7 @@ fun PageCategory(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val collectStateManager = LocalCollectStateManager.current
+    val readingHistoryManager = LocalReadingHistoryManager.current
     val collectIds by collectStateManager.collectIds.collectAsState()
     val collectInitialized by collectStateManager.isInitialized.collectAsState()
     var showLoginDialog by remember { mutableStateOf(false) }
@@ -250,7 +251,7 @@ fun PageCategory(
                         scope.launch { scaffoldNavigator.navigateBack() }
                     },
                     onArticleClick = { article ->
-                        LocalReadingHistoryManager.current.addReadingHistory(article)
+                        readingHistoryManager.addReadingHistory(article)
                         nav.openBrowser(article.link)
                     },
                     onCollectClick = { article, isCollected ->

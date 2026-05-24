@@ -81,6 +81,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
+    val readingHistoryManager = LocalReadingHistoryManager.current
     val context = LocalContext.current
     val collectStateManager = LocalCollectStateManager.current
     val collectIds by collectStateManager.collectIds.collectAsState()
@@ -241,7 +242,7 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                         }
                     },
                 ) {
-                    LocalReadingHistoryManager.current.addReadingHistory(article)
+                    readingHistoryManager.addReadingHistory(article)
                     nav.openBrowser(article.link)
                 }
             }
