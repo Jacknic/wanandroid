@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>NewLineAtEndOfFile:CourseInfo.kt$com.jacknic.android.wanandroid.core.model.CourseInfo.kt</ID>
+    <ID>NewLineAtEndOfFile:ShareArticles.kt$com.jacknic.android.wanandroid.core.model.ShareArticles.kt</ID>
+    <ID>OutdatedDocumentation:Article.kt$Article</ID>
+    <ID>OutdatedDocumentation:ArticleTag.kt$ArticleTag</ID>
+    <ID>OutdatedDocumentation:Banner.kt$Banner</ID>
+    <ID>OutdatedDocumentation:Chapter.kt$Chapter</ID>
+    <ID>OutdatedDocumentation:CoinDetail.kt$CoinDetail</ID>
+    <ID>OutdatedDocumentation:CoinInfo.kt$CoinInfo</ID>
+    <ID>OutdatedDocumentation:CollectTool.kt$CollectTool</ID>
+    <ID>OutdatedDocumentation:CourseInfo.kt$CourseInfo</ID>
+    <ID>OutdatedDocumentation:FriendLink.kt$FriendLink</ID>
+    <ID>OutdatedDocumentation:HarmonyIndex.kt$HarmonyIndex</ID>
+    <ID>OutdatedDocumentation:HotKeyword.kt$HotKeyword</ID>
+    <ID>OutdatedDocumentation:Message.kt$Message</ID>
+    <ID>OutdatedDocumentation:NavInfo.kt$NavInfo</ID>
+    <ID>OutdatedDocumentation:Paging.kt$Paging&lt;T&gt;</ID>
+    <ID>OutdatedDocumentation:PersonalInfo.kt$PersonalInfo</ID>
+    <ID>OutdatedDocumentation:Rank.kt$Rank</ID>
+    <ID>OutdatedDocumentation:ShareArticles.kt$ShareArticles</ID>
+    <ID>OutdatedDocumentation:Tree.kt$Tree</ID>
+    <ID>OutdatedDocumentation:UserInfo.kt$UserInfo</ID>
+    <ID>OutdatedDocumentation:WanResult.kt$WanResult&lt;T&gt;</ID>
+    <ID>OutdatedDocumentation:WendaComment.kt$WendaComment</ID>
+  </CurrentIssues>
+</SmellBaseline>

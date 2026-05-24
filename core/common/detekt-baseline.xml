@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ForbiddenImport:AppCommonInitializer.kt$import timber.log.Timber</ID>
+    <ID>ForbiddenImport:LoggerTree.kt$import timber.log.Timber</ID>
+    <ID>ForbiddenImport:TLog.kt$import android.util.Log</ID>
+    <ID>ForbiddenImport:TLog.kt$import timber.log.Timber</ID>
+    <ID>MagicNumber:LoggerTree.kt$LoggerTree$4</ID>
+    <ID>NewLineAtEndOfFile:AppCommonInitializer.kt$com.jacknic.android.wanandroid.core.common.AppCommonInitializer.kt</ID>
+    <ID>NewLineAtEndOfFile:LoggerTree.kt$com.jacknic.android.wanandroid.core.common.LoggerTree.kt</ID>
+    <ID>NewLineAtEndOfFile:StateResult.kt$com.jacknic.android.wanandroid.core.common.StateResult.kt</ID>
+    <ID>NewLineAtEndOfFile:TLog.kt$com.jacknic.android.wanandroid.core.common.TLog.kt</ID>
+    <ID>OutdatedDocumentation:StateResult.kt$inline fun &lt;R, T&gt; Result&lt;T&gt;.toStateResult(transformer: (T) -&gt; R): StateResult&lt;R&gt;</ID>
+    <ID>OutdatedDocumentation:StateResult.kt$inline fun &lt;R, T&gt; StateResult&lt;T&gt;.toStateResult(transformer: (T) -&gt; R): StateResult&lt;R&gt;</ID>
+    <ID>OutdatedDocumentation:StateResult.kt$inline fun &lt;T&gt; StateResult&lt;T&gt;.onState( loading: () -&gt; Unit = {}, error: (value: Throwable?) -&gt; Unit = {}, success: (value: T) -&gt; Unit = {} )</ID>
+    <ID>TooGenericExceptionCaught:StateResult.kt$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

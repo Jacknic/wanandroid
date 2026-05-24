@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexInterface:WanApi.kt$WanApi</ID>
+    <ID>ForbiddenImport:AndroidCookieJar.kt$import android.util.Log</ID>
+    <ID>InstanceOfCheckForException:WanExt.kt$e is HttpException</ID>
+    <ID>MatchingDeclarationName:Annotations.kt$PageNotice</ID>
+    <ID>NewLineAtEndOfFile:AndroidCookieJar.kt$com.jacknic.android.wanandroid.core.network.AndroidCookieJar.kt</ID>
+    <ID>NewLineAtEndOfFile:Annotations.kt$com.jacknic.android.wanandroid.core.network.Annotations.kt</ID>
+    <ID>NewLineAtEndOfFile:AppTrustManager.kt$com.jacknic.android.wanandroid.core.network.AppTrustManager.kt</ID>
+    <ID>NewLineAtEndOfFile:WanApi.kt$com.jacknic.android.wanandroid.core.network.WanApi.kt</ID>
+    <ID>SwallowedException:WanExt.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AppTrustManager.kt$AppTrustManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WanExt.kt$e: Exception</ID>
+    <ID>TooManyFunctions:WanApi.kt$WanApi</ID>
+  </CurrentIssues>
+</SmellBaseline>

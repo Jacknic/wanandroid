@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>BracesOnIfStatements:LoginPage.kt$else</ID>
+    <ID>BracesOnIfStatements:LoginPage.kt$if</ID>
+    <ID>BracesOnIfStatements:PageCategory.kt$if</ID>
+    <ID>BracesOnIfStatements:PageMain.kt$if</ID>
+    <ID>BracesOnIfStatements:PageSetting.kt$else</ID>
+    <ID>BracesOnIfStatements:PageSetting.kt$if</ID>
+    <ID>BracesOnIfStatements:Theme.kt$else</ID>
+    <ID>BracesOnIfStatements:Theme.kt$if</ID>
+    <ID>BracesOnWhenStatements:Theme.kt$when</ID>
+    <ID>ClassOrdering:HomeViewModel.kt$HomeViewModel$init { getBannerList() getCategories() }</ID>
+    <ID>ClassOrdering:HomeViewModel.kt$HomeViewModel$private val pagingFlows = mutableMapOf&lt;Int, Flow&lt;PagingData&lt;Article&gt;&gt;&gt;()</ID>
+    <ID>CognitiveComplexMethod:LoginPage.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageLogin( nav: NavHostController, vm: LoginViewModel = hiltViewModel&lt;LoginViewModel&gt;() )</ID>
+    <ID>CognitiveComplexMethod:PageCategory.kt$@Composable private fun TreeList( trees: List&lt;Tree&gt;, expandedIndices: Set&lt;Int&gt;, onToggleExpand: (Int) -&gt; Unit, onSelectChild: (chapterId: Int, name: String, parentName: String) -&gt; Unit, )</ID>
+    <ID>CognitiveComplexMethod:PageCategory.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageCategory( scaffoldNavigator: ThreePaneScaffoldNavigator&lt;TreeNavKey&gt; = rememberListDetailPaneScaffoldNavigator&lt;TreeNavKey&gt;(), vm: CategoryViewModel = hiltViewModel() )</ID>
+    <ID>CognitiveComplexMethod:PageHome.kt$@OptIn( ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ) @Composable fun PageHome( vm: HomeViewModel = hiltViewModel(), scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(), )</ID>
+    <ID>CognitiveComplexMethod:PageSearch.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSearch( vm: SearchViewModel = hiltViewModel() )</ID>
+    <ID>CognitiveComplexMethod:PageSetting.kt$@Composable @OptIn(ExperimentalMaterial3Api::class) private fun LanguagePanel( showLanguagePanel: MutableState&lt;Boolean&gt;, languageNames: Array&lt;String&gt;, languageCodes: Array&lt;String&gt; )</ID>
+    <ID>CognitiveComplexMethod:PageSetting.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun ThemeColorSelector()</ID>
+    <ID>CognitiveComplexMethod:PageSetting.kt$@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter") @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun PageSetting(vm: LoginViewModel = hiltViewModel())</ID>
+    <ID>CognitiveComplexMethod:PageSquare.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSquare( vm: SquareViewModel = hiltViewModel(), scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(), )</ID>
+    <ID>CyclomaticComplexMethod:LoginPage.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageLogin( nav: NavHostController, vm: LoginViewModel = hiltViewModel&lt;LoginViewModel&gt;() )</ID>
+    <ID>CyclomaticComplexMethod:PageSearch.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSearch( vm: SearchViewModel = hiltViewModel() )</ID>
+    <ID>LambdaParameterNaming:PageHome.kt$_</ID>
+    <ID>LongMethod:ArticleListItem.kt$@Composable fun ArticleListItem( article: Article, modifier: Modifier = Modifier, onClick: () -&gt; Unit = {} )</ID>
+    <ID>LongMethod:LoginPage.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageLogin( nav: NavHostController, vm: LoginViewModel = hiltViewModel&lt;LoginViewModel&gt;() )</ID>
+    <ID>LongMethod:PageBrowser.kt$@OptIn(ExperimentalMaterial3Api::class) @SuppressLint("SetJavaScriptEnabled", "UnusedMaterial3ScaffoldPaddingParameter") @Composable fun PageBrowser()</ID>
+    <ID>LongMethod:PageCategory.kt$@Composable private fun ArticlePagingList( pagingItems: LazyPagingItems&lt;Article&gt;, onArticleClick: (Article) -&gt; Unit, modifier: Modifier = Modifier )</ID>
+    <ID>LongMethod:PageCategory.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageCategory( scaffoldNavigator: ThreePaneScaffoldNavigator&lt;TreeNavKey&gt; = rememberListDetailPaneScaffoldNavigator&lt;TreeNavKey&gt;(), vm: CategoryViewModel = hiltViewModel() )</ID>
+    <ID>LongMethod:PageDiscovery.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageDiscovery( vm: DiscoveryViewModel = hiltViewModel(), onNavigateToHomeCategory: (Int) -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:PageHome.kt$@Composable private fun ArticleList( pagingItems: LazyPagingItems&lt;Article&gt;, showBanner: Boolean, banners: List&lt;Banner&gt;, isWideScreen: Boolean, gridState: LazyGridState, onArticleClick: (Article) -&gt; Unit, )</ID>
+    <ID>LongMethod:PageHome.kt$@OptIn( ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ) @Composable fun PageHome( vm: HomeViewModel = hiltViewModel(), scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(), )</ID>
+    <ID>LongMethod:PageMain.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class) @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter") @Composable fun PageMain()</ID>
+    <ID>LongMethod:PageMine.kt$@Composable private fun CreatorCenter()</ID>
+    <ID>LongMethod:PageMine.kt$@Composable private fun UserInfoSection( nickname: String, level: Int, coinCount: Int, rank: String, collectCount: Int, )</ID>
+    <ID>LongMethod:PageSearch.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSearch( vm: SearchViewModel = hiltViewModel() )</ID>
+    <ID>LongMethod:PageSetting.kt$@Composable private fun ColorPickerDialog( initialColor: Color, onDismiss: () -&gt; Unit, onConfirm: (Color) -&gt; Unit )</ID>
+    <ID>LongMethod:PageSetting.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun ThemeColorSelector()</ID>
+    <ID>LongMethod:PageSetting.kt$@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter") @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun PageSetting(vm: LoginViewModel = hiltViewModel())</ID>
+    <ID>LongMethod:PageSquare.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSquare( vm: SquareViewModel = hiltViewModel(), scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(), )</ID>
+    <ID>LongParameterList:Color.kt$ThemeColorScheme$( val label: String, val lightPrimary: Color, val lightSecondary: Color, val lightTertiary: Color, val darkPrimary: Color, val darkSecondary: Color, val darkTertiary: Color, val swatchColor: Color = lightPrimary, val isCustom: Boolean = false )</ID>
+    <ID>LongParameterList:PageHome.kt$( pagingItems: LazyPagingItems&lt;Article&gt;, showBanner: Boolean, banners: List&lt;Banner&gt;, isWideScreen: Boolean, gridState: LazyGridState, onArticleClick: (Article) -&gt; Unit, )</ID>
+    <ID>MagicNumber:ArticleListItem.kt$50</ID>
+    <ID>MagicNumber:LoginPage.kt$0.33f</ID>
+    <ID>MagicNumber:LoginPage.kt$0.66f</ID>
+    <ID>MagicNumber:LoginViewModel.kt$LoginViewModel.Companion$20</ID>
+    <ID>MagicNumber:LoginViewModel.kt$LoginViewModel.Companion$3</ID>
+    <ID>MagicNumber:LoginViewModel.kt$LoginViewModel.Companion$6</ID>
+    <ID>MagicNumber:LoginViewModel.kt$LoginViewModel.Companion$8</ID>
+    <ID>MagicNumber:PageBrowser.kt$&lt;no name provided&gt;$100f</ID>
+    <ID>MagicNumber:PageHome.kt$600</ID>
+    <ID>MagicNumber:PageMine.kt$4</ID>
+    <ID>MagicNumber:PageSetting.kt$0.5f</ID>
+    <ID>MagicNumber:PageSetting.kt$0xFF</ID>
+    <ID>MagicNumber:PageSetting.kt$16</ID>
+    <ID>MagicNumber:PageSetting.kt$24</ID>
+    <ID>MagicNumber:PageSetting.kt$3</ID>
+    <ID>MagicNumber:PageSetting.kt$4</ID>
+    <ID>MagicNumber:PageSetting.kt$6</ID>
+    <ID>MagicNumber:PageSetting.kt$8</ID>
+    <ID>MagicNumber:PageSquare.kt$600</ID>
+    <ID>MagicNumber:SearchBar.kt$0.7f</ID>
+    <ID>MagicNumber:UserLevelCard.kt$166f</ID>
+    <ID>MagicNumber:UserLevelCard.kt$329</ID>
+    <ID>MatchingDeclarationName:AppNavHost.kt$Page</ID>
+    <ID>MatchingDeclarationName:ArticleListItem.kt$LinkType</ID>
+    <ID>MatchingDeclarationName:PageCategory.kt$TreeNavKey : Parcelable</ID>
+    <ID>MatchingDeclarationName:PageMain.kt$NavDestinations</ID>
+    <ID>MaxLineLength:LoginPage.kt$val icon = if (confirmVisibility) Icons.TwoTone.Visibility else Icons.TwoTone.VisibilityOff</ID>
+    <ID>MaxLineLength:LoginPage.kt$visualTransformation = if (confirmVisibility) VisualTransformation.None else PasswordVisualTransformation()</ID>
+    <ID>MaxLineLength:PageHome.kt$fontWeight = if (index == pagerState.currentPage) FontWeight.SemiBold else FontWeight.Normal</ID>
+    <ID>MaxLineLength:PageHome.kt$loadState.append is LoadState.NotLoading &amp;&amp; (loadState.append as LoadState.NotLoading).endOfPaginationReached &amp;&amp; pagingItems.itemCount &gt; 0</ID>
+    <ID>NewLineAtEndOfFile:App.kt$com.jacknic.android.wanandroid.App.kt</ID>
+    <ID>NewLineAtEndOfFile:Color.kt$com.jacknic.android.wanandroid.ui.theme.Color.kt</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.jacknic.android.wanandroid.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeBanner.kt$com.jacknic.android.wanandroid.ui.component.HomeBanner.kt</ID>
+    <ID>NewLineAtEndOfFile:MainActivity.kt$com.jacknic.android.wanandroid.MainActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:PageBrowser.kt$com.jacknic.android.wanandroid.ui.page.browser.PageBrowser.kt</ID>
+    <ID>NewLineAtEndOfFile:PageSplash.kt$com.jacknic.android.wanandroid.ui.page.splash.PageSplash.kt</ID>
+    <ID>NewLineAtEndOfFile:PageSquare.kt$com.jacknic.android.wanandroid.ui.page.main.square.PageSquare.kt</ID>
+    <ID>NewLineAtEndOfFile:PagingListDataSource.kt$com.jacknic.android.wanandroid.util.PagingListDataSource.kt</ID>
+    <ID>NewLineAtEndOfFile:SearchBar.kt$com.jacknic.android.wanandroid.ui.component.SearchBar.kt</ID>
+    <ID>NewLineAtEndOfFile:SplashViewModel.kt$com.jacknic.android.wanandroid.ui.page.splash.SplashViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:Type.kt$com.jacknic.android.wanandroid.ui.theme.Type.kt</ID>
+    <ID>NewLineAtEndOfFile:UserLevelCard.kt$com.jacknic.android.wanandroid.ui.component.UserLevelCard.kt</ID>
+    <ID>OutdatedDocumentation:PagingListDataSource.kt$PagingListDataSource.Companion$fun &lt;T : Any&gt; pager( loadAction: suspend (page: Int, pageSize: Int) -&gt; Result&lt;Paging&lt;T&gt;&gt;, pageSize: Int = 30, initPage: Int = 0 ): Pager&lt;Int, T&gt;</ID>
+    <ID>SpacingBetweenPackageAndImports:HomeViewModel.kt$ </ID>
+    <ID>UnusedImports:MineViewModel.kt$import com.jacknic.android.wanandroid.core.model.CoinInfo</ID>
+    <ID>UnusedImports:MineViewModel.kt$import com.jacknic.android.wanandroid.core.model.UserInfo</ID>
+    <ID>UnusedPrivateProperty:HomeViewModel.kt$HomeViewModel$private var savedStateHandle: SavedStateHandle</ID>
+  </CurrentIssues>
+</SmellBaseline>

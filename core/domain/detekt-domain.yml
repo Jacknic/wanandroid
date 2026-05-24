@@ -1,0 +1,30 @@
+# =============================================================================
+# :core:domain 模块专用 Detekt 配置
+# AGENT.md 5.1 #5: domain 是纯 JVM 模块，绝对禁止依赖任何 Android 框架
+# 继承根 detekt.yml，额外增加 Android 依赖禁止规则
+# =============================================================================
+
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+
+style:
+  ForbiddenImport:
+    active: true
+    imports:
+      # 禁止所有 Android 框架依赖
+      - 'android.'
+      - 'androidx.'
+      - 'com.google.android.'
+    forbiddenPatterns: ''
+  ForbiddenMethodCall:
+    active: true
+    methods:
+      - 'android.util.Log.d'
+      - 'android.util.Log.e'
+      - 'android.util.Log.i'
+      - 'android.util.Log.v'
+      - 'android.util.Log.w'
+      - 'kotlin.io.println'

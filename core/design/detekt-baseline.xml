@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>BracesOnIfStatements:TabItem.kt$if</ID>
+    <ID>MagicNumber:TabItem.kt$0.1f</ID>
+    <ID>MagicNumber:TabItem.kt$0.5f</ID>
+    <ID>MagicNumber:TabItem.kt$15</ID>
+    <ID>MagicNumber:TabItem.kt$50</ID>
+    <ID>NewLineAtEndOfFile:TabItem.kt$com.jacknic.android.wanandroid.core.design.components.TabItem.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>

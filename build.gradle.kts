@@ -18,6 +18,31 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin) apply false
+    alias(libs.plugins.detekt)
+}
+
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    buildUponDefaultConfig = true
+    allRules = true
+    config.setFrom(files("$rootDir/detekt.yml"))
+}
+
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${libs.versions.detekt.get()}")
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required = true
+        xml.required = true
+        txt.required = false
+        sarif.required = true
+    }
+}
+
+tasks.register("detektAll") {
+    dependsOn(tasks.withType<io.gitlab.arturbosch.detekt.Detekt>())
 }
 
 /**
@@ -182,6 +207,26 @@ fun LibraryExtension.configLibrary(target: Project) {
 
 subprojects {
     val target = this
+
+    // 为所有子模块应用 detekt 插件
+    pluginManager.apply("io.gitlab.arturbosch.detekt")
+
+    // 子模块 detekt 配置：使用根配置 + 模块级 baseline
+    pluginManager.withPlugin("io.gitlab.arturbosch.detekt") {
+        extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension>("detekt") {
+            buildUponDefaultConfig = true
+            allRules = true
+            config.setFrom(files("$rootDir/detekt.yml"))
+            baseline = file("detekt-baseline.xml")
+        }
+        tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+            reports {
+                html.required = true
+                xml.required = true
+                sarif.required = true
+            }
+        }
+    }
 
     pluginManager.withPlugin("com.android.application") {
         // println("${this.name} 插件已使用")

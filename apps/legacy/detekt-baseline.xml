@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>NewLineAtEndOfFile:App.kt$com.jacknic.android.wanandroid.App.kt</ID>
+    <ID>NewLineAtEndOfFile:MainActivity.kt$com.jacknic.android.wanandroid.MainActivity.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>
