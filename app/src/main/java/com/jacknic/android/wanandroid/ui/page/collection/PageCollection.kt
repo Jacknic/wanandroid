@@ -49,6 +49,7 @@ import com.jacknic.android.wanandroid.core.network.isUnauthorized
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.LocalReadingHistoryManager
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.navTop
 import com.jacknic.android.wanandroid.ui.page.openBrowser
@@ -175,7 +176,10 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                             ) { _, article ->
                                 CollectArticleItem(
                                     article = article,
-                                    onClick = { nav.openBrowser(article.link) },
+                                    onClick = {
+                                        LocalReadingHistoryManager.current.addReadingHistory(article)
+                                        nav.openBrowser(article.link)
+                                    },
                                     onRemove = { articleToRemove = article },
                                 )
                             }

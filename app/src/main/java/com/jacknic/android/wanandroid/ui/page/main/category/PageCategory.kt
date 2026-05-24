@@ -90,6 +90,7 @@ import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.LocalReadingHistoryManager
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.navTop
 import com.jacknic.android.wanandroid.ui.page.openBrowser
@@ -248,7 +249,10 @@ fun PageCategory(
                     onBack = {
                         scope.launch { scaffoldNavigator.navigateBack() }
                     },
-                    onArticleClick = { article -> nav.openBrowser(article.link) },
+                    onArticleClick = { article ->
+                        LocalReadingHistoryManager.current.addReadingHistory(article)
+                        nav.openBrowser(article.link)
+                    },
                     onCollectClick = { article, isCollected ->
                         scope.launch {
                             when (val result = collectStateManager.toggleCollect(article.id, isCollected)) {

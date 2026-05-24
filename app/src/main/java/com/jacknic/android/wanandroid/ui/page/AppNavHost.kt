@@ -12,11 +12,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jacknic.android.wanandroid.ui.component.CollectStateManager
+import com.jacknic.android.wanandroid.ui.component.ReadingHistoryManager
 import com.jacknic.android.wanandroid.ui.page.browser.PageBrowser
 import com.jacknic.android.wanandroid.ui.page.browser.openBrowser
 import com.jacknic.android.wanandroid.ui.page.collection.PageCollection
 import com.jacknic.android.wanandroid.ui.page.login.PageLogin
 import com.jacknic.android.wanandroid.ui.page.main.PageMain
+import com.jacknic.android.wanandroid.ui.page.readinghistory.PageReadingHistory
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
 import com.jacknic.android.wanandroid.ui.page.setting.PageSetting
 import com.jacknic.android.wanandroid.ui.page.splash.PageSplash
@@ -38,6 +40,7 @@ object Page {
     const val Setting = "PageSetting"
     const val Login = "PageLogin"
     const val Collection = "PageCollection"
+    const val ReadingHistory = "PageReadingHistory"
 }
 
 /**
@@ -73,6 +76,13 @@ val LocalCollectStateManager = compositionLocalOf<CollectStateManager> {
 }
 
 /**
+ * 阅读记录管理器 CompositionLocal
+ */
+val LocalReadingHistoryManager = compositionLocalOf<ReadingHistoryManager> {
+    throw IllegalAccessException("未初始化阅读记录管理器")
+}
+
+/**
  * 页面导航图
  */
 @Composable
@@ -81,10 +91,12 @@ fun AppNavHost(
     nav: NavHostController = rememberNavController(),
     startDestination: String = Page.Splash,
     collectStateManager: CollectStateManager,
+    readingHistoryManager: ReadingHistoryManager,
 ) {
     CompositionLocalProvider(
         LocalNavCtrl provides nav,
         LocalCollectStateManager provides collectStateManager,
+        LocalReadingHistoryManager provides readingHistoryManager,
     ) {
         NavHost(
             modifier = modifier,
@@ -98,6 +110,7 @@ fun AppNavHost(
             composable(Page.Setting) { PageSetting() }
             composable(Page.Login) { PageLogin(nav) }
             composable(Page.Collection) { PageCollection() }
+            composable(Page.ReadingHistory) { PageReadingHistory() }
         }
     }
 }

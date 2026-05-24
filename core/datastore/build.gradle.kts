@@ -9,6 +9,7 @@ dependencies {
     implementation(androidx.datastore.datastore)
     implementation(androidx.datastore.datastorePreferences)
     implementation(androidx.security.securityCrypto)
+    implementation(libs.gson)
 
     testImplementation(projects.core.datastoreTest)
     testImplementation(libs.kotlinx.coroutines.test)

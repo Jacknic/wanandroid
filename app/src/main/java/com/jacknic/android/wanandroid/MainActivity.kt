@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.jacknic.android.wanandroid.core.common.TLog
 import com.jacknic.android.wanandroid.ui.component.CollectStateManager
+import com.jacknic.android.wanandroid.ui.component.ReadingHistoryManager
 import com.jacknic.android.wanandroid.ui.page.AppNavHost
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var collectStateManager: CollectStateManager
+
+    @Inject
+    lateinit var readingHistoryManager: ReadingHistoryManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         log.tag().d("onCreate: MainActivity")
@@ -37,7 +41,10 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Unspecified,
                 ) {
-                    AppNavHost(collectStateManager = collectStateManager)
+                    AppNavHost(
+                        collectStateManager = collectStateManager,
+                        readingHistoryManager = readingHistoryManager,
+                    )
                 }
             }
         }

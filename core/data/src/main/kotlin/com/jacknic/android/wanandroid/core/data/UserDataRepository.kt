@@ -1,5 +1,6 @@
 package com.jacknic.android.wanandroid.core.data
 
+import com.jacknic.android.wanandroid.core.model.ReadingHistory
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {
@@ -32,6 +33,28 @@ interface UserDataRepository {
      * 清空搜索历史
      */
     suspend fun clearSearchHistory()
+
+    // === 阅读记录 ===
+
+    /**
+     * 阅读记录列表
+     */
+    fun readingHistoryFlow(): Flow<List<ReadingHistory>>
+
+    /**
+     * 添加阅读记录
+     */
+    suspend fun addReadingHistory(history: ReadingHistory)
+
+    /**
+     * 删除单条阅读记录
+     */
+    suspend fun removeReadingHistory(articleId: Int)
+
+    /**
+     * 清空阅读记录
+     */
+    suspend fun clearReadingHistory()
 
     // === 主题设置 ===
 

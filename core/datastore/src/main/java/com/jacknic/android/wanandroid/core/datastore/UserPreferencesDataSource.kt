@@ -8,6 +8,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.jacknic.android.wanandroid.core.model.ReadingHistory
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first
@@ -75,6 +78,54 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
     suspend fun clearSearchHistory() {
         settings.edit { preferences ->
             preferences.remove(KEY_SEARCH_HISTORY_LIST)
+        }
+    }
+
+    // === 阅读记录 ===
+
+    private val gson = Gson()
+
+    /**
+     * 阅读记录列表（按最近阅读时间排序）
+     */
+    fun readingHistoryFlow() = settings.data.map { preferences ->
+        val json = preferences[KEY_READING_HISTORY] ?: return@map emptyList()
+        try {
+            val type = object : TypeToken<List<ReadingHistory>>() {}.type
+            gson.fromJson<List<ReadingHistory>>(json, type) ?: emptyList()
+        } catch (_: Exception) {
+            emptyList()
+        }
+    }
+
+    /**
+     * 添加阅读记录（已存在则移至最前并更新阅读时间）
+     */
+    suspend fun addReadingHistory(history: ReadingHistory) {
+        val current = readingHistoryFlow().first()
+        val next = (listOf(history) + current.filter { it.id != history.id }).take(MAX_READING_HISTORY_SIZE)
+        settings.edit { preferences ->
+            preferences[KEY_READING_HISTORY] = gson.toJson(next)
+        }
+    }
+
+    /**
+     * 删除单条阅读记录
+     */
+    suspend fun removeReadingHistory(articleId: Int) {
+        val current = readingHistoryFlow().first()
+        val next = current.filter { it.id != articleId }
+        settings.edit { preferences ->
+            preferences[KEY_READING_HISTORY] = gson.toJson(next)
+        }
+    }
+
+    /**
+     * 清空阅读记录
+     */
+    suspend fun clearReadingHistory() {
+        settings.edit { preferences ->
+            preferences.remove(KEY_READING_HISTORY)
         }
     }
 
@@ -156,6 +207,13 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
         private val KEY_SEARCH_HISTORY_LIST = stringPreferencesKey("search_history_list")
 
         private const val HISTORY_SEPARATOR = "\n"
+
+        /**
+         * 阅读记录
+         */
+        private val KEY_READING_HISTORY = stringPreferencesKey("reading_history")
+
+        private const val MAX_READING_HISTORY_SIZE = 200
 
         /**
          * 主题模式（SYSTEM/LIGHT/DARK）

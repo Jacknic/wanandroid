@@ -61,6 +61,7 @@ import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
+import com.jacknic.android.wanandroid.ui.page.LocalReadingHistoryManager
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.theme.ThemeMode
 import com.jacknic.android.wanandroid.ui.theme.themeMode
@@ -74,8 +75,10 @@ import com.jacknic.android.wanandroid.ui.theme.useThemeMode
 fun PageMine(vm: MineViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
     val collectStateManager = LocalCollectStateManager.current
+    val readingHistoryManager = LocalReadingHistoryManager.current
     val personalInfoState by vm.personalInfo.collectAsStateWithLifecycle()
     val collectIds by collectStateManager.collectIds.collectAsState()
+    val readingHistoryList by readingHistoryManager.readingHistoryFlow.collectAsState(initial = emptyList())
     val data = (personalInfoState as? StateResult.Success)?.data
     val userInfo = data?.userInfo
     val coinInfo = data?.coinInfo
@@ -140,7 +143,9 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                 coinCount = coinInfo?.coinCount ?: 0,
                 rank = coinInfo?.rank ?: "-",
                 collectCount = if (collectIds.isNotEmpty()) collectIds.size else (userInfo?.collectIds?.size ?: 0),
+                readingCount = readingHistoryList.size,
                 onCollectClick = { nav.navigate(Page.Collection) },
+                onReadingClick = { nav.navigate(Page.ReadingHistory) },
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -156,7 +161,9 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
             Spacer(modifier = Modifier.height(12.dp))
 
             // 更多功能
-            MoreFeatures()
+            MoreFeatures(
+                onReadingHistory = { nav.navigate(Page.ReadingHistory) },
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -173,7 +180,9 @@ private fun UserInfoSection(
     coinCount: Int,
     rank: String,
     collectCount: Int,
+    readingCount: Int = 0,
     onCollectClick: () -> Unit = {},
+    onReadingClick: () -> Unit = {},
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // 头像和用户名
@@ -261,7 +270,11 @@ private fun UserInfoSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            StatItem("点赞", "33")
+            StatItem(
+                label = "阅读",
+                value = readingCount.toString(),
+                onClick = onReadingClick,
+            )
             StatItem(
                 label = "收藏",
                 value = collectCount.toString(),
@@ -437,7 +450,7 @@ private fun CreatorCenter() {
  * 更多功能
  */
 @Composable
-private fun MoreFeatures() {
+private fun MoreFeatures(onReadingHistory: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -466,7 +479,7 @@ private fun MoreFeatures() {
                 MoreFeatureItem("推广中心", Icons.TwoTone.LocalActivity),
                 MoreFeatureItem("我的优惠券", Icons.TwoTone.Star),
                 MoreFeatureItem("我的圈子", Icons.TwoTone.Group),
-                MoreFeatureItem("阅读记录", Icons.TwoTone.Drafts),
+                MoreFeatureItem("阅读记录", Icons.TwoTone.Drafts, onReadingHistory),
                 MoreFeatureItem("标签管理", Icons.TwoTone.Favorite),
                 MoreFeatureItem("我的报名", Icons.TwoTone.Face),
                 MoreFeatureItem("意见反馈", Icons.TwoTone.Notifications),
@@ -498,14 +511,14 @@ private fun MoreFeatures() {
     }
 }
 
-private data class MoreFeatureItem(val label: String, val icon: ImageVector)
+private data class MoreFeatureItem(val label: String, val icon: ImageVector, val onClick: (() -> Unit)? = null)
 
 @Composable
 private fun FeatureGridItem(item: MoreFeatureItem, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
-            .clickable { }
+            .clickable { item.onClick?.invoke() }
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

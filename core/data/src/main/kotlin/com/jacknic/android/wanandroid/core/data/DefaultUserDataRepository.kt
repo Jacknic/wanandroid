@@ -2,6 +2,7 @@ package com.jacknic.android.wanandroid.core.data
 
 import com.jacknic.android.wanandroid.core.datastore.SecureCredentialsDataSource
 import com.jacknic.android.wanandroid.core.datastore.UserPreferencesDataSource
+import com.jacknic.android.wanandroid.core.model.ReadingHistory
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +16,10 @@ internal class DefaultUserDataRepository @Inject constructor(
     override suspend fun addSearchHistory(keyword: String) = dataSource.addSearchHistory(keyword)
     override suspend fun removeSearchHistory(keyword: String) = dataSource.removeSearchHistory(keyword)
     override suspend fun clearSearchHistory() = dataSource.clearSearchHistory()
+    override fun readingHistoryFlow(): Flow<List<ReadingHistory>> = dataSource.readingHistoryFlow()
+    override suspend fun addReadingHistory(history: ReadingHistory) = dataSource.addReadingHistory(history)
+    override suspend fun removeReadingHistory(articleId: Int) = dataSource.removeReadingHistory(articleId)
+    override suspend fun clearReadingHistory() = dataSource.clearReadingHistory()
     override fun themeModeFlow(): Flow<String> = dataSource.themeModeFlow()
     override suspend fun setThemeMode(mode: String) = dataSource.setThemeMode(mode)
     override fun dynamicThemeColorFlow(): Flow<Boolean> = dataSource.dynamicThemeColorFlow()
