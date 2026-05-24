@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>ClassOrdering:UserPreferencesDataSource.kt$UserPreferencesDataSource$Companion</ID>
     <ID>MagicNumber:UserPreferencesDataSource.kt$UserPreferencesDataSource$20</ID>
   </CurrentIssues>
 </SmellBaseline>

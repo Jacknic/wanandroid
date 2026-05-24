@@ -37,9 +37,11 @@ class PagingListDataSource<T : Any>(
         /**
          * 创建分页数据对象
          *
+         * @param T 数据类型
          * @param loadAction 分页加载逻辑
          * @param pageSize 分页大小
          * @param initPage 初始加载页面
+         * @return 分页 Pager 对象
          */
         fun <T : Any> pager(
             loadAction: suspend (page: Int, pageSize: Int) -> Result<Paging<T>>,

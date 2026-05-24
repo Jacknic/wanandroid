@@ -1,6 +1,5 @@
 package com.jacknic.android.wanandroid.ui.page.main.home
 
-
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,6 +42,13 @@ class HomeViewModel @Inject constructor(
     private val _targetCid = MutableStateFlow<Int?>(null)
     val targetCid = _targetCid.asStateFlow()
 
+    private val pagingFlows = mutableMapOf<Int, Flow<PagingData<Article>>>()
+
+    init {
+        getBannerList()
+        getCategories()
+    }
+
     /**
      * 导航到指定分类
      */
@@ -55,13 +61,6 @@ class HomeViewModel @Inject constructor(
      */
     fun consumeTargetCid() {
         _targetCid.value = null
-    }
-
-    private val pagingFlows = mutableMapOf<Int, Flow<PagingData<Article>>>()
-
-    init {
-        getBannerList()
-        getCategories()
     }
 
     /**

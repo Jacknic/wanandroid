@@ -1,7 +1,7 @@
 package com.jacknic.android.wanandroid.ui.page.main.home
 
-import androidx.compose.animation.AnimatedVisibility
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -69,7 +69,6 @@ import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.model.Banner
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.CollectResult
-import com.jacknic.android.wanandroid.ui.component.CollectStateManager
 import com.jacknic.android.wanandroid.ui.component.HomeBanner
 import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
@@ -215,7 +214,7 @@ fun PageHome(
                         )
                     }
                 ) {
-                    categories.forEachIndexed { index, _ ->
+                    categories.forEachIndexed { index, category ->
                         Tab(
                             selected = index == pagerState.currentPage,
                             onClick = {
@@ -227,7 +226,11 @@ fun PageHome(
                                 Text(
                                     text = categoryNames.getOrElse(index) { "" },
                                     style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = if (index == pagerState.currentPage) FontWeight.SemiBold else FontWeight.Normal,
+                                    fontWeight = if (index == pagerState.currentPage) {
+                                        FontWeight.SemiBold
+                                    } else {
+                                        FontWeight.Normal
+                                    },
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -414,7 +417,9 @@ private fun ArticleList(
                 }
             }
 
-            loadState.append is LoadState.NotLoading && (loadState.append as LoadState.NotLoading).endOfPaginationReached && pagingItems.itemCount > 0 -> {
+            loadState.append is LoadState.NotLoading
+                && (loadState.append as LoadState.NotLoading).endOfPaginationReached
+                && pagingItems.itemCount > 0 -> {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     Box(
                         modifier = Modifier

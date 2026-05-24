@@ -59,6 +59,7 @@ fun UserLevelCard(bgRes: Int, frontRes: Int, subLabel: String, state: String) {
     }
 }
 
+
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
@@ -90,6 +91,7 @@ fun PreviewUserLevelCard() {
         }
     }
 }
+
 
 @PreviewScreenSizes
 @Composable
@@ -123,3 +125,4 @@ fun PreviewUserLevelCardPager() {
         }
     }
 }
+

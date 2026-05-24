@@ -28,8 +28,11 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TabItem(onClick: () -> Unit, selected: Boolean, text: String) {
     val styleColor =
-        if (selected) MaterialTheme.colorScheme.primary
-        else MaterialTheme.colorScheme.onSurface.copy(0.5f)
+        if (selected) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurface.copy(0.5f)
+        }
     CompositionLocalProvider(
         LocalContentColor provides styleColor
     ) {

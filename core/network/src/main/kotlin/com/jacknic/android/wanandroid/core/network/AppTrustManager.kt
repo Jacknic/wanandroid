@@ -1,6 +1,7 @@
 package com.jacknic.android.wanandroid.core.network
 
 import android.annotation.SuppressLint
+import com.jacknic.android.wanandroid.core.common.TLog
 import okhttp3.internal.platform.Platform
 import java.security.cert.CertificateNotYetValidException
 import java.security.cert.X509Certificate
@@ -14,6 +15,7 @@ import javax.net.ssl.X509TrustManager
 @SuppressLint("CustomX509TrustManager")
 class AppTrustManager : X509TrustManager {
     private val trustManager = Platform.get().platformTrustManager()
+    private val log = TLog.create("AppTrustManager")
 
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
         trustManager.checkClientTrusted(chain, authType)
@@ -22,11 +24,11 @@ class AppTrustManager : X509TrustManager {
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
         try {
             trustManager.checkServerTrusted(chain, authType)
-        } catch (e: Exception) {
+        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
             val cause = e.cause
             // 忽略有效期验证异常
             if (cause is CertificateNotYetValidException) {
-                cause.printStackTrace()
+                log.tag().d("checkServerTrusted: certificate not yet valid, ignoring")
             } else {
                 throw e
             }

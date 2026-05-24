@@ -3,7 +3,6 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ComplexInterface:WanRepository.kt$WanRepository</ID>
-    <ID>NewLineAtEndOfFile:WanRepository.kt$com.jacknic.android.wanandroid.core.domain.WanRepository.kt</ID>
     <ID>TooManyFunctions:WanRepository.kt$WanRepository</ID>
   </CurrentIssues>
 </SmellBaseline>

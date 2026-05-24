@@ -2,17 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>BracesOnIfStatements:LoginPage.kt$else</ID>
-    <ID>BracesOnIfStatements:LoginPage.kt$if</ID>
-    <ID>BracesOnIfStatements:PageCategory.kt$if</ID>
-    <ID>BracesOnIfStatements:PageMain.kt$if</ID>
-    <ID>BracesOnIfStatements:PageSetting.kt$else</ID>
-    <ID>BracesOnIfStatements:PageSetting.kt$if</ID>
-    <ID>BracesOnIfStatements:Theme.kt$else</ID>
-    <ID>BracesOnIfStatements:Theme.kt$if</ID>
-    <ID>BracesOnWhenStatements:Theme.kt$when</ID>
-    <ID>ClassOrdering:HomeViewModel.kt$HomeViewModel$init { getBannerList() getCategories() }</ID>
-    <ID>ClassOrdering:HomeViewModel.kt$HomeViewModel$private val pagingFlows = mutableMapOf&lt;Int, Flow&lt;PagingData&lt;Article&gt;&gt;&gt;()</ID>
     <ID>CognitiveComplexMethod:LoginPage.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageLogin( nav: NavHostController, vm: LoginViewModel = hiltViewModel&lt;LoginViewModel&gt;() )</ID>
     <ID>CognitiveComplexMethod:PageCategory.kt$@Composable private fun TreeList( trees: List&lt;Tree&gt;, expandedIndices: Set&lt;Int&gt;, onToggleExpand: (Int) -&gt; Unit, onSelectChild: (chapterId: Int, name: String, parentName: String) -&gt; Unit, )</ID>
     <ID>CognitiveComplexMethod:PageCategory.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageCategory( scaffoldNavigator: ThreePaneScaffoldNavigator&lt;TreeNavKey&gt; = rememberListDetailPaneScaffoldNavigator&lt;TreeNavKey&gt;(), vm: CategoryViewModel = hiltViewModel() )</ID>
@@ -24,7 +13,6 @@
     <ID>CognitiveComplexMethod:PageSquare.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSquare( vm: SquareViewModel = hiltViewModel(), scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(), )</ID>
     <ID>CyclomaticComplexMethod:LoginPage.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageLogin( nav: NavHostController, vm: LoginViewModel = hiltViewModel&lt;LoginViewModel&gt;() )</ID>
     <ID>CyclomaticComplexMethod:PageSearch.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageSearch( vm: SearchViewModel = hiltViewModel() )</ID>
-    <ID>LambdaParameterNaming:PageHome.kt$_</ID>
     <ID>LongMethod:ArticleListItem.kt$@Composable fun ArticleListItem( article: Article, modifier: Modifier = Modifier, onClick: () -&gt; Unit = {} )</ID>
     <ID>LongMethod:LoginPage.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PageLogin( nav: NavHostController, vm: LoginViewModel = hiltViewModel&lt;LoginViewModel&gt;() )</ID>
     <ID>LongMethod:PageBrowser.kt$@OptIn(ExperimentalMaterial3Api::class) @SuppressLint("SetJavaScriptEnabled", "UnusedMaterial3ScaffoldPaddingParameter") @Composable fun PageBrowser()</ID>
@@ -65,31 +53,5 @@
     <ID>MagicNumber:SearchBar.kt$0.7f</ID>
     <ID>MagicNumber:UserLevelCard.kt$166f</ID>
     <ID>MagicNumber:UserLevelCard.kt$329</ID>
-    <ID>MatchingDeclarationName:AppNavHost.kt$Page</ID>
-    <ID>MatchingDeclarationName:ArticleListItem.kt$LinkType</ID>
-    <ID>MatchingDeclarationName:PageCategory.kt$TreeNavKey : Parcelable</ID>
-    <ID>MatchingDeclarationName:PageMain.kt$NavDestinations</ID>
-    <ID>MaxLineLength:LoginPage.kt$val icon = if (confirmVisibility) Icons.TwoTone.Visibility else Icons.TwoTone.VisibilityOff</ID>
-    <ID>MaxLineLength:LoginPage.kt$visualTransformation = if (confirmVisibility) VisualTransformation.None else PasswordVisualTransformation()</ID>
-    <ID>MaxLineLength:PageHome.kt$fontWeight = if (index == pagerState.currentPage) FontWeight.SemiBold else FontWeight.Normal</ID>
-    <ID>MaxLineLength:PageHome.kt$loadState.append is LoadState.NotLoading &amp;&amp; (loadState.append as LoadState.NotLoading).endOfPaginationReached &amp;&amp; pagingItems.itemCount &gt; 0</ID>
-    <ID>NewLineAtEndOfFile:App.kt$com.jacknic.android.wanandroid.App.kt</ID>
-    <ID>NewLineAtEndOfFile:Color.kt$com.jacknic.android.wanandroid.ui.theme.Color.kt</ID>
-    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.jacknic.android.wanandroid.ExampleUnitTest.kt</ID>
-    <ID>NewLineAtEndOfFile:HomeBanner.kt$com.jacknic.android.wanandroid.ui.component.HomeBanner.kt</ID>
-    <ID>NewLineAtEndOfFile:MainActivity.kt$com.jacknic.android.wanandroid.MainActivity.kt</ID>
-    <ID>NewLineAtEndOfFile:PageBrowser.kt$com.jacknic.android.wanandroid.ui.page.browser.PageBrowser.kt</ID>
-    <ID>NewLineAtEndOfFile:PageSplash.kt$com.jacknic.android.wanandroid.ui.page.splash.PageSplash.kt</ID>
-    <ID>NewLineAtEndOfFile:PageSquare.kt$com.jacknic.android.wanandroid.ui.page.main.square.PageSquare.kt</ID>
-    <ID>NewLineAtEndOfFile:PagingListDataSource.kt$com.jacknic.android.wanandroid.util.PagingListDataSource.kt</ID>
-    <ID>NewLineAtEndOfFile:SearchBar.kt$com.jacknic.android.wanandroid.ui.component.SearchBar.kt</ID>
-    <ID>NewLineAtEndOfFile:SplashViewModel.kt$com.jacknic.android.wanandroid.ui.page.splash.SplashViewModel.kt</ID>
-    <ID>NewLineAtEndOfFile:Type.kt$com.jacknic.android.wanandroid.ui.theme.Type.kt</ID>
-    <ID>NewLineAtEndOfFile:UserLevelCard.kt$com.jacknic.android.wanandroid.ui.component.UserLevelCard.kt</ID>
-    <ID>OutdatedDocumentation:PagingListDataSource.kt$PagingListDataSource.Companion$fun &lt;T : Any&gt; pager( loadAction: suspend (page: Int, pageSize: Int) -&gt; Result&lt;Paging&lt;T&gt;&gt;, pageSize: Int = 30, initPage: Int = 0 ): Pager&lt;Int, T&gt;</ID>
-    <ID>SpacingBetweenPackageAndImports:HomeViewModel.kt$ </ID>
-    <ID>UnusedImports:MineViewModel.kt$import com.jacknic.android.wanandroid.core.model.CoinInfo</ID>
-    <ID>UnusedImports:MineViewModel.kt$import com.jacknic.android.wanandroid.core.model.UserInfo</ID>
-    <ID>UnusedPrivateProperty:HomeViewModel.kt$HomeViewModel$private var savedStateHandle: SavedStateHandle</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -5,7 +5,6 @@ import com.jacknic.android.wanandroid.core.datastore.UserPreferencesDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-
 internal class DefaultUserDataRepository @Inject constructor(
     private val dataSource: UserPreferencesDataSource,
     private val secureCredentialsDataSource: SecureCredentialsDataSource

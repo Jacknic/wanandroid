@@ -1,7 +1,7 @@
 package com.jacknic.android.wanandroid.core.network
 
-import android.util.Log
 import android.webkit.CookieManager
+import com.jacknic.android.wanandroid.core.common.TLog
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -35,7 +35,7 @@ class AndroidCookieJar : CookieJar {
 
         @Volatile
         private var cookieJar: AndroidCookieJar? = null
-        private const val TAG = "AndroidCookieJar"
+        private val log = TLog.create("AndroidCookieJar")
 
         /**
          * 获取存储管理单例
@@ -53,7 +53,7 @@ class AndroidCookieJar : CookieJar {
          */
         fun clear() {
             CookieManager.getInstance().removeAllCookies {
-                Log.d(TAG, "clear: done=$it")
+                log.tag().d("clear: done=$it")
             }
         }
     }

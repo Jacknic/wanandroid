@@ -61,6 +61,7 @@ inline fun <T> StateResult<T>.onLoading(action: () -> Unit): StateResult<T> {
 /**
  * 全状态判断逻辑
  *
+ * @param T 数据类型
  * @param loading 加载中
  * @param error 加载错误
  * @param success 加载成功
@@ -87,6 +88,8 @@ fun <T> StateResult<T>.getDataOrNull(): T? {
 /**
  * 数据类型转换
  *
+ * @param R 目标数据类型
+ * @param T 源数据类型
  * @param transformer 转换函数
  */
 inline fun <R, T> StateResult<T>.toStateResult(transformer: (T) -> R): StateResult<R> {
@@ -107,6 +110,8 @@ fun <T> Result<T>.toStateResult(): StateResult<T> {
 /**
  * 转换为带状态结构
  *
+ * @param R 目标数据类型
+ * @param T 源数据类型
  * @param transformer 数据类型转换
  */
 inline fun <R, T> Result<T>.toStateResult(transformer: (T) -> R): StateResult<R> {

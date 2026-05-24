@@ -1,3 +1,5 @@
+@file:Suppress("ForbiddenImport")
+
 package com.jacknic.android.wanandroid.core.common
 
 import com.orhanobut.logger.AndroidLogAdapter

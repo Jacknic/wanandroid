@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.jacknic.android.wanandroid.ui.component
 
 import androidx.compose.foundation.background

@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
 
 package com.jacknic.android.wanandroid.ui.page.main.category
@@ -326,9 +327,16 @@ private fun TreeList(
                     },
                     trailingContent = {
                         Icon(
-                            imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown
-                            else Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = if (isExpanded) "折叠" else "展开"
+                            imageVector = if (isExpanded) {
+                                Icons.Default.KeyboardArrowDown
+                            } else {
+                                Icons.AutoMirrored.Filled.KeyboardArrowRight
+                            },
+                            contentDescription = if (isExpanded) {
+                                "折叠"
+                            } else {
+                                "展开"
+                            }
                         )
                     },
                     modifier = Modifier.clickable { onToggleExpand(index) }

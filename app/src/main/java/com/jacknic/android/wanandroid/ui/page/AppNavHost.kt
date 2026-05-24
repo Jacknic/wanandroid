@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.jacknic.android.wanandroid.ui.page
 
 import androidx.compose.runtime.Composable

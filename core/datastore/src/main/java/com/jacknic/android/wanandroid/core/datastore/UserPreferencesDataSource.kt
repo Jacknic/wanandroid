@@ -24,40 +24,6 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
 
     private val settings by lazy { context.dataStore }
 
-    companion object {
-        /**
-         * 跳过登录标志
-         */
-        private val KEY_SKIP_LOGIN = booleanPreferencesKey("skip_login")
-
-        /**
-         * 搜索历史
-         */
-        private val KEY_SEARCH_HISTORY_LIST = stringPreferencesKey("search_history_list")
-
-        private const val HISTORY_SEPARATOR = "\n"
-
-        /**
-         * 主题模式（SYSTEM/LIGHT/DARK）
-         */
-        private val KEY_THEME_MODE = stringPreferencesKey("theme_mode")
-
-        /**
-         * 是否启用动态颜色
-         */
-        private val KEY_DYNAMIC_THEME_COLOR = booleanPreferencesKey("dynamic_theme_color")
-
-        /**
-         * 主题颜色方案
-         */
-        private val KEY_THEME_COLOR_SCHEME = stringPreferencesKey("theme_color_scheme")
-
-        /**
-         * 自定义主题颜色（ARGB 整数）
-         */
-        private val KEY_CUSTOM_COLOR_PRIMARY = intPreferencesKey("custom_color_primary")
-    }
-
     /**
      * 是否跳过登录
      */
@@ -177,5 +143,39 @@ class UserPreferencesDataSource @Inject constructor(@param:ApplicationContext pr
         settings.edit { preferences ->
             preferences[KEY_CUSTOM_COLOR_PRIMARY] = argb
         }
+    }
+
+    companion object {
+        /**
+         * 跳过登录标志
+         */
+        private val KEY_SKIP_LOGIN = booleanPreferencesKey("skip_login")
+
+        /**
+         * 搜索历史
+         */
+        private val KEY_SEARCH_HISTORY_LIST = stringPreferencesKey("search_history_list")
+
+        private const val HISTORY_SEPARATOR = "\n"
+
+        /**
+         * 主题模式（SYSTEM/LIGHT/DARK）
+         */
+        private val KEY_THEME_MODE = stringPreferencesKey("theme_mode")
+
+        /**
+         * 是否启用动态颜色
+         */
+        private val KEY_DYNAMIC_THEME_COLOR = booleanPreferencesKey("dynamic_theme_color")
+
+        /**
+         * 主题颜色方案
+         */
+        private val KEY_THEME_COLOR_SCHEME = stringPreferencesKey("theme_color_scheme")
+
+        /**
+         * 自定义主题颜色（ARGB 整数）
+         */
+        private val KEY_CUSTOM_COLOR_PRIMARY = intPreferencesKey("custom_color_primary")
     }
 }

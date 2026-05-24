@@ -142,16 +142,27 @@ fun WanandroidTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) {
+                dynamicDarkColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            }
         }
 
         themeColorScheme == ThemeColorScheme.CUSTOM -> {
-            if (darkTheme) darkColorSchemeForCustom(customColorData)
-            else lightColorSchemeForCustom(customColorData)
+            if (darkTheme) {
+                darkColorSchemeForCustom(customColorData)
+            } else {
+                lightColorSchemeForCustom(customColorData)
+            }
         }
 
-        darkTheme -> darkColorSchemeFor(themeColorScheme)
-        else -> lightColorSchemeFor(themeColorScheme)
+        darkTheme -> {
+            darkColorSchemeFor(themeColorScheme)
+        }
+        else -> {
+            lightColorSchemeFor(themeColorScheme)
+        }
     }
 
     MaterialTheme(

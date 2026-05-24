@@ -192,9 +192,12 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                 val showLanguagePanel = rememberSaveable { mutableStateOf(false) }
                 val currentLocale = AppCompatDelegate.getApplicationLocales()
                 val currentIndex = remember(currentLocale) {
-                    if (currentLocale.isEmpty) 0
-                    else languageCodes.indexOfFirst { it.isNotEmpty() && it == currentLocale.get(0)?.language }
-                        .coerceAtLeast(0)
+                    if (currentLocale.isEmpty) {
+                        0
+                    } else {
+                        languageCodes.indexOfFirst { it.isNotEmpty() && it == currentLocale.get(0)?.language }
+                            .coerceAtLeast(0)
+                    }
                 }
                 val interactionSource = remember { MutableInteractionSource() }
                 ListItem(
@@ -383,15 +386,20 @@ private fun ThemeColorSelector() {
                                         MaterialTheme.colorScheme.primary,
                                         CircleShape
                                     )
-                                } else Modifier
+                                } else {
+                                    Modifier
+                                }
                             )
                             .then(
-                                if (isDynamicActive && scheme != ThemeColorScheme.CUSTOM) Modifier
-                                else Modifier.clickable {
-                                    if (scheme == ThemeColorScheme.CUSTOM) {
-                                        showColorPicker = true
-                                    } else {
-                                        useThemeColorScheme(scheme)
+                                if (isDynamicActive && scheme != ThemeColorScheme.CUSTOM) {
+                                    Modifier
+                                } else {
+                                    Modifier.clickable {
+                                        if (scheme == ThemeColorScheme.CUSTOM) {
+                                            showColorPicker = true
+                                        } else {
+                                            useThemeColorScheme(scheme)
+                                        }
                                     }
                                 }
                             ),
@@ -486,7 +494,11 @@ private fun ColorPickerDialog(
                 ) {
                     Text(
                         "预览",
-                        color = if (lightness > 0.5f) Color.Black else Color.White,
+                        color = if (lightness > 0.5f) {
+                            Color.Black
+                        } else {
+                            Color.White
+                        },
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -611,8 +623,11 @@ private fun LanguagePanel(
         val colorPrimary = MaterialTheme.colorScheme.primary
         val currentLocale = AppCompatDelegate.getApplicationLocales()
         languageNames.forEachIndexed { index, name ->
-            val selected = if (index == 0) currentLocale.isEmpty
-            else currentLocale.get(0)?.language == languageCodes[index]
+            val selected = if (index == 0) {
+                currentLocale.isEmpty
+            } else {
+                currentLocale.get(0)?.language == languageCodes[index]
+            }
             ListItem(
                 headlineContent = {
                     Text(name, color = if (selected) colorPrimary else Color.Unspecified)

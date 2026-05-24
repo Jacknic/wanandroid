@@ -20,7 +20,7 @@ suspend fun <T> runResult(
 ): Result<T> = runCatching {
     val result = try {
         action()
-    } catch (e: Exception) {
+    } catch (@Suppress("TooGenericExceptionCaught", "SwallowedException") e: Exception) {
         if (e is HttpException) {
             throw WanServerException(e.code(), e.message())
         } else {

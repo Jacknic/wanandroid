@@ -3,9 +3,6 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ComplexInterface:UserDataRepository.kt$UserDataRepository</ID>
-    <ID>NewLineAtEndOfFile:DataModule.kt$com.jacknic.android.wanandroid.core.data.di.DataModule.kt</ID>
-    <ID>NewLineAtEndOfFile:DefaultWanRepository.kt$com.jacknic.android.wanandroid.core.data.DefaultWanRepository.kt</ID>
-    <ID>SpacingBetweenPackageAndImports:DefaultUserDataRepository.kt$ </ID>
     <ID>TooManyFunctions:DefaultWanRepository.kt$DefaultWanRepository : WanRepository</ID>
   </CurrentIssues>
 </SmellBaseline>

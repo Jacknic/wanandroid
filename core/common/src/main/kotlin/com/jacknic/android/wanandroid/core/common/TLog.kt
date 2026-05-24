@@ -1,6 +1,9 @@
+@file:Suppress("ForbiddenImport")
+
 package com.jacknic.android.wanandroid.core.common
 
 import android.util.Log
+import com.jacknic.android.wanandroid.core.common.TLog.Companion.logLevel
 import timber.log.Timber
 
 /**

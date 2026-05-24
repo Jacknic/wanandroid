@@ -2,8 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>NewLineAtEndOfFile:CourseInfo.kt$com.jacknic.android.wanandroid.core.model.CourseInfo.kt</ID>
-    <ID>NewLineAtEndOfFile:ShareArticles.kt$com.jacknic.android.wanandroid.core.model.ShareArticles.kt</ID>
     <ID>OutdatedDocumentation:Article.kt$Article</ID>
     <ID>OutdatedDocumentation:ArticleTag.kt$ArticleTag</ID>
     <ID>OutdatedDocumentation:Banner.kt$Banner</ID>

@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.jacknic.android.wanandroid.ui.page.main
 
 import android.annotation.SuppressLint
@@ -97,8 +99,11 @@ fun PageMain() {
                         )
                     },
                     label = {
-                        val textColor = if (selected) MaterialTheme.colorScheme.primary
-                        else Color.Unspecified
+                        val textColor = if (selected) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            Color.Unspecified
+                        }
                         val colorState by animateColorAsState(textColor)
                         Text(stringResource(it.label), color = colorState)
                     },

@@ -245,7 +245,7 @@ fun PageLogin(
                         onNext = { /* focus moves to confirm password */ },
                         onGo = {
                             if (!loggingIn && username.isNotBlank() && password.isNotBlank()) {
-                                vm.loginWithCredentials(username, password, rememberPassword)
+                                vm.login(username, password)
                             }
                             skc?.hide()
                         }
@@ -467,55 +467,55 @@ fun PageLogin(
                         )
                     )
                 }
-            } // close Column
-        } // close Box
-    } // close Scaffold lambda
-}
-
-@Composable
-private fun PasswordStrengthIndicator(strength: Int) {
-    val colorScheme = MaterialTheme.colorScheme
-    val (color, label) = when (strength) {
-        LoginViewModel.PASSWORD_STRENGTH_WEAK ->
-            colorScheme.error to stringResource(R.string.password_strength_weak)
-
-        LoginViewModel.PASSWORD_STRENGTH_MEDIUM ->
-            colorScheme.tertiary to stringResource(R.string.password_strength_medium)
-
-        LoginViewModel.PASSWORD_STRENGTH_STRONG ->
-            colorScheme.primary to stringResource(R.string.password_strength_strong)
-
-        else -> colorScheme.outline to ""
-    }
-    val progress = when (strength) {
-        LoginViewModel.PASSWORD_STRENGTH_WEAK -> 0.33f
-        LoginViewModel.PASSWORD_STRENGTH_MEDIUM -> 0.66f
-        LoginViewModel.PASSWORD_STRENGTH_STRONG -> 1f
-        else -> 0f
+            }
+        }
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        LinearProgressIndicator(
-            progress = { progress },
-            color = color,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(4.dp),
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = stringResource(R.string.password_strength_label),
-                style = MaterialTheme.typography.labelSmall,
-                color = colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
+    @Composable
+    fun PasswordStrengthIndicator(strength: Int) {
+        val colorScheme = MaterialTheme.colorScheme
+        val (color, label) = when (strength) {
+            LoginViewModel.PASSWORD_STRENGTH_WEAK ->
+                colorScheme.error to stringResource(R.string.password_strength_weak)
+
+            LoginViewModel.PASSWORD_STRENGTH_MEDIUM ->
+                colorScheme.tertiary to stringResource(R.string.password_strength_medium)
+
+            LoginViewModel.PASSWORD_STRENGTH_STRONG ->
+                colorScheme.primary to stringResource(R.string.password_strength_strong)
+
+            else -> colorScheme.outline to ""
+        }
+        val progress = when (strength) {
+            LoginViewModel.PASSWORD_STRENGTH_WEAK -> 0.33f
+            LoginViewModel.PASSWORD_STRENGTH_MEDIUM -> 0.66f
+            LoginViewModel.PASSWORD_STRENGTH_STRONG -> 1f
+            else -> 0f
+        }
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            LinearProgressIndicator(
+                progress = { progress },
                 color = color,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp),
             )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = stringResource(R.string.password_strength_label),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = color,
+                )
+            }
         }
     }
 }
