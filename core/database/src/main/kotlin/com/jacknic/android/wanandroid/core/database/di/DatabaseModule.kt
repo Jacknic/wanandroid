@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.jacknic.android.wanandroid.core.database.AppDatabase
 import com.jacknic.android.wanandroid.core.database.ReadingHistoryDao
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,16 +20,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "wanandroid.db",
-        ).build()
-    }
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java,
+        "wanandroid.db",
+    ).build()
 
     @Provides
-    fun provideReadingHistoryDao(database: AppDatabase): ReadingHistoryDao {
-        return database.readingHistoryDao()
-    }
+    fun provideReadingHistoryDao(database: AppDatabase): ReadingHistoryDao = database.readingHistoryDao()
 }

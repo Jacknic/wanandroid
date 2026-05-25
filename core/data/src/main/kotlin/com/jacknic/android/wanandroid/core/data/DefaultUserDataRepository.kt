@@ -1,7 +1,6 @@
 package com.jacknic.android.wanandroid.core.data
 
 import com.jacknic.android.wanandroid.core.database.ReadingHistoryDao
-import com.jacknic.android.wanandroid.core.database.ReadingHistoryEntity
 import com.jacknic.android.wanandroid.core.database.toEntity
 import com.jacknic.android.wanandroid.core.database.toModel
 import com.jacknic.android.wanandroid.core.datastore.SecureCredentialsDataSource
@@ -24,12 +23,9 @@ internal class DefaultUserDataRepository @Inject constructor(
     override suspend fun clearSearchHistory() = dataSource.clearSearchHistory()
     override fun readingHistoryFlow(): Flow<List<ReadingHistory>> =
         readingHistoryDao.getAll().map { entities -> entities.map { it.toModel() } }
-    override suspend fun addReadingHistory(history: ReadingHistory) =
-        readingHistoryDao.insert(history.toEntity())
-    override suspend fun removeReadingHistory(articleId: Int) =
-        readingHistoryDao.deleteById(articleId)
-    override suspend fun clearReadingHistory() =
-        readingHistoryDao.deleteAll()
+    override suspend fun addReadingHistory(history: ReadingHistory) = readingHistoryDao.insert(history.toEntity())
+    override suspend fun removeReadingHistory(articleId: Int) = readingHistoryDao.deleteById(articleId)
+    override suspend fun clearReadingHistory() = readingHistoryDao.deleteAll()
     override fun themeModeFlow(): Flow<String> = dataSource.themeModeFlow()
     override suspend fun setThemeMode(mode: String) = dataSource.setThemeMode(mode)
     override fun dynamicThemeColorFlow(): Flow<Boolean> = dataSource.dynamicThemeColorFlow()
