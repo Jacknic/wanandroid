@@ -118,25 +118,22 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
             )
         },
     ) { padding ->
-        Column(
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                vm.refresh()
+                isRefreshing = false
+            },
             modifier = Modifier
                 .padding(padding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         ) {
-            // 筛选条
-            FilterBar(vm = vm)
+            Column(modifier = Modifier.fillMaxSize()) {
+                // 筛选条
+                FilterBar(vm = vm)
 
-            PullToRefreshBox(
-                isRefreshing = isRefreshing,
-                onRefresh = {
-                    isRefreshing = true
-                    vm.refresh()
-                    isRefreshing = false
-                },
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
-            ) {
                 when (val state = todoListState) {
                     is StateResult.Loading -> {
                         Box(
