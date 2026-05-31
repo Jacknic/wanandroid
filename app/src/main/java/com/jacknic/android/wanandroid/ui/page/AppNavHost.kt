@@ -22,6 +22,7 @@ import com.jacknic.android.wanandroid.ui.page.readinghistory.PageReadingHistory
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
 import com.jacknic.android.wanandroid.ui.page.setting.PageSetting
 import com.jacknic.android.wanandroid.ui.page.splash.PageSplash
+import com.jacknic.android.wanandroid.ui.page.todo.PageTodo
 
 object Page {
 
@@ -41,6 +42,7 @@ object Page {
     const val Login = "PageLogin"
     const val Collection = "PageCollection"
     const val ReadingHistory = "PageReadingHistory"
+    const val Todo = "PageTodo"
 }
 
 /**
@@ -111,6 +113,7 @@ fun AppNavHost(
             composable(Page.Login) { PageLogin(nav) }
             composable(Page.Collection) { PageCollection() }
             composable(Page.ReadingHistory) { PageReadingHistory() }
+            composable(Page.Todo) { PageTodo() }
         }
     }
 }

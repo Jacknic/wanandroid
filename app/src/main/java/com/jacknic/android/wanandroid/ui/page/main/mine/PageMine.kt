@@ -156,7 +156,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
             Spacer(modifier = Modifier.height(12.dp))
 
             // 创作者中心
-            CreatorCenter()
+            CreatorCenter(onTodoClick = { nav.navigate(Page.Todo) })
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -367,7 +367,7 @@ private fun FeatureCard() {
  * 创作者中心
  */
 @Composable
-private fun CreatorCenter() {
+private fun CreatorCenter(onTodoClick: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -411,10 +411,10 @@ private fun CreatorCenter() {
 
             // 功能项
             val creatorItems = listOf(
-                "内容数据" to Icons.TwoTone.Create,
-                "粉丝数据" to Icons.TwoTone.Group,
-                "创作活动" to Icons.TwoTone.LocalActivity,
-                "草稿箱" to Icons.TwoTone.Drafts,
+                CreatorItem("内容数据", Icons.TwoTone.Create),
+                CreatorItem("粉丝数据", Icons.TwoTone.Group),
+                CreatorItem("创作活动", Icons.TwoTone.LocalActivity),
+                CreatorItem("Todo", Icons.TwoTone.Drafts, onTodoClick),
             )
             Row(
                 modifier = Modifier
@@ -422,29 +422,31 @@ private fun CreatorCenter() {
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                creatorItems.forEach { (label, icon) ->
+                creatorItems.forEach { item ->
                     Column(
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.small)
                             .weight(1f)
-                            .clickable { }
+                            .clickable { item.onClick?.invoke() }
                             .padding(vertical = 8.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Icon(
-                            icon,
-                            contentDescription = label,
+                            item.icon,
+                            contentDescription = item.label,
                             modifier = Modifier.size(28.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(label, fontSize = 12.sp)
+                        Text(item.label, fontSize = 12.sp)
                     }
                 }
             }
         }
     }
 }
+
+private data class CreatorItem(val label: String, val icon: ImageVector, val onClick: (() -> Unit)? = null)
 
 /**
  * 更多功能
