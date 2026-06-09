@@ -2,6 +2,7 @@
 
 package com.jacknic.android.wanandroid.ui.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
@@ -41,21 +43,26 @@ import androidx.core.net.toUri
 import androidx.core.text.parseAsHtml
 import coil.compose.AsyncImage
 import com.jacknic.android.wanandroid.core.model.Article
+import com.jacknic.android.wanandroid.core.ui.R
 import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 
 /**
  * 链接类型枚举
  */
-enum class LinkType(val domains: List<String>, val label: String, val color: Color) {
-    JUEJIN(listOf("juejin.cn", "juejin.im"), "掘金", Color(0xFF0066FF)),
-    WECHAT(listOf("mp.weixin.qq.com"), "微信", Color(0xFF07C160)),
-    WANANDROID(listOf("wanandroid.com"), "玩安卓", Color(0xFF276692)),
-    CSDN(listOf("csdn.net"), "CSDN", Color(0xFFFA7040)),
-    JIANSHU(listOf("jianshu.com"), "简书", Color(0xFFE67E22)),
-    ZHIHU(listOf("zhihu.com", "zhuanlan.zhihu.com"), "知乎", Color(0xFF0066FF)),
-    GITHUB(listOf("github.com"), "GitHub", Color(0xFF181717)),
-    ANDROID_DEVELOPER(listOf("developer.android.com"), "Android", Color(0xFF3DDC84)),
-    OTHER(listOf(""), "其他", Color(0xFF868686)),
+enum class LinkType(
+    val domains: List<String>,
+    @param:StringRes val labelRes: Int,
+    val color: Color,
+) {
+    JUEJIN(listOf("juejin.cn", "juejin.im"), R.string.link_type_juejin, Color(0xFF0066FF)),
+    WECHAT(listOf("mp.weixin.qq.com"), R.string.link_type_wechat, Color(0xFF07C160)),
+    WANANDROID(listOf("wanandroid.com"), R.string.link_type_wanandroid, Color(0xFF276692)),
+    CSDN(listOf("csdn.net"), R.string.link_type_csdn, Color(0xFFFA7040)),
+    JIANSHU(listOf("jianshu.com"), R.string.link_type_jianshu, Color(0xFFE67E22)),
+    ZHIHU(listOf("zhihu.com", "zhuanlan.zhihu.com"), R.string.link_type_zhihu, Color(0xFF0066FF)),
+    GITHUB(listOf("github.com"), R.string.link_type_github, Color(0xFF181717)),
+    ANDROID_DEVELOPER(listOf("developer.android.com"), R.string.link_type_android, Color(0xFF3DDC84)),
+    OTHER(listOf(""), R.string.link_type_other, Color(0xFF868686)),
 }
 
 /**
@@ -173,7 +180,7 @@ fun ArticleListItem(
                 // 链接类型徽章
                 linkType?.let { type ->
                     LinkTypeBadge(
-                        text = type.label,
+                        text = stringResource(type.labelRes),
                         color = type.color,
                     )
                 }

@@ -161,7 +161,7 @@
     <!-- Link Types -->
     <string name="link_type_juejin">Juejin</string>
     <string name="link_type_wechat">WeChat</string>
-    <string name="link_type_wanandroid">WanAndroid</string>
+    <string name="link_type_wanandroid">Wan</string>
     <string name="link_type_csdn">CSDN</string>
     <string name="link_type_jianshu">Jianshu</string>
     <string name="link_type_zhihu">Zhihu</string>
