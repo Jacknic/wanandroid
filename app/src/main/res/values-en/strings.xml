@@ -1,36 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WanAndroid</string>
-    <string name="title_home">Home</string>
-    <string name="title_category">Category</string>
-    <string name="title_discovery">Discover</string>
-    <string name="title_square">Square</string>
-    <string name="title_mine">Me</string>
-    <string name="title_hot_search">Hot Search</string>
-    <string name="title_useful_sites">Useful Sites</string>
-    <string name="title_project_category">Project Category</string>
-    <string name="title_theme_mode">Theme Mode</string>
-    <string name="title_dynamic_theme_color">Dynamic Color</string>
-    <string name="desc_dynamic_theme_color">Match wallpaper color style</string>
-    <string name="login_hit_label_password">Password</string>
-    <string name="login_hit_label_username">Username</string>
-    <string name="login_tips_login_success">Login success</string>
-    <string name="login_tips_login_failed">Login failed</string>
-    <string name="login_btn_login">Login</string>
-    <string name="login_btn_login_loading">Loading</string>
-    <string name="login_btn_skip_login">Skip</string>
-    <string name="login_remember_password">Remember Password</string>
-    <string name="login_clear_credentials">Clear saved credentials</string>
-    <string-array name="tab_titles">
-        <item>@string/title_home</item>
-        <item>@string/title_category</item>
-        <item>@string/title_discovery</item>
-        <item>@string/title_square</item>
-        <item>@string/title_mine</item>
-    </string-array>
-    <string-array name="theme_mode_names">
-        <item>Follow System</item>
-        <item>Light Mode</item>
-        <item>Dark Mode</item>
-    </string-array>
+    <!-- 字符串资源已迁移至 core:ui 模块 (core/ui/src/main/res/values-en/strings.xml) -->
 </resources>

@@ -2,7 +2,6 @@ package com.jacknic.android.wanandroid.ui.page.todo
 
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -63,6 +63,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.core.model.Todo
 import com.jacknic.android.wanandroid.core.network.isUnauthorized
+import com.jacknic.android.wanandroid.core.ui.R
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.navTop
@@ -103,7 +104,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Todo") },
+                title = { Text(stringResource(R.string.page_todo)) },
                 navigationIcon = {
                     IconButton(onClick = { nav.navigateUp() }) {
                         Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "返回")
@@ -152,17 +153,23 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    if (isUnauthorized) "未登录" else "加载失败",
+                                    if (isUnauthorized) {
+                                        stringResource(
+                                            R.string.error_not_logged_in,
+                                        )
+                                    } else {
+                                        stringResource(R.string.error_network)
+                                    },
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 if (isUnauthorized) {
                                     TextButton(onClick = { nav.navTop(Page.Login, Page.Main) }) {
-                                        Text("去登录")
+                                        Text(stringResource(R.string.action_login))
                                     }
                                 } else {
                                     TextButton(onClick = { vm.refresh() }) {
-                                        Text("重试")
+                                        Text(stringResource(R.string.action_retry))
                                     }
                                 }
                             }
@@ -178,7 +185,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    "暂无待办事项",
+                                    stringResource(R.string.todo_empty),
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
@@ -187,7 +194,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                                 stickyHeader {
                                     Surface(modifier = Modifier.fillMaxWidth()) {
                                         Text(
-                                            "共 $total 项",
+                                            stringResource(R.string.collection_selected_count, total),
                                             fontSize = 13.sp,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             modifier = Modifier.padding(
@@ -230,7 +237,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
     // 新增对话框
     if (showAddDialog) {
         TodoEditDialog(
-            title = "新增待办",
+            title = stringResource(R.string.todo_add_title),
             initialTitle = "",
             initialContent = "",
             initialDate = todayStr(),
@@ -240,7 +247,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                     if (success) {
                         showAddDialog = false
                     } else {
-                        Toast.makeText(context, "添加失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.todo_add_success), Toast.LENGTH_SHORT).show()
                     }
                 }
             },
@@ -250,7 +257,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
     // 编辑对话框
     editingTodo?.let { todo ->
         TodoEditDialog(
-            title = "编辑待办",
+            title = stringResource(R.string.todo_edit_title),
             initialTitle = todo.title,
             initialContent = todo.content,
             initialDate = todo.date.ifBlank { todayStr() },
@@ -266,7 +273,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                     if (success) {
                         editingTodo = null
                     } else {
-                        Toast.makeText(context, "更新失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.todo_update_success), Toast.LENGTH_SHORT).show()
                     }
                 }
             },
@@ -277,7 +284,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
     todoToDelete?.let { todo ->
         AlertDialog(
             onDismissRequest = { todoToDelete = null },
-            title = { Text("删除待办") },
+            title = { Text(stringResource(R.string.todo_delete_title)) },
             text = {
                 Text(
                     todo.title.take(50).let { if (it.length < todo.title.length) "$it…" else it },
@@ -290,12 +297,12 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                     vm.deleteTodo(todo.id)
                     todoToDelete = null
                 }) {
-                    Text("删除", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.action_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { todoToDelete = null }) {
-                    Text("取消")
+                    Text(stringResource(R.string.action_cancel))
                 }
             },
         )
@@ -319,7 +326,7 @@ private fun FilterBar(vm: TodoViewModel) {
                 selectedFilter = null
                 vm.setFilter(null)
             },
-            label = { Text("全部") },
+            label = { Text(stringResource(R.string.todo_filter_all)) },
         )
         FilterChip(
             selected = selectedFilter == 0,
@@ -327,7 +334,7 @@ private fun FilterBar(vm: TodoViewModel) {
                 selectedFilter = 0
                 vm.setFilter(0)
             },
-            label = { Text("未完成") },
+            label = { Text(stringResource(R.string.todo_filter_uncompleted)) },
         )
         FilterChip(
             selected = selectedFilter == 1,
@@ -335,22 +342,20 @@ private fun FilterBar(vm: TodoViewModel) {
                 selectedFilter = 1
                 vm.setFilter(1)
             },
-            label = { Text("已完成") },
+            label = { Text(stringResource(R.string.todo_filter_completed)) },
         )
     }
 }
 
 @Composable
-private fun TodoItem(
-    todo: Todo,
-    onToggleStatus: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
-) {
+private fun TodoItem(todo: Todo, onToggleStatus: () -> Unit, onEdit: () -> Unit, onDelete: () -> Unit) {
     val isDone = todo.status == 1
     val titleColor by animateColorAsState(
-        targetValue = if (isDone) MaterialTheme.colorScheme.onSurfaceVariant
-        else MaterialTheme.colorScheme.onSurface,
+        targetValue = if (isDone) {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        },
         label = "titleColor",
     )
 
@@ -380,7 +385,13 @@ private fun TodoItem(
                 ) {
                     Icon(
                         imageVector = if (isDone) Icons.TwoTone.CheckCircle else Icons.TwoTone.RadioButtonUnchecked,
-                        contentDescription = if (isDone) "已完成" else "未完成",
+                        contentDescription = if (isDone) {
+                            stringResource(
+                                R.string.todo_filter_completed,
+                            )
+                        } else {
+                            stringResource(R.string.todo_filter_uncompleted)
+                        },
                         tint = if (isDone) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(24.dp),
                     )
@@ -403,7 +414,7 @@ private fun TodoItem(
                 ) {
                     Icon(
                         Icons.TwoTone.Edit,
-                        contentDescription = "编辑",
+                        contentDescription = stringResource(R.string.action_edit),
                         modifier = Modifier.size(18.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -415,7 +426,7 @@ private fun TodoItem(
                 ) {
                     Icon(
                         Icons.TwoTone.Delete,
-                        contentDescription = "删除",
+                        contentDescription = stringResource(R.string.action_delete),
                         modifier = Modifier.size(18.dp),
                         tint = MaterialTheme.colorScheme.error,
                     )
@@ -470,21 +481,21 @@ private fun TodoEditDialog(
                 OutlinedTextField(
                     value = todoTitle,
                     onValueChange = { todoTitle = it },
-                    label = { Text("标题") },
+                    label = { Text(stringResource(R.string.todo_title_hint)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
                 OutlinedTextField(
                     value = todoContent,
                     onValueChange = { todoContent = it },
-                    label = { Text("详情") },
+                    label = { Text(stringResource(R.string.todo_content_hint)) },
                     maxLines = 3,
                     modifier = Modifier.fillMaxWidth(),
                 )
                 OutlinedTextField(
                     value = todoDate,
                     onValueChange = { todoDate = it },
-                    label = { Text("日期 (yyyy-MM-dd)") },
+                    label = { Text(stringResource(R.string.todo_date_hint)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -495,12 +506,12 @@ private fun TodoEditDialog(
                 onClick = { onConfirm(todoTitle, todoContent, todoDate) },
                 enabled = todoTitle.isNotBlank(),
             ) {
-                Text("确定")
+                Text(stringResource(R.string.action_confirm))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("取消")
+                Text(stringResource(R.string.action_cancel))
             }
         },
     )

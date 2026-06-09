@@ -274,6 +274,70 @@ fun getArticleListFlow(cid: Int): Flow<PagingData<Article>> {
 
 ---
 
+## 6.1 国际化规范 (Internationalization Standards)
+
+所有用户可见的文本**必须**通过 `strings.xml` 资源管理，严禁硬编码中文文本。
+
+### 6.1.1 字符串资源命名规范
+
+采用 `模块_描述` 的下划线命名法：
+
+| 类别 | 前缀 | 示例 |
+|------|------|------|
+| 通用操作 | `action_` | `action_confirm`, `action_cancel` |
+| 页面标题 | `page_` | `page_collection`, `page_setting` |
+| 功能模块 | `模块名_` | `collection_`, `todo_`, `setting_` |
+| 错误提示 | `error_` | `error_network`, `error_unknown` |
+| 成功提示 | `success_` | `success_collect`, `success_delete` |
+| 状态文本 | `状态_` | `loading`, `no_more_data` |
+
+### 6.1.2 代码开发规范
+
+**禁止硬编码文本**：
+```kotlin
+// ❌ 错误 - 硬编码
+Text("确定要删除吗？")
+Button(onClick = { }) { Text("删除") }
+
+// ✅ 正确 - 使用资源引用
+Text(stringResource(R.string.collection_delete_message))
+Button(onClick = { }) { Text(stringResource(R.string.action_delete)) }
+```
+
+**必需的导入**：
+```kotlin
+import androidx.compose.ui.res.stringResource
+```
+
+**带参数的字符串**：
+```xml
+<!-- strings.xml -->
+<string name="collection_selected_count">已选 %1$d 项</string>
+```
+```kotlin
+// 使用
+Text(stringResource(R.string.collection_selected_count, selectedCount))
+```
+
+### 6.1.3 开发流程
+
+1. **在 `core/ui/src/main/res/values/strings.xml` 中定义字符串资源**
+2. **在代码中通过 `stringResource(R.string.xxx)` 引用**
+3. **如果使用参数，确保 XML 中的占位符类型正确**（`%1$d` = 整数，`%1$s` = 字符串）
+
+### 6.1.4 代码审查检查点
+
+- [ ] 所有用户可见文本是否使用 `stringResource` 引用
+- [ ] 是否导入了 `androidx.compose.ui.res.stringResource`
+- [ ] 字符串资源命名是否符合规范
+- [ ] 是否存在硬编码的中文字符串
+
+### 6.1.5 参考文档
+
+详细规范请参考：`docs/internationalization_guide.md`
+
+---
+
 ## 7. 高频构建与自动化命令 (Engineering Commands)
 
 Agent 在辅助进行代码审查、重构或本地验证时，应熟知并能准确建议/执行以下 Gradle 命令（在项目根目录下通过 `./gradlew` 执行）：

@@ -66,10 +66,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.loading
 import com.jacknic.android.wanandroid.core.common.onError
 import com.jacknic.android.wanandroid.core.common.onSuccess
+import com.jacknic.android.wanandroid.core.ui.R
 import com.jacknic.android.wanandroid.ui.component.LoginAnimatedBackground
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.navTop

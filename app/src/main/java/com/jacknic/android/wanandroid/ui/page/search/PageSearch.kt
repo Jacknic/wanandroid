@@ -58,8 +58,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.jacknic.android.wanandroid.R
 import com.jacknic.android.wanandroid.core.common.getDataOrNull
+import com.jacknic.android.wanandroid.core.ui.R
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.page.LocalCollectStateManager
@@ -236,7 +236,11 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                         scope.launch {
                             when (val result = collectStateManager.toggleCollect(article.id, isCollected)) {
                                 is CollectResult.NotLoggedIn -> showLoginDialog = true
-                                is CollectResult.Error -> Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                                is CollectResult.Error -> Toast.makeText(
+                                    context,
+                                    context.getString(result.errorResId),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                                 is CollectResult.Success -> {}
                             }
                         }

@@ -1,4 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 应用名称 -->
     <string name="app_name">玩安卓</string>
+
+    <!-- 通用操作 -->
+    <string name="action_confirm">确定</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_delete">删除</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_save">保存</string>
+    <string name="action_retry">重试</string>
+    <string name="action_login">去登录</string>
+    <string name="action_select_all">全选</string>
+    <string name="action_invert_selection">反选</string>
+    <string name="action_multi_select">多选</string>
+    <string name="action_back">返回</string>
+
+    <!-- 页面标题 -->
+    <string name="page_home">首页</string>
+    <string name="page_category">分类</string>
+    <string name="page_discovery">发现</string>
+    <string name="page_square">广场</string>
+    <string name="page_mine">我的</string>
+    <string name="page_collection">我的收藏</string>
+    <string name="page_todo">待办事项</string>
+    <string name="page_setting">设置</string>
+    <string name="page_search">搜索</string>
+    <string name="page_login">登录</string>
+    <string name="page_browser">浏览器</string>
+    <string name="page_register">注册</string>
+
+    <!-- 首页底部导航 -->
+    <string name="title_home">首页</string>
+    <string name="title_category">分类</string>
+    <string name="title_discovery">发现</string>
+    <string name="title_square">广场</string>
+    <string name="title_mine">我的</string>
+
+    <!-- 发现页 -->
+    <string name="title_hot_search">搜索热词</string>
+    <string name="title_useful_sites">常用网站</string>
+    <string name="title_project_category">项目分类</string>
+
+    <!-- 设置页 -->
+    <string name="title_theme_mode">主题模式</string>
+    <string name="title_dynamic_theme_color">动态颜色</string>
+    <string name="desc_dynamic_theme_color">自动匹配壁纸颜色样式</string>
+
+    <!-- 登录页 -->
+    <string name="login_hit_label_password">密码</string>
+    <string name="login_hit_label_username">用户名</string>
+    <string name="login_tips_login_success">登录成功</string>
+    <string name="login_tips_login_failed">登录失败</string>
+    <string name="login_btn_login">登录</string>
+    <string name="login_btn_login_loading">登录中</string>
+    <string name="login_btn_skip_login">跳过</string>
+    <string name="login_remember_password">记住密码</string>
+    <string name="login_clear_credentials">清除已保存的登录信息</string>
+    <string name="login_link_to_register">没有账号？去注册</string>
+
+    <!-- 注册页 -->
+    <string name="register_title">注册</string>
+    <string name="register_hit_label_username">用户名</string>
+    <string name="register_hit_label_password">密码</string>
+    <string name="register_hit_label_confirm_password">确认密码</string>
+    <string name="register_btn_register">注册</string>
+    <string name="register_btn_register_loading">注册中</string>
+    <string name="register_tips_success">注册成功</string>
+    <string name="register_tips_failed">注册失败</string>
+    <string name="register_link_to_login">已有账号？去登录</string>
+    <string name="register_agree_privacy">我已阅读并同意</string>
+    <string name="register_privacy_policy">《隐私协议》</string>
+    <string name="register_terms_of_service">《用户服务协议》</string>
+    <string name="register_error_agree_privacy">请先同意隐私协议</string>
+
+    <!-- 密码强度 -->
+    <string name="password_strength_weak">弱</string>
+    <string name="password_strength_medium">中</string>
+    <string name="password_strength_strong">强</string>
+    <string name="password_strength_label">密码强度：</string>
+
+    <!-- 收藏相关 -->
+    <string name="collection_title">我的收藏</string>
+    <string name="collection_batch_delete_title">批量删除收藏</string>
+    <string name="collection_batch_delete_message">确定要删除选中的 %1$d 篇收藏文章吗？此操作不可撤销。</string>
+    <string name="collection_batch_delete_success">已删除 %1$d 篇收藏</string>
+    <string name="collection_batch_delete_partial">成功删除 %1$d 篇，失败 %2$d 篇</string>
+    <string name="collection_batch_delete_empty">请先选择要删除的收藏</string>
+    <string name="collection_cancel_title">取消收藏</string>
+    <string name="collection_cancel_message">确定要取消收藏吗？</string>
+    <string name="collection_empty">暂无收藏</string>
+    <string name="collection_selected_count">已选 %1$d 项</string>
+    <string name="collection_total_count">共 %1$d 篇收藏</string>
+
+    <!-- 待办相关 -->
+    <string name="todo_add_title">新增待办</string>
+    <string name="todo_edit_title">编辑待办</string>
+    <string name="todo_delete_title">删除待办</string>
+    <string name="todo_delete_message">确定要删除这个待办吗？</string>
+    <string name="todo_filter_all">全部</string>
+    <string name="todo_filter_uncompleted">未完成</string>
+    <string name="todo_filter_completed">已完成</string>
+    <string name="todo_title_hint">标题</string>
+    <string name="todo_content_hint">详情</string>
+    <string name="todo_date_hint">日期 (yyyy-MM-dd)</string>
+    <string name="todo_empty">暂无待办</string>
+    <string name="todo_add_success">新增成功</string>
+    <string name="todo_update_success">更新成功</string>
+    <string name="todo_delete_success">删除成功</string>
+
+    <!-- 搜索相关 -->
+    <string name="search_hint">搜索玩安卓</string>
+    <string name="search_history">搜索历史</string>
+    <string name="search_clear_history">清空历史</string>
+
+    <!-- 设置相关 -->
+    <string name="setting_edit_profile">编辑资料</string>
+    <string name="setting_general">通用设置</string>
+    <string name="setting_others">其他</string>
+    <string name="setting_language">语言设置</string>
+    <string name="setting_notification">推送通知</string>
+    <string name="setting_check_update">检查更新</string>
+    <string name="setting_current_version">当前版本: v%1$s</string>
+    <string name="setting_about">关于</string>
+    <string name="setting_theme_color">主题颜色</string>
+    <string name="setting_logout_confirm">退出后将需要重新登录您的账号</string>
+    <string name="setting_logout_title">退出登录</string>
+
+    <!-- 主题相关 -->
+    <string name="theme_color_default">默认</string>
+    <string name="theme_color_green">绿色</string>
+    <string name="theme_color_purple">紫色</string>
+    <string name="theme_color_orange">橙色</string>
+    <string name="theme_color_red">红色</string>
+    <string name="theme_color_custom">自定义</string>
+    <string name="theme_custom_title">选择自定义颜色</string>
+    <string name="theme_custom_hex">十六进制</string>
+    <string name="theme_custom_hue">色相</string>
+    <string name="theme_custom_saturation">饱和度</string>
+    <string name="theme_custom_lightness">亮度</string>
+
+    <!-- 错误提示 -->
+    <string name="error_network">网络错误，请检查网络连接</string>
+    <string name="error_server">服务器错误，请稍后重试</string>
+    <string name="error_unknown">未知错误</string>
+    <string name="error_not_logged_in">请先登录</string>
+    <string name="error_collect_failed">收藏失败</string>
+    <string name="error_uncollect_failed">取消收藏失败</string>
+
+    <!-- 成功提示 -->
+    <string name="success_collect">收藏成功</string>
+    <string name="success_uncollect">已取消收藏</string>
+    <string name="success_delete">删除成功</string>
+
+    <!-- 加载状态 -->
+    <string name="loading">加载中…</string>
+    <string name="no_more_data">没有更多数据了</string>
+    <string name="swipe_to_refresh">下拉刷新</string>
+
+    <!-- 链接类型 -->
+    <string name="link_type_juejin">掘金</string>
+    <string name="link_type_wechat">微信</string>
+    <string name="link_type_wanandroid">玩安卓</string>
+    <string name="link_type_csdn">CSDN</string>
+    <string name="link_type_jianshu">简书</string>
+    <string name="link_type_zhihu">知乎</string>
+    <string name="link_type_github">GitHub</string>
+    <string name="link_type_android">Android</string>
+    <string name="link_type_other">其他</string>
+
+    <!-- 底部导航栏标题数组 -->
+    <string-array name="tab_titles">
+        <item>@string/title_home</item>
+        <item>@string/title_category</item>
+        <item>@string/title_discovery</item>
+        <item>@string/title_square</item>
+        <item>@string/title_mine</item>
+    </string-array>
+
+    <!-- 主题模式数组 -->
+    <string-array name="theme_mode_names">
+        <item>跟随系统</item>
+        <item>浅色模式</item>
+        <item>深色模式</item>
+    </string-array>
+
+    <!-- 语言数组 -->
+    <string-array name="language_names">
+        <item>跟随系统</item>
+        <item>简体中文</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>""</item>
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
 </resources>

@@ -2,6 +2,7 @@ package com.jacknic.android.wanandroid.ui.component
 
 import com.jacknic.android.wanandroid.core.data.UserDataRepository
 import com.jacknic.android.wanandroid.core.domain.WanRepository
+import com.jacknic.android.wanandroid.core.ui.R
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,7 @@ sealed class CollectResult {
     data object NotLoggedIn : CollectResult()
 
     /** 操作失败 */
-    data class Error(val message: String) : CollectResult()
+    data class Error(val errorResId: Int) : CollectResult()
 }
 
 /**
@@ -88,7 +89,7 @@ class CollectStateManager @Inject constructor(private val repo: WanRepository, u
                 _collectIds.update { it - articleId }
                 CollectResult.Success
             } else {
-                CollectResult.Error(result.exceptionOrNull()?.message ?: "取消收藏失败")
+                CollectResult.Error(R.string.error_uncollect_failed)
             }
         } else {
             val result = repo.collectArticle(articleId)
@@ -96,7 +97,7 @@ class CollectStateManager @Inject constructor(private val repo: WanRepository, u
                 _collectIds.update { it + articleId }
                 CollectResult.Success
             } else {
-                CollectResult.Error(result.exceptionOrNull()?.message ?: "收藏失败")
+                CollectResult.Error(R.string.error_collect_failed)
             }
         }
     }
@@ -115,7 +116,7 @@ class CollectStateManager @Inject constructor(private val repo: WanRepository, u
             _collectIds.update { it - articleId }
             CollectResult.Success
         } else {
-            CollectResult.Error(result.exceptionOrNull()?.message ?: "取消收藏失败")
+            CollectResult.Error(R.string.error_uncollect_failed)
         }
     }
 

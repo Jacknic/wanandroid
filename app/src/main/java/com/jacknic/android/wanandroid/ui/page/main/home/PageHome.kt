@@ -286,7 +286,11 @@ fun PageHome(
                         scope.launch {
                             when (val result = collectStateManager.toggleCollect(article.id, isCollected)) {
                                 is CollectResult.NotLoggedIn -> showLoginDialog = true
-                                is CollectResult.Error -> Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                                is CollectResult.Error -> Toast.makeText(
+                                    context,
+                                    context.getString(result.errorResId),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                                 is CollectResult.Success -> {}
                             }
                         }

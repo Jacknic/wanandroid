@@ -75,7 +75,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jacknic.android.wanandroid.BuildConfig
-import com.jacknic.android.wanandroid.R
+import com.jacknic.android.wanandroid.core.ui.R
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
 import com.jacknic.android.wanandroid.ui.page.Page
 import com.jacknic.android.wanandroid.ui.page.login.LoginViewModel
@@ -103,13 +103,19 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
     val nav = LocalNavCtrl.current
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
-    Scaffold(topBar = {
-        TopAppBar(title = { Text("设置") }, navigationIcon = {
-            IconButton(onClick = { nav.navigateUp() }) {
-                Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "")
-            }
-        }, scrollBehavior = scrollBehavior)
-    }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.page_setting)) },
+                navigationIcon = {
+                    IconButton(onClick = { nav.navigateUp() }) {
+                        Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "")
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
+    ) { padding ->
         LazyColumn(
             contentPadding = padding,
             modifier = Modifier
@@ -118,7 +124,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
         ) {
             // === 账号管理 ===
             item {
-                SectionHeader(title = "账号管理")
+                SectionHeader(title = stringResource(R.string.setting_edit_profile))
             }
             item {
                 val interactionSource = remember { MutableInteractionSource() }
@@ -126,7 +132,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     leadingContent = {
                         Icon(Icons.TwoTone.Person, "", modifier = Modifier.size(24.dp))
                     },
-                    headlineContent = { Text("编辑资料") },
+                    headlineContent = { Text(stringResource(R.string.setting_edit_profile)) },
                     trailingContent = {
                         Icon(Icons.AutoMirrored.TwoTone.KeyboardArrowRight, "")
                     },
@@ -138,7 +144,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
 
             // === 通用设置 ===
             item {
-                SectionHeader(title = "通用设置")
+                SectionHeader(title = stringResource(R.string.setting_general))
             }
             item {
                 val themeModeNames = stringArrayResource(R.array.theme_mode_names)
@@ -206,7 +212,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     leadingContent = {
                         Icon(Icons.TwoTone.Language, "", modifier = Modifier.size(24.dp))
                     },
-                    headlineContent = { Text("语言设置") },
+                    headlineContent = { Text(stringResource(R.string.setting_language)) },
                     supportingContent = {
                         LanguagePanel(showLanguagePanel, languageNames, languageCodes)
                         Text(languageNames[currentIndex])
@@ -225,7 +231,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     leadingContent = {
                         Icon(Icons.TwoTone.Notifications, "", modifier = Modifier.size(24.dp))
                     },
-                    headlineContent = { Text("推送通知") },
+                    headlineContent = { Text(stringResource(R.string.setting_notification)) },
                     trailingContent = {
                         Icon(Icons.AutoMirrored.TwoTone.KeyboardArrowRight, "")
                     },
@@ -237,7 +243,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
 
             // === 其他 ===
             item {
-                SectionHeader(title = "其他")
+                SectionHeader(title = stringResource(R.string.setting_others))
             }
             item {
                 val interactionSource = remember { MutableInteractionSource() }
@@ -245,8 +251,8 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     leadingContent = {
                         Icon(Icons.TwoTone.Update, "", modifier = Modifier.size(24.dp))
                     },
-                    headlineContent = { Text("检查更新") },
-                    supportingContent = { Text("当前版本: v${BuildConfig.VERSION_NAME}") },
+                    headlineContent = { Text(stringResource(R.string.setting_check_update)) },
+                    supportingContent = { Text(stringResource(R.string.setting_current_version, BuildConfig.VERSION_NAME)) },
                     trailingContent = {
                         Icon(Icons.AutoMirrored.TwoTone.KeyboardArrowRight, "")
                     },
@@ -261,7 +267,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     leadingContent = {
                         Icon(Icons.TwoTone.Info, "", modifier = Modifier.size(24.dp))
                     },
-                    headlineContent = { Text("关于") },
+                    headlineContent = { Text(stringResource(R.string.setting_about)) },
                     trailingContent = {
                         Icon(Icons.AutoMirrored.TwoTone.KeyboardArrowRight, "")
                     },
@@ -289,7 +295,7 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                             .widthIn(max = 360.dp),
                     ) {
                         Text(
-                            text = "退出登录",
+                            text = stringResource(R.string.setting_logout_title),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth(),
                         )
@@ -306,7 +312,10 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "当前版本: v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                        text = stringResource(
+                            R.string.setting_current_version,
+                            "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -316,19 +325,21 @@ fun PageSetting(vm: LoginViewModel = hiltViewModel()) {
         if (showLogoutDialog) {
             AlertDialog(
                 onDismissRequest = { showLogoutDialog = false },
-                title = { Text(text = "确定要退出登录？") },
+                title = { Text(text = stringResource(R.string.setting_logout_title)) },
                 text = {
-                    Text("退出后将需要重新登录您的账号")
+                    Text(stringResource(R.string.setting_logout_confirm))
                 },
                 confirmButton = {
-                    TextButton(onClick = {
-                        showLogoutDialog = false
-                        vm.logout()
-                        nav.navTop(Page.Login, Page.Main)
-                    }) { Text("确定") }
+                    TextButton(
+                        onClick = {
+                            showLogoutDialog = false
+                            vm.logout()
+                            nav.navTop(Page.Login, Page.Main)
+                        },
+                    ) { Text(stringResource(R.string.action_confirm)) }
                 },
                 dismissButton = {
-                    TextButton(onClick = { showLogoutDialog = false }) { Text("取消") }
+                    TextButton(onClick = { showLogoutDialog = false }) { Text(stringResource(R.string.action_cancel)) }
                 },
             )
         }

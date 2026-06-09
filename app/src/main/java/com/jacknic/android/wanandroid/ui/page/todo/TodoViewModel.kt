@@ -89,14 +89,7 @@ class TodoViewModel @Inject constructor(private val repo: WanRepository) : ViewM
         }
     }
 
-    fun updateTodo(
-        id: Int,
-        title: String,
-        content: String,
-        date: String,
-        status: Int,
-        onResult: (Boolean) -> Unit = {},
-    ) {
+    fun updateTodo(id: Int, title: String, content: String, date: String, status: Int, onResult: (Boolean) -> Unit = {}) {
         viewModelScope.launch {
             try {
                 val result = repo.updateTodo(id = id, title = title, content = content, date = date, status = status)

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">WanAndroid</string>
+
+    <!-- Common Actions -->
+    <string name="action_confirm">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_save">Save</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_login">Login</string>
+    <string name="action_select_all">Select All</string>
+    <string name="action_invert_selection">Invert Selection</string>
+    <string name="action_multi_select">Multi Select</string>
+    <string name="action_back">Back</string>
+
+    <!-- Page Titles -->
+    <string name="page_home">Home</string>
+    <string name="page_category">Category</string>
+    <string name="page_discovery">Discover</string>
+    <string name="page_square">Square</string>
+    <string name="page_mine">Me</string>
+    <string name="page_collection">My Collection</string>
+    <string name="page_todo">Todo</string>
+    <string name="page_setting">Settings</string>
+    <string name="page_search">Search</string>
+    <string name="page_login">Login</string>
+    <string name="page_browser">Browser</string>
+    <string name="page_register">Register</string>
+
+    <!-- Bottom Navigation -->
+    <string name="title_home">Home</string>
+    <string name="title_category">Category</string>
+    <string name="title_discovery">Discover</string>
+    <string name="title_square">Square</string>
+    <string name="title_mine">Me</string>
+
+    <!-- Discovery Page -->
+    <string name="title_hot_search">Hot Search</string>
+    <string name="title_useful_sites">Useful Sites</string>
+    <string name="title_project_category">Project Category</string>
+
+    <!-- Settings Page -->
+    <string name="title_theme_mode">Theme Mode</string>
+    <string name="title_dynamic_theme_color">Dynamic Color</string>
+    <string name="desc_dynamic_theme_color">Match wallpaper color style</string>
+
+    <!-- Login Page -->
+    <string name="login_hit_label_password">Password</string>
+    <string name="login_hit_label_username">Username</string>
+    <string name="login_tips_login_success">Login success</string>
+    <string name="login_tips_login_failed">Login failed</string>
+    <string name="login_btn_login">Login</string>
+    <string name="login_btn_login_loading">Loading</string>
+    <string name="login_btn_skip_login">Skip</string>
+    <string name="login_remember_password">Remember Password</string>
+    <string name="login_clear_credentials">Clear saved credentials</string>
+    <string name="login_link_to_register">No account? Register</string>
+
+    <!-- Register Page -->
+    <string name="register_title">Register</string>
+    <string name="register_hit_label_username">Username</string>
+    <string name="register_hit_label_password">Password</string>
+    <string name="register_hit_label_confirm_password">Confirm Password</string>
+    <string name="register_btn_register">Register</string>
+    <string name="register_btn_register_loading">Registering</string>
+    <string name="register_tips_success">Register success</string>
+    <string name="register_tips_failed">Register failed</string>
+    <string name="register_link_to_login">Have an account? Login</string>
+    <string name="register_agree_privacy">I have read and agree to the</string>
+    <string name="register_privacy_policy">Privacy Policy</string>
+    <string name="register_terms_of_service">Terms of Service</string>
+    <string name="register_error_agree_privacy">Please agree to the privacy policy first</string>
+
+    <!-- Password Strength -->
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_medium">Medium</string>
+    <string name="password_strength_strong">Strong</string>
+    <string name="password_strength_label">Password Strength:</string>
+
+    <!-- Collection -->
+    <string name="collection_title">My Collection</string>
+    <string name="collection_batch_delete_title">Batch Delete Collection</string>
+    <string name="collection_batch_delete_message">Are you sure to delete the selected %1$d collection(s)? This action cannot be undone.</string>
+    <string name="collection_batch_delete_success">Deleted %1$d collection(s)</string>
+    <string name="collection_batch_delete_partial">Successfully deleted %1$d, failed %2$d</string>
+    <string name="collection_batch_delete_empty">Please select collections to delete</string>
+    <string name="collection_cancel_title">Cancel Collection</string>
+    <string name="collection_cancel_message">Are you sure to cancel this collection?</string>
+    <string name="collection_empty">No collections yet</string>
+    <string name="collection_selected_count">Selected %1$d item(s)</string>
+    <string name="collection_total_count">Total %1$d collection(s)</string>
+
+    <!-- Todo -->
+    <string name="todo_add_title">Add Todo</string>
+    <string name="todo_edit_title">Edit Todo</string>
+    <string name="todo_delete_title">Delete Todo</string>
+    <string name="todo_delete_message">Are you sure to delete this todo?</string>
+    <string name="todo_filter_all">All</string>
+    <string name="todo_filter_uncompleted">Uncompleted</string>
+    <string name="todo_filter_completed">Completed</string>
+    <string name="todo_title_hint">Title</string>
+    <string name="todo_content_hint">Content</string>
+    <string name="todo_date_hint">Date (yyyy-MM-dd)</string>
+    <string name="todo_empty">No todos yet</string>
+    <string name="todo_add_success">Added successfully</string>
+    <string name="todo_update_success">Updated successfully</string>
+    <string name="todo_delete_success">Deleted successfully</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search WanAndroid</string>
+    <string name="search_history">Search History</string>
+    <string name="search_clear_history">Clear History</string>
+
+    <!-- Settings -->
+    <string name="setting_edit_profile">Edit Profile</string>
+    <string name="setting_general">General</string>
+    <string name="setting_others">Others</string>
+    <string name="setting_language">Language</string>
+    <string name="setting_notification">Push Notifications</string>
+    <string name="setting_check_update">Check Update</string>
+    <string name="setting_current_version">Current version: v%1$s</string>
+    <string name="setting_about">About</string>
+    <string name="setting_theme_color">Theme Color</string>
+    <string name="setting_logout_confirm">You will need to log in again after logging out</string>
+    <string name="setting_logout_title">Log Out</string>
+
+    <!-- Theme Colors -->
+    <string name="theme_color_default">Default</string>
+    <string name="theme_color_green">Green</string>
+    <string name="theme_color_purple">Purple</string>
+    <string name="theme_color_orange">Orange</string>
+    <string name="theme_color_red">Red</string>
+    <string name="theme_color_custom">Custom</string>
+    <string name="theme_custom_title">Choose Custom Color</string>
+    <string name="theme_custom_hex">Hex</string>
+    <string name="theme_custom_hue">Hue</string>
+    <string name="theme_custom_saturation">Saturation</string>
+    <string name="theme_custom_lightness">Lightness</string>
+
+    <!-- Error Messages -->
+    <string name="error_network">Network error, please check your connection</string>
+    <string name="error_server">Server error, please try again later</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_not_logged_in">Please log in first</string>
+    <string name="error_collect_failed">Failed to collect</string>
+    <string name="error_uncollect_failed">Failed to uncollect</string>
+
+    <!-- Success Messages -->
+    <string name="success_collect">Collected successfully</string>
+    <string name="success_uncollect">Uncollected</string>
+    <string name="success_delete">Deleted successfully</string>
+
+    <!-- Loading States -->
+    <string name="loading">Loading…</string>
+    <string name="no_more_data">No more data</string>
+    <string name="swipe_to_refresh">Swipe to refresh</string>
+
+    <!-- Link Types -->
+    <string name="link_type_juejin">Juejin</string>
+    <string name="link_type_wechat">WeChat</string>
+    <string name="link_type_wanandroid">WanAndroid</string>
+    <string name="link_type_csdn">CSDN</string>
+    <string name="link_type_jianshu">Jianshu</string>
+    <string name="link_type_zhihu">Zhihu</string>
+    <string name="link_type_github">GitHub</string>
+    <string name="link_type_android">Android</string>
+    <string name="link_type_other">Other</string>
+
+    <!-- Bottom Navigation Array -->
+    <string-array name="tab_titles">
+        <item>@string/title_home</item>
+        <item>@string/title_category</item>
+        <item>@string/title_discovery</item>
+        <item>@string/title_square</item>
+        <item>@string/title_mine</item>
+    </string-array>
+
+    <!-- Theme Mode Array -->
+    <string-array name="theme_mode_names">
+        <item>Follow System</item>
+        <item>Light Mode</item>
+        <item>Dark Mode</item>
+    </string-array>
+
+    <!-- Language Arrays -->
+    <string-array name="language_names">
+        <item>Follow System</item>
+        <item>Simplified Chinese</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>""</item>
+        <item>zh</item>
+        <item>en</item>
+    </string-array>
+</resources>

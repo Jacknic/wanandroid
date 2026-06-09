@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +47,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jacknic.android.wanandroid.core.common.StateResult
 import com.jacknic.android.wanandroid.core.model.Article
 import com.jacknic.android.wanandroid.core.network.isUnauthorized
+import com.jacknic.android.wanandroid.core.ui.R
 import com.jacknic.android.wanandroid.ui.component.ArticleListItem
 import com.jacknic.android.wanandroid.ui.component.CollectResult
 import com.jacknic.android.wanandroid.ui.page.LocalNavCtrl
@@ -87,10 +89,10 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("我的收藏") },
+                title = { Text(stringResource(R.string.page_collection)) },
                 navigationIcon = {
                     IconButton(onClick = { nav.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "返回")
+                        Icon(Icons.AutoMirrored.TwoTone.ArrowBack, stringResource(R.string.action_back))
                     }
                 },
                 scrollBehavior = scrollBehavior,
@@ -126,17 +128,23 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                if (isUnauthorized) "未登录" else "加载失败",
+                                if (isUnauthorized) {
+                                    stringResource(
+                                        R.string.error_not_logged_in,
+                                    )
+                                } else {
+                                    stringResource(R.string.error_unknown)
+                                },
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             if (isUnauthorized) {
                                 TextButton(onClick = { nav.navTop(Page.Login, Page.Main) }) {
-                                    Text("去登录")
+                                    Text(stringResource(R.string.action_login))
                                 }
                             } else {
                                 TextButton(onClick = { vm.refresh() }) {
-                                    Text("重试")
+                                    Text(stringResource(R.string.action_retry))
                                 }
                             }
                         }
@@ -152,7 +160,7 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                "暂无收藏文章",
+                                stringResource(R.string.collection_empty),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -161,7 +169,7 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                             stickyHeader {
                                 Surface(modifier = Modifier.fillMaxWidth()) {
                                     Text(
-                                        "共 $total 篇收藏",
+                                        stringResource(R.string.collection_total_count, total),
                                         fontSize = 13.sp,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.padding(
@@ -209,7 +217,7 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
     articleToRemove?.let { article ->
         AlertDialog(
             onDismissRequest = { articleToRemove = null },
-            title = { Text("取消收藏") },
+            title = { Text(stringResource(R.string.collection_cancel_title)) },
             text = {
                 Text(
                     article.title.take(50)
@@ -224,17 +232,17 @@ fun PageCollection(vm: CollectionViewModel = hiltViewModel()) {
                         if (result is CollectResult.NotLoggedIn) {
                             nav.navTop(Page.Login, Page.Main)
                         } else if (result is CollectResult.Error) {
-                            Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(result.errorResId), Toast.LENGTH_SHORT).show()
                         }
                     }
                     articleToRemove = null
                 }) {
-                    Text("确定", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.action_confirm), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { articleToRemove = null }) {
-                    Text("取消")
+                    Text(stringResource(R.string.action_cancel))
                 }
             },
         )
