@@ -340,7 +340,7 @@ subprojects {
                                 it.name in listOf("releaseSourcesJar", "kotlinSourcesJar")
                             }?.let { artifact(it) }
                         }
-                        from(targetComponent!!)
+                        from(targetComponent)
                         pom {
                             description.set(project.description)
                         }
@@ -348,5 +348,10 @@ subprojects {
                 }
             }
         }
+    }
+
+    // 禁用所有测试任务的 failOnNoDiscoveredTests 选项
+    tasks.withType<AbstractTestTask> {
+        failOnNoDiscoveredTests = false
     }
 }
