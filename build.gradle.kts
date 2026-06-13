@@ -1,20 +1,17 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.sdklib.AndroidVersion.VersionCodes
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
-import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.legacy.kapt) apply false
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(androidx.plugins.androidxNavigationSafeargsKotlinGradlePlugin) apply false
@@ -108,27 +105,10 @@ fun getGitTag(dir: String): String? {
 /**
  * Android 模块统一配置
  */
-fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
+fun CommonExtension.configCommon(target: Project) {
     with(target) {
-        pluginManager.apply("org.jetbrains.kotlin.android")
-        pluginManager.apply("kotlin-kapt")
-    }
+        pluginManager.apply("com.android.legacy-kapt")
 
-    compileSdk = VersionCodes.BAKLAVA
-    defaultConfig {
-        minSdk = VersionCodes.N
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-
-    with(target) {
         dependencies {
             val commonPath = ":core:common"
             val commonProject = findProject(commonPath)
@@ -157,28 +137,27 @@ fun CommonExtension<*, *, *, *, *, *>.configCommon(target: Project) {
                 "androidTestImplementation"(projects.core.testing)
             }
         }
-
-        testOptions {
-            unitTests {
-                isIncludeAndroidResources = true
-            }
-        }
-        (this as ExtensionAware).extensions.configure<KaptExtension>("kapt") {
-            correctErrorTypes = true
-        }
-        (this as ExtensionAware).extensions.configure<KotlinAndroidProjectExtension>("kotlin") {
-            jvmToolchain(17)
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_1_8)
-            }
-        }
+        // jvmTarget 默认跟随 compileOptions.targetCompatibility (Java 8 → JVM 1.8)
+        // jvmToolchain 由 Gradle java.toolchain 统一管理
     }
 }
 
 /**
  * 应用模块统一配置
  */
-fun BaseAppModuleExtension.configApplication(target: Project) {
+fun ApplicationExtension.configApplication(target: Project) {
+    compileSdk = VersionCodes.BAKLAVA
+    defaultConfig {
+        minSdk = VersionCodes.N
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+
     configCommon(target)
     with(target) {
         dependencies {
@@ -198,12 +177,12 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
         }
     }
 
-    defaultConfig {
+    defaultConfig.apply {
         targetSdk = VersionCodes.BAKLAVA
         versionCode = 1
         versionName = "1.0.0"
         applicationId = namespace
-        signingConfig = signingConfigs["debug"]
+        signingConfig = signingConfigs.getByName("debug")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -211,9 +190,9 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = true
-            signingConfig = signingConfigs["debug"]
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -226,12 +205,30 @@ fun BaseAppModuleExtension.configApplication(target: Project) {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 /**
  * 库模块统一配置
  */
 fun LibraryExtension.configLibrary(target: Project) {
+    compileSdk = VersionCodes.BAKLAVA
+    defaultConfig {
+        minSdk = VersionCodes.N
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+
     val names = mutableListOf(libs.catalog.get().group)
     val p = target.parent
     if (p != null && p != rootProject) {
@@ -246,10 +243,25 @@ fun LibraryExtension.configLibrary(target: Project) {
             withSourcesJar()
         }
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 subprojects {
     val target = this
+
+    // 统一 Java 工具链
+    pluginManager.withPlugin("java") {
+        extensions.configure<JavaPluginExtension>("java") {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(17))
+            }
+        }
+    }
 
     // 为所有子模块应用 detekt 插件
     pluginManager.apply("io.gitlab.arturbosch.detekt")
@@ -273,7 +285,7 @@ subprojects {
 
     pluginManager.withPlugin("com.android.application") {
         // println("${this.name} 插件已使用")
-        extensions.configure<BaseAppModuleExtension>("android") { configApplication(target) }
+        extensions.configure<ApplicationExtension>("android") { configApplication(target) }
     }
     pluginManager.withPlugin("com.android.library") {
         // println("${this.name} 插件已使用")
