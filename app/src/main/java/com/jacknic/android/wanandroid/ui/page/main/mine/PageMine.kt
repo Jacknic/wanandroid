@@ -39,6 +39,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -95,10 +97,13 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
             }
     }
 
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { },
+                scrollBehavior = scrollBehavior,
                 actions = {
                     IconButton(onClick = {
                         val nextMode = when (themeMode) {
@@ -127,6 +132,8 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                         Icon(Icons.TwoTone.Settings, "设置")
                     }
                 },
+                colors = TopAppBarDefaults.topAppBarColors()
+                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface),
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -134,6 +141,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
         Column(
             modifier = Modifier
                 .padding(padding)
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(scrollState),
         ) {
             // 用户信息区域

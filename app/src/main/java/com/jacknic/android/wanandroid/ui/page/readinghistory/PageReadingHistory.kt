@@ -4,16 +4,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.DeleteSweep
@@ -30,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +65,9 @@ fun PageReadingHistory(vm: ReadingHistoryViewModel = hiltViewModel()) {
     val historyList by vm.readingHistoryList.collectAsStateWithLifecycle()
     var showClearDialog by remember { mutableStateOf(false) }
     var itemToRemove by remember { mutableStateOf<ReadingHistory?>(null) }
+
+    val isWideScreen = currentWindowAdaptiveInfo()
+        .windowSizeClass.isWidthAtLeastBreakpoint(600)
 
     Scaffold(
         topBar = {
@@ -96,17 +102,19 @@ fun PageReadingHistory(vm: ReadingHistoryViewModel = hiltViewModel()) {
                 )
             }
         } else {
-            LazyColumn(
+            LazyVerticalGrid(
+                columns = if (isWideScreen) GridCells.Adaptive(minSize = 300.dp) else GridCells.Fixed(1),
                 modifier = Modifier
                     .padding(padding)
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                contentPadding = PaddingValues(
                     horizontal = 12.dp,
                     vertical = 8.dp,
                 ),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                stickyHeader {
+                item(span = { GridItemSpan(maxLineSpan) }) {
                     Surface(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             "共 ${historyList.size} 条记录",

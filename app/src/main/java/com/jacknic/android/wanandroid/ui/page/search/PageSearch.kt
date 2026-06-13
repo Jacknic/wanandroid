@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -39,6 +41,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -133,30 +136,36 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                         placeholder = { Text("搜索文章关键词") },
                         suffix = {
                             if (inputText.isNotEmpty()) {
-                                IconButton(onClick = {
-                                    inputText = ""
-                                    vm.clearSearch()
-                                }) {
+                                IconButton(
+                                    onClick = {
+                                        inputText = ""
+                                        vm.clearSearch()
+                                    },
+                                ) {
                                     Icon(Icons.TwoTone.Clear, null)
                                 }
                             }
                         },
                         trailingIcon = {
-                            IconButton(onClick = {
+                            IconButton(
+                                onClick = {
+                                    if (inputText.isNotEmpty()) {
+                                        vm.search(inputText)
+                                        keyboardController?.hide()
+                                    }
+                                },
+                            ) { Icon(Icons.TwoTone.Search, null) }
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        keyboardActions = KeyboardActions(
+                            onSearch = {
                                 if (inputText.isNotEmpty()) {
                                     vm.search(inputText)
                                     keyboardController?.hide()
                                 }
-                            }) { Icon(Icons.TwoTone.Search, null) }
-                        },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                        keyboardActions = KeyboardActions(onSearch = {
-                            if (inputText.isNotEmpty()) {
-                                vm.search(inputText)
-                                keyboardController?.hide()
-                            }
-                        }),
+                            },
+                        ),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
@@ -167,14 +176,16 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        if (inputText.isNotEmpty()) {
-                            inputText = ""
-                            vm.clearSearch()
-                        } else {
-                            nav.popBackStack()
-                        }
-                    }) {
+                    IconButton(
+                        onClick = {
+                            if (inputText.isNotEmpty()) {
+                                inputText = ""
+                                vm.clearSearch()
+                            } else {
+                                nav.popBackStack()
+                            }
+                        },
+                    ) {
                         Icon(Icons.AutoMirrored.TwoTone.ArrowBack, "返回")
                     }
                 },
@@ -182,16 +193,21 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
         },
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) { padding ->
-        LazyColumn(
+        val isWideScreen = currentWindowAdaptiveInfo()
+            .windowSizeClass.isWidthAtLeastBreakpoint(600)
+        LazyVerticalGrid(
+            columns = if (isWideScreen) GridCells.Adaptive(minSize = 300.dp) else GridCells.Fixed(1),
             modifier = Modifier
-                .padding(padding)
+                .padding(PaddingValues(top = padding.calculateTopPadding()))
                 .fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 16.dp),
+            contentPadding = PaddingValues(top = 8.dp, start = 8.dp, end = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             val hotkeys = hotkeyResult.getDataOrNull() ?: emptyList()
             if (searchKey.isEmpty()) {
                 if (searchHistory.isNotEmpty()) {
-                    item {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
                         SearchHistorySection(
                             history = searchHistory.toList(),
                             onItemClick = {
@@ -205,7 +221,7 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                 }
 
                 if (hotkeys.isNotEmpty()) {
-                    item {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
                         DiscoveryCardSection(
                             title = stringResource(R.string.title_hot_search),
                             icon = Icons.TwoTone.Search,
@@ -227,7 +243,6 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                 },
             ) { index ->
                 val article = pagingItems[index] ?: return@items
-                Spacer(modifier = Modifier.size(8.dp))
                 val isCollected = if (collectInitialized) collectIds.contains(article.id) else article.collect
                 ArticleListItem(
                     article = article,
@@ -241,6 +256,7 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                                     context.getString(result.errorResId),
                                     Toast.LENGTH_SHORT,
                                 ).show()
+
                                 is CollectResult.Success -> {}
                             }
                         }
@@ -258,7 +274,7 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                     .height(80.dp)
                 when {
                     state.refresh is LoadState.Loading || state.prepend is LoadState.Loading -> {
-                        item {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             Box(modifier = modifier, contentAlignment = Alignment.Center) {
                                 CircularProgressIndicator()
                             }
@@ -266,7 +282,7 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                     }
 
                     state.refresh is LoadState.Error -> {
-                        item {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             Box(modifier = modifier, contentAlignment = Alignment.Center) {
                                 Button(onClick = { pagingItems.refresh() }) {
                                     Text("加载错误,重新加载")
@@ -276,7 +292,7 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                     }
 
                     state.append is LoadState.Error -> {
-                        item {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             Box(modifier = modifier, contentAlignment = Alignment.Center) {
                                 Button(onClick = { pagingItems.retry() }) {
                                     Text("加载错误,点击重试")
@@ -285,6 +301,10 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
                         }
                     }
                 }
+            }
+
+            item {
+                Spacer(modifier = Modifier.padding(bottom = padding.calculateBottomPadding()))
             }
         }
     }
@@ -296,10 +316,12 @@ fun PageSearch(vm: SearchViewModel = hiltViewModel()) {
             title = { Text("提示") },
             text = { Text("收藏功能需要登录，是否前往登录？") },
             confirmButton = {
-                TextButton(onClick = {
-                    showLoginDialog = false
-                    nav.navTop(Page.Login, Page.Main)
-                }) {
+                TextButton(
+                    onClick = {
+                        showLoginDialog = false
+                        nav.navTop(Page.Login, Page.Main)
+                    },
+                ) {
                     Text("去登录")
                 }
             },

@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Add
@@ -39,12 +42,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -86,13 +91,18 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
     var editingTodo by remember { mutableStateOf<Todo?>(null) }
     var todoToDelete by remember { mutableStateOf<Todo?>(null) }
 
-    val lazyListState = rememberLazyListState()
+    val isWideScreen = currentWindowAdaptiveInfo()
+        .windowSizeClass.isWidthAtLeastBreakpoint(600)
+
+    val lazyGridState = rememberSaveable(saver = LazyGridState.Saver) {
+        LazyGridState()
+    }
 
     // 滚动到底部自动加载更多
-    LaunchedEffect(lazyListState) {
+    LaunchedEffect(lazyGridState) {
         snapshotFlow {
-            val lastVisibleIndex = lazyListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            val totalItems = lazyListState.layoutInfo.totalItemsCount
+            val lastVisibleIndex = lazyGridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            val totalItems = lazyGridState.layoutInfo.totalItemsCount
             lastVisibleIndex to totalItems
         }.collect { (lastVisible, total) ->
             if (lastVisible >= total - 2 && total > 0) {
@@ -190,8 +200,15 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                                 )
                             }
                         } else {
-                            LazyColumn(state = lazyListState) {
-                                stickyHeader {
+                            LazyVerticalGrid(
+                                columns = if (isWideScreen) GridCells.Adaptive(minSize = 300.dp) else GridCells.Fixed(1),
+                                state = lazyGridState,
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                item(span = { GridItemSpan(maxLineSpan) }) {
                                     Surface(modifier = Modifier.fillMaxWidth()) {
                                         Text(
                                             stringResource(R.string.collection_selected_count, total),
@@ -213,7 +230,7 @@ fun PageTodo(vm: TodoViewModel = hiltViewModel()) {
                                     )
                                 }
                                 if (!state.data.over) {
-                                    item {
+                                    item(span = { GridItemSpan(maxLineSpan) }) {
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxWidth()

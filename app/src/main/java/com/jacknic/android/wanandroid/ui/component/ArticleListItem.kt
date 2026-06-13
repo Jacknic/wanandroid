@@ -49,11 +49,7 @@ import com.jacknic.android.wanandroid.ui.theme.WanandroidTheme
 /**
  * 链接类型枚举
  */
-enum class LinkType(
-    val domains: List<String>,
-    @param:StringRes val labelRes: Int,
-    val color: Color,
-) {
+enum class LinkType(val domains: List<String>, @param:StringRes val labelRes: Int, val color: Color) {
     JUEJIN(listOf("juejin.cn", "juejin.im"), R.string.link_type_juejin, Color(0xFF0066FF)),
     WECHAT(listOf("mp.weixin.qq.com"), R.string.link_type_wechat, Color(0xFF07C160)),
     WANANDROID(listOf("wanandroid.com"), R.string.link_type_wanandroid, Color(0xFF276692)),

@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,6 +39,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,6 +72,8 @@ fun PageDiscovery(vm: DiscoveryViewModel = hiltViewModel(), onNavigateToHomeCate
     val hotkeys = hotkeyResult.getDataOrNull() ?: emptyList()
     val friendLinks = friendResult.getDataOrNull() ?: emptyList()
     val projectTrees = projectTreeResult.getDataOrNull() ?: emptyList()
+
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     val savedScroll = vm.getScrollState()
     val listState = rememberSaveable(saver = LazyListState.Saver) {
@@ -105,12 +109,16 @@ fun PageDiscovery(vm: DiscoveryViewModel = hiltViewModel(), onNavigateToHomeCate
                         Icon(Icons.TwoTone.Search, "搜索")
                     }
                 },
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors()
+                    .copy(scrolledContainerColor = MaterialTheme.colorScheme.surface),
             )
         },
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .fillMaxSize(),
             state = listState,
             contentPadding = PaddingValues(bottom = 16.dp),
