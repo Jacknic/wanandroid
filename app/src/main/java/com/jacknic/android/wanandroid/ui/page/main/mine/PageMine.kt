@@ -96,7 +96,6 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
             }
     }
 
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -120,7 +119,7 @@ fun PageMine(vm: MineViewModel = hiltViewModel()) {
                             contentDescription = names[themeMode.ordinal],
                         )
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { nav.navigate(Page.Message) }) {
                         Icon(Icons.TwoTone.Notifications, "通知")
                     }
                     IconButton(onClick = {

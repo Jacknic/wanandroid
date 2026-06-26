@@ -18,6 +18,16 @@ import com.jacknic.android.wanandroid.ui.page.browser.openBrowser
 import com.jacknic.android.wanandroid.ui.page.collection.PageCollection
 import com.jacknic.android.wanandroid.ui.page.login.PageLogin
 import com.jacknic.android.wanandroid.ui.page.main.PageMain
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_CATEGORY
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_CONTENT
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_FROM_NAME
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_FULL_LINK
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_LINK
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_NICE_DATE
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_TAG
+import com.jacknic.android.wanandroid.ui.page.message.KEY_MESSAGE_TITLE
+import com.jacknic.android.wanandroid.ui.page.message.PageMessage
+import com.jacknic.android.wanandroid.ui.page.message.PageMessageDetail
 import com.jacknic.android.wanandroid.ui.page.readinghistory.PageReadingHistory
 import com.jacknic.android.wanandroid.ui.page.search.PageSearch
 import com.jacknic.android.wanandroid.ui.page.setting.PageSetting
@@ -43,6 +53,8 @@ object Page {
     const val Collection = "PageCollection"
     const val ReadingHistory = "PageReadingHistory"
     const val Todo = "PageTodo"
+    const val Message = "PageMessage"
+    const val MessageDetail = "PageMessageDetail"
 }
 
 /**
@@ -114,6 +126,28 @@ fun AppNavHost(
             composable(Page.Collection) { PageCollection() }
             composable(Page.ReadingHistory) { PageReadingHistory() }
             composable(Page.Todo) { PageTodo() }
+            composable(Page.Message) { PageMessage() }
+            composable(Page.MessageDetail) {
+                val handle = nav.previousBackStackEntry?.savedStateHandle
+                val title = handle?.get<String>(KEY_MESSAGE_TITLE).orEmpty()
+                val content = handle?.get<String>(KEY_MESSAGE_CONTENT).orEmpty()
+                val link = handle?.get<String>(KEY_MESSAGE_LINK).orEmpty()
+                val fullLink = handle?.get<String>(KEY_MESSAGE_FULL_LINK).orEmpty()
+                val niceDate = handle?.get<String>(KEY_MESSAGE_NICE_DATE).orEmpty()
+                val tag = handle?.get<String>(KEY_MESSAGE_TAG).orEmpty()
+                val category = handle?.get<Int>(KEY_MESSAGE_CATEGORY) ?: 0
+                val fromName = handle?.get<String>(KEY_MESSAGE_FROM_NAME).orEmpty()
+                PageMessageDetail(
+                    title = title,
+                    content = content,
+                    link = link,
+                    fullLink = fullLink,
+                    niceDate = niceDate,
+                    tag = tag,
+                    category = category,
+                    fromName = fromName,
+                )
+            }
         }
     }
 }

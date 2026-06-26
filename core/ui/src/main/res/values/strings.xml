@@ -158,6 +158,26 @@
     <string name="no_more_data">没有更多数据了</string>
     <string name="swipe_to_refresh">下拉刷新</string>
 
+    <!-- 消息中心 -->
+    <string name="page_message">消息中心</string>
+    <string name="page_message_detail">消息详情</string>
+    <string name="message_tab_all">全部</string>
+    <string name="message_tab_unread">未读</string>
+    <string name="message_tab_read">已读</string>
+    <string name="message_empty">暂无消息</string>
+    <string name="message_unread_count">%1$d 条未读</string>
+    <string name="message_mark_all_read">全部已读</string>
+    <string name="message_mark_all_read_success">已全部标记为已读</string>
+    <string name="message_delete_title">删除消息</string>
+    <string name="message_delete_message">确定要删除这条消息吗？</string>
+    <string name="message_delete_success">已删除</string>
+    <string name="message_from">来自：%1$s</string>
+    <string name="message_open_link">查看链接</string>
+    <string name="message_empty_title">暂无消息</string>
+    <string name="message_empty_desc">暂时没有新消息，下拉刷新试试</string>
+    <string name="message_error_title">加载失败</string>
+    <string name="message_error_desc">网络似乎出了点问题，请稍后重试</string>
+
     <!-- 链接类型 -->
     <string name="link_type_juejin">掘金</string>
     <string name="link_type_wechat">微信</string>

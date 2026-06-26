@@ -129,8 +129,8 @@ internal class DefaultWanRepository @Inject constructor(private val api: WanApi)
         api.getMessageLgReadedList(page, pageSize)
     }
 
-    override suspend fun getMessageLgUnreadedList(page: Int) = runResult {
-        api.getMessageLgUnreadedList(page)
+    override suspend fun getMessageLgUnreadedList(page: Int, pageSize: Int?) = runResult {
+        api.getMessageLgUnreadedList(page, pageSize)
     }
 
     override suspend fun getWendaList(page: Int, pageSize: Int?) = runResult {

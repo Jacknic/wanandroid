@@ -7,6 +7,7 @@ import com.jacknic.android.wanandroid.core.model.CoinInfo
 import com.jacknic.android.wanandroid.core.model.CourseInfo
 import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
+import com.jacknic.android.wanandroid.core.model.Message
 import com.jacknic.android.wanandroid.core.model.NavInfo
 import com.jacknic.android.wanandroid.core.model.Paging
 import com.jacknic.android.wanandroid.core.model.PersonalInfo
@@ -256,14 +257,15 @@ interface WanRepository {
      * @param page 页码
      * @param pageSize 分页大小 1-40 (optional)
      */
-    suspend fun getMessageLgReadedList(page: Int, pageSize: Int? = null): Result<Paging<Any?>>
+    suspend fun getMessageLgReadedList(page: Int, pageSize: Int? = null): Result<Paging<Message>>
 
     /**
      * 获取未读消息列表
      *
      * @param page 页码
+     * @param pageSize 分页大小 1-40 (optional)
      */
-    suspend fun getMessageLgUnreadedList(page: Int): Result<Paging<Any?>>
+    suspend fun getMessageLgUnreadedList(page: Int, pageSize: Int? = null): Result<Paging<Message>>
 
     /**
      * 获取问答列表

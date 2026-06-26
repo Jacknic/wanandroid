@@ -7,6 +7,7 @@ import com.jacknic.android.wanandroid.core.model.CoinInfo
 import com.jacknic.android.wanandroid.core.model.CourseInfo
 import com.jacknic.android.wanandroid.core.model.FriendLink
 import com.jacknic.android.wanandroid.core.model.HotKeyword
+import com.jacknic.android.wanandroid.core.model.Message
 import com.jacknic.android.wanandroid.core.model.NavInfo
 import com.jacknic.android.wanandroid.core.model.Paging
 import com.jacknic.android.wanandroid.core.model.PersonalInfo
@@ -328,15 +329,16 @@ interface WanApi {
      * @param pageSize 分页大小 1-40 (optional)
      */
     @GET("/message/lg/readed_list/{page}/json")
-    suspend fun getMessageLgReadedList(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Any?>>
+    suspend fun getMessageLgReadedList(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Message>>
 
     /**
      * 未读消息列表
      *
      * @param page 页码
+     * @param pageSize 分页大小 1-40 (optional)
      */
-    @GET("/message/lg/unreaded_list/{page}/json")
-    suspend fun getMessageLgUnreadedList(@Path("page") page: Int): WanResult<Paging<Any?>>
+    @GET("/message/lg/unread_list/{page}/json")
+    suspend fun getMessageLgUnreadedList(@Path("page") page: Int, @Query("page_size") pageSize: Int? = null): WanResult<Paging<Message>>
 
     /**
      * 问答列表
